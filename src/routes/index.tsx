@@ -133,7 +133,24 @@ function Home() {
         </div>
       </section>
 
-      <section id="week" className="scroll-mt-20 py-16 sm:py-24">
+      <section id="map" className="scroll-mt-20 py-16 sm:py-24">
+        <div className="mx-auto max-w-5xl px-5">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-bold uppercase text-primary">The resort</p>
+              <h2 className="mt-3 text-3xl uppercase sm:text-4xl">Map</h2>
+            </div>
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+              Where we sleep, where the lifts are, where lunch, après and the late ones happen.
+            </p>
+          </div>
+          <div className="mt-8">
+            <ResortMap />
+          </div>
+        </div>
+      </section>
+
+      <section id="week" className="scroll-mt-20 border-y border-border bg-card py-16 sm:py-24">
         <div className="mx-auto max-w-5xl px-5">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
@@ -154,6 +171,15 @@ function Home() {
             ))}
           </ol>
 
+          <div className="mt-8 rounded-lg border border-border bg-background p-5">
+            <div className="flex flex-wrap items-center gap-3">
+              <Plane className="size-5 text-primary" aria-hidden="true" />
+              <p className="font-semibold">{transfers.headline}</p>
+              <StatusBadge status={transfers.status} />
+            </div>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{transfers.body}</p>
+          </div>
+
           <details id="guide" className="group scroll-mt-20 mt-8 border-y border-border">
             <summary className="flex cursor-pointer list-none items-center justify-between py-5 text-base font-bold text-primary">
               <span>See the guide</span>
@@ -163,13 +189,7 @@ function Home() {
               <div>
                 <h3 className="flex items-center gap-2 text-xl uppercase"><Mountain className="size-5 text-primary" aria-hidden="true" /> Mountain</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Beginner slopes start in town, and the whole of Les 3 Vallées connects from the same lifts.</p>
-                <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                  {mountain.links.map((link) => (
-                    <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className="flex items-center justify-between border-b border-border py-2 text-sm font-semibold hover:text-primary">
-                      {link.label}<ExternalLink className="size-3.5" aria-hidden="true" />
-                    </a>
-                  ))}
-                </div>
+                <p className="mt-3 border-l-4 border-accent pl-4 text-sm leading-relaxed">{mountain.note}</p>
               </div>
               <div>
                 <h3 className="flex items-center gap-2 text-xl uppercase"><Users className="size-5 text-primary" aria-hidden="true" /> Not skiing</h3>
@@ -187,11 +207,29 @@ function Home() {
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{teamGames.body}</p>
               </div>
               <details className="lg:col-span-2">
-                <summary className="flex cursor-pointer list-none items-center gap-2 font-bold text-primary"><Snowflake className="size-4" aria-hidden="true" /> Open packing checklist</summary>
+                <summary className="flex cursor-pointer list-none items-center gap-2 font-bold text-primary"><Snowflake className="size-4" aria-hidden="true" /> Open packing list</summary>
                 <div className="mt-5"><PackingList /></div>
               </details>
             </div>
           </details>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-5 py-10">
+        <p className="text-xs font-bold uppercase text-muted-foreground">Live resort links</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-4">
+          {mountain.links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-between rounded-full border border-border px-4 py-2.5 text-sm font-semibold transition hover:border-foreground"
+            >
+              {link.label}
+              <ExternalLink className="size-3.5 text-primary" aria-hidden="true" />
+            </a>
+          ))}
         </div>
       </section>
 
@@ -226,3 +264,4 @@ function Home() {
     </div>
   );
 }
+
