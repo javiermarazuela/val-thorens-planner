@@ -5,8 +5,8 @@
 - [x] Hero, resort case, accommodation, week calendar, mountain, non-skiers
 - [x] Interactive packing checklist saved on the device
 - [x] Price and booking block with honest placeholder
-- [x] Answers, organiser contacts and update dates
+- [x] Compact answers and Jonah's organiser contact
 - [x] Redirect the old guide URLs to the matching sections
 - [x] Keep the dormant password boundary for attendee-only detail
-- [ ] Add the real price, inclusions and booking link (waiting on committee sign-off)
-- [ ] Add organiser contact details and urgent-help number (waiting on the user)
+- [ ] Add the final inclusions and booking link (waiting on committee sign-off)
+- [ ] Add the full committee list, WhatsApp link and urgent-help number (waiting on the user)
