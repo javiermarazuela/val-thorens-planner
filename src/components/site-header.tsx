@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, MountainSnow, X } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { sections, trip } from "@/lib/trip";
 
 export function SiteHeader() {
@@ -38,16 +39,18 @@ export function SiteHeader() {
           >
             Book a place
           </a>
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="grid size-10 place-items-center rounded-md border border-border lg:hidden"
+            className="rounded-md lg:hidden"
           >
             {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
             <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
-          </button>
+          </Button>
         </div>
       </div>
 

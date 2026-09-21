@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { RotateCcw } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { packing } from "@/lib/trip";
 
 const STORAGE_KEY = "vt2027-packing";
@@ -47,13 +48,15 @@ export function PackingList() {
           <div className="h-2 w-32 overflow-hidden rounded-full bg-secondary" role="presentation">
             <div className="h-full bg-primary transition-all" style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
           </div>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => setChecked([])}
-            className="inline-flex items-center gap-2 text-xs font-extrabold uppercase text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground"
           >
             <RotateCcw className="size-4" aria-hidden="true" /> Reset
-          </button>
+          </Button>
         </div>
       </div>
 

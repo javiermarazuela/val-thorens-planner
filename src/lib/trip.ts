@@ -16,14 +16,10 @@ export const trip = {
 };
 
 export const sections = [
-  { id: "resort", label: "Resort" },
   { id: "stay", label: "Where we stay" },
   { id: "week", label: "The week" },
-  { id: "mountain", label: "The mountain" },
-  { id: "off-snow", label: "Not skiing" },
-  { id: "packing", label: "Packing" },
+  { id: "guide", label: "Guide" },
   { id: "price", label: "Price" },
-  { id: "answers", label: "Answers" },
 ] as const;
 
 export const resortFacts = [
