@@ -349,10 +349,10 @@ function Home() {
             />
             <div className="rounded-lg bg-foreground p-7 text-background">
               <p className="text-xs font-extrabold uppercase text-background/70">Price per person</p>
-              <p className="mt-4 font-display text-5xl">To be confirmed</p>
+              <p className="mt-4 font-display text-5xl">~€2,000</p>
               <p className="mt-4 text-sm leading-relaxed text-background/80">
-                Booking opens as soon as the price is signed off. Until then, nothing to pay and nothing to commit to —
-                come back to this page or ask an organiser.
+                The final price is still being signed off by the committee. The ~€2,000 figure is the best estimate right
+                now; the confirmed number, deposit and payment dates will replace it here as soon as they are set.
               </p>
               <Button asChild variant="frost" className="mt-7 w-full bg-background text-foreground hover:bg-background/90">
                 <a href="#answers">
