@@ -9,20 +9,24 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
         primary: "bg-primary text-primary-foreground hover:bg-primary/90",
         outline: "border border-border bg-transparent text-foreground hover:bg-secondary",
         frost: "bg-foreground text-background hover:bg-foreground/85",
+        ghost: "bg-transparent text-foreground hover:bg-secondary",
+        link: "bg-transparent text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-12",
         sm: "h-10 min-h-10 px-4 text-xs",
+        icon: "size-11 min-h-11 px-0",
       },
     },
     defaultVariants: { variant: "primary", size: "default" },
   },
 );
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & { asChild?: boolean };
 
 function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {

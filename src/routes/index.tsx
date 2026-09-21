@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CalendarDays, MountainSnow, Route as RouteIcon, Users } from "lucide-react";
+import { ArrowRight, CalendarDays, MountainSnow, Route as RouteIcon, Users, type LucideIcon } from "lucide-react";
 
 import tripImage from "@/assets/val-thorens-trip.jpg";
 import guideImage from "@/assets/val-thorens-guide.jpg";
@@ -19,6 +19,12 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const facts: Array<{ Icon: LucideIcon; value: string; label: string }> = [
+    { Icon: MountainSnow, value: trip.altitude, label: "highest resort in Europe" },
+    { Icon: RouteIcon, value: trip.linkedPiste, label: "linked piste in Les 3 Vallées" },
+    { Icon: Users, value: String(trip.people), label: "club members" },
+  ];
+
   return (
     <div>
       <section className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-[1600px] gap-3 p-3 md:grid-cols-2 md:p-5">
@@ -62,7 +68,7 @@ function Index() {
             <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">Val Thorens is compact, largely pedestrian and mostly ski-in ski-out. You get 150km locally, connected into the world’s largest linked ski area.</p>
           </div>
           <div className="mt-14 grid border-y border-border sm:grid-cols-3 sm:divide-x sm:divide-border">
-            {[{ Icon: MountainSnow, value: trip.altitude, label: "highest resort in Europe" }, { Icon: RouteIcon, value: trip.linkedPiste, label: "linked piste in Les 3 Vallées" }, { Icon: Users, value: String(trip.people), label: "club members" }].map(({ Icon, value, label }) => <div key={label} className="py-7 sm:px-7 first:pl-0"><Icon className="size-6 text-primary" /><p className="mt-5 font-display text-4xl">{value}</p><p className="mt-2 text-sm text-muted-foreground">{label}</p></div>)}
+            {facts.map(({ Icon, value, label }) => <div key={label} className="py-7 sm:px-7 first:pl-0"><Icon className="size-6 text-primary" /><p className="mt-5 font-display text-4xl">{value}</p><p className="mt-2 text-sm text-muted-foreground">{label}</p></div>)}
           </div>
         </div>
       </section>
