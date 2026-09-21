@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CalendarDays, MountainSnow, Users } from "lucide-react";
+import { ArrowRight, CalendarDays, MountainSnow, Route as RouteIcon, Users } from "lucide-react";
 
 import tripImage from "@/assets/val-thorens-trip.jpg";
 import guideImage from "@/assets/val-thorens-guide.jpg";
@@ -62,7 +62,7 @@ function Index() {
             <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">Val Thorens is compact, largely pedestrian and mostly ski-in ski-out. You get 150km locally, connected into the world’s largest linked ski area.</p>
           </div>
           <div className="mt-14 grid border-y border-border sm:grid-cols-3 sm:divide-x sm:divide-border">
-            {[[MountainSnow, trip.altitude, "highest resort in Europe"], [MountainSnow, trip.linkedPiste, "linked piste in Les 3 Vallées"], [Users, String(trip.people), "club members"]].map(([Icon, value, label]) => <div key={String(label)} className="py-7 sm:px-7 first:pl-0"><Icon className="size-6 text-primary" /><p className="mt-5 font-display text-4xl">{String(value)}</p><p className="mt-2 text-sm text-muted-foreground">{String(label)}</p></div>)}
+            {[{ Icon: MountainSnow, value: trip.altitude, label: "highest resort in Europe" }, { Icon: RouteIcon, value: trip.linkedPiste, label: "linked piste in Les 3 Vallées" }, { Icon: Users, value: String(trip.people), label: "club members" }].map(({ Icon, value, label }) => <div key={label} className="py-7 sm:px-7 first:pl-0"><Icon className="size-6 text-primary" /><p className="mt-5 font-display text-4xl">{value}</p><p className="mt-2 text-sm text-muted-foreground">{label}</p></div>)}
           </div>
         </div>
       </section>
