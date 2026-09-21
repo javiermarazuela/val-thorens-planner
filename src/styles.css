@@ -19,7 +19,7 @@
  */
 
 @theme inline {
-  --font-sans: "DM Sans", sans-serif;
+  --font-sans: "Hind", sans-serif;
   --font-display: "Archivo Black", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

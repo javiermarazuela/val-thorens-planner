@@ -2,14 +2,14 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 const hashForSlug: Record<string, string> = {
   schedule: "week",
-  transport: "answers",
-  faqs: "answers",
+  transport: "guide",
+  faqs: "contact",
   town: "stay",
-  mountain: "mountain",
-  "things-to-do": "off-snow",
-  "non-skiers": "off-snow",
-  "team-games": "off-snow",
-  "live-conditions": "mountain",
+  mountain: "guide",
+  "things-to-do": "guide",
+  "non-skiers": "guide",
+  "team-games": "guide",
+  "live-conditions": "guide",
 };
 
 // Old guide pages now live as sections of the single page.
