@@ -200,3 +200,35 @@ export const contacts = {
   body:
     "Jonah is your first point of contact: +1 (202) 557-9599. The full committee list, WhatsApp group link and urgent-help number will be published here before departure.",
 };
+
+export type MapCategory = "base" | "lift" | "lunch" | "apres" | "club";
+
+export const mapCategories: Array<{ id: MapCategory; label: string; color: string }> = [
+  { id: "base", label: "Where we stay", color: "#2563eb" },
+  { id: "lift", label: "Lifts", color: "#10b981" },
+  { id: "lunch", label: "Mountain lunch", color: "#f59e0b" },
+  { id: "apres", label: "Après", color: "#ef4444" },
+  { id: "club", label: "Late night", color: "#a855f7" },
+];
+
+export const mapPoints: Array<{
+  name: string;
+  category: MapCategory;
+  x: number;
+  y: number;
+  note: string;
+  status: GuideStatus;
+}> = [
+  { name: "Our apartments", category: "base", x: 48, y: 62, note: "Central village, walking distance from the lifts and the bars. Exact buildings confirmed closer to the trip.", status: "partial" },
+  { name: "Funitel Péclet", category: "lift", x: 68, y: 44, note: "Fast way up the east side of the bowl and into the glacier runs.", status: "confirmed" },
+  { name: "Cime Caron cable car", category: "lift", x: 18, y: 30, note: "3,200m and the big view. Queue early on a clear day.", status: "confirmed" },
+  { name: "Beginner carpets", category: "lift", x: 44, y: 70, note: "Gentle slopes at the edge of the village — day one starts here.", status: "confirmed" },
+  { name: "Plein Sud chair", category: "lift", x: 56, y: 56, note: "The main lift out of the village and the route to Les 3 Vallées.", status: "confirmed" },
+  { name: "Chalet de la Marine", category: "lunch", x: 74, y: 30, note: "Long lunch on the terrace, reachable on an easy blue.", status: "soon" },
+  { name: "Chez Pépé Nicolas", category: "lunch", x: 82, y: 56, note: "Old farm, big plates, slightly further out.", status: "soon" },
+  { name: "La Folie Douce", category: "apres", x: 60, y: 40, note: "Top of Plein Sud. Starts mid-afternoon, and you still have to ski down.", status: "soon" },
+  { name: "360 Bar", category: "apres", x: 52, y: 60, note: "Bottom of the slope, first stop coming off the mountain.", status: "soon" },
+  { name: "Le Malaysia", category: "club", x: 46, y: 74, note: "Underground, very large, very late.", status: "soon" },
+  { name: "Klub Summit", category: "club", x: 54, y: 76, note: "In the middle of the village, a short walk from most doors.", status: "soon" },
+];
+
