@@ -168,18 +168,18 @@ export const packing: Array<{ group: string; items: string[] }> = [
 ];
 
 export const pricing = {
-  status: "soon" as GuideStatus,
+  status: "partial" as GuideStatus,
   known: [
+    "Approximate price per person: ~€2,000.",
     "One price covers accommodation, transfers and the organised programme.",
     "Payment is staged, not one lump sum.",
   ],
   forthcoming: [
-    "The final price per person",
     "Exactly what is and is not included",
     "Deposit amount and payment dates",
     "Whether lift pass and rental are bundled or bought separately",
   ],
-  note: "We will not publish a number until the committee has signed it off. When it lands, it appears here and the update date changes.",
+  note: "The final price is still being signed off by the committee. The ~€2,000 figure is the best estimate right now; the confirmed number will replace it here as soon as it is set.",
 };
 
 export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
@@ -193,7 +193,7 @@ export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
 ];
 
 export const contacts = {
-  status: "soon" as GuideStatus,
+  status: "confirmed" as GuideStatus,
   body:
-    "Organiser names, phone numbers, the WhatsApp group link and an urgent-help number will be published here before departure. Seven of us are on the committee; you will not be short of someone to ask.",
+    "Jonah is your first point of contact: +1 (202) 557-9599. The full committee list, WhatsApp group link and urgent-help number will be published here before departure.",
 };
