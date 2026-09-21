@@ -1,5 +1,6 @@
 # Roadmap
 
+- [ ] Choose an icy-blue design direction with restrained timber contrast
 - [ ] Build shared trip content and site navigation
 - [ ] Build the public Trip page
 - [ ] Build the Guide home and nine guide pages
