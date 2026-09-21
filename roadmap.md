@@ -6,4 +6,4 @@
 - [x] Build the Guide home and nine guide pages
 - [x] Add deliberate forthcoming states and update dates
 - [x] Prepare the dormant password boundary
-- [ ] Verify metadata, phone layout, links, and preview
+- [x] Verify metadata, phone layout, links, and preview
