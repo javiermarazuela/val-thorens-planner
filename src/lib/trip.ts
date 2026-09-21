@@ -178,15 +178,22 @@ export const pricing = {
   note: "The final price is still being signed off by the committee. The ~€2,000 figure is the best estimate right now; the confirmed number will replace it here as soon as it is set.",
 };
 
+export const transfers = {
+  status: "partial" as GuideStatus,
+  headline: "Fly to Geneva (GVA).",
+  body: "Book your flights to Geneva Airport. We recommend the morning arrivals on Saturday 9 January and the afternoon departures on Saturday 16 January — exact flight numbers are being confirmed. We organise the coaches from Geneva up to Val Thorens, both ways.",
+};
+
 export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
-  { q: "Which flights should I book?", a: "Do not book anything yet. Transfers are being built around specific arrival windows, and we will publish the recommended flights and airports before you need to commit.", status: "soon" },
-  { q: "Do I need to have skied before?", a: "No. A good share of the group will be on skis for the first time. There are wide beginner slopes in the village and lesson options are being arranged.", status: "partial" },
-  { q: "How much cash should I bring?", a: "Very little. Almost everything is card, but €50 in cash covers the odd machine, tip or taxi that is not.", status: "confirmed" },
-  { q: "What about insurance?", a: "You need travel insurance that explicitly covers winter sports, and a GHIC or EHIC card. This is not optional — mountain rescue is expensive.", status: "confirmed" },
+  { q: "Which flights should I book?", a: "Fly into Geneva (GVA). We recommend the Saturday morning arrival and the following Saturday afternoon return; the two recommended flights will be posted here shortly. We run the coaches from Geneva to the resort and back.", status: "partial" },
+  { q: "What time is the last lift?", a: "Mid-afternoon, roughly 16:15–16:45 depending on the lift. Miss the link back over the ridge from Méribel or Courchevel and it is a long, expensive taxi round the valley — start heading home by 15:30.", status: "confirmed" },
+  { q: "What if I get injured?", a: "There is a medical centre in the village and piste rescue on the mountain. Insurance covering winter sports and mountain rescue is mandatory, not optional. Organisers are reachable all week, and the daytime programme means you are not stuck in an apartment alone.", status: "partial" },
+  { q: "What if I don’t ski?", a: "You are in good company — plenty of the group won't be on the mountain every day. The village is compact and pedestrian, a pedestrian lift pass gets you up to the terraces for lunch and après with everyone else, and there is tobogganing, a spa and snowshoeing on top of that.", status: "partial" },
+  { q: "Do I need to have skied before?", a: "No. A good share of the group will be on skis for the first time. The beginner slopes start in the village and lesson options are being arranged.", status: "partial" },
+  { q: "Cash or card?", a: "Card almost everywhere. Bring around €50 in cash for the odd locker, tip or taxi that isn't.", status: "confirmed" },
   { q: "Can I bring my own skis?", a: "Yes. If you are renting instead, pre-booking is cheaper and faster than queueing in resort on the Sunday morning.", status: "confirmed" },
-  { q: "What if I get injured?", a: "There is a medical centre in the village and organisers on hand. The non-skier daytime programme exists partly for exactly this.", status: "partial" },
-  { q: "Check-in and check-out?", a: "Times will be confirmed with the accommodation and published here well before departure.", status: "soon" },
 ];
+
 
 export const contacts = {
   status: "confirmed" as GuideStatus,
