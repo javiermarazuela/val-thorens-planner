@@ -1,24 +1,80 @@
-import { Link } from "@tanstack/react-router";
-import { MountainSnow } from "lucide-react";
+import { useState } from "react";
+import { Menu, MountainSnow, X } from "lucide-react";
+
+import { sections, trip } from "@/lib/trip";
 
 export function SiteHeader() {
+  const [open, setOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Val Thorens 2027 home">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+        <a href="#top" className="flex items-center gap-2.5" aria-label="Val Thorens 2027, back to top">
           <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground">
             <MountainSnow aria-hidden="true" className="size-5" />
           </span>
           <span>
             <span className="block font-display text-sm uppercase leading-none">Val Thorens</span>
-            <span className="mt-1 block text-xs font-bold text-muted-foreground">09—16 JAN 2027</span>
+            <span className="mt-1 block text-[0.65rem] font-bold text-muted-foreground">{trip.datesShort}</span>
           </span>
-        </Link>
-        <nav className="flex rounded-full border border-border bg-card p-1" aria-label="Primary navigation">
-          <Link to="/" activeOptions={{ exact: true }} className="rounded-full px-4 py-2 text-xs font-extrabold uppercase text-muted-foreground" activeProps={{ className: "bg-primary text-primary-foreground" }}>Trip</Link>
-          <Link to="/guide" className="rounded-full px-4 py-2 text-xs font-extrabold uppercase text-muted-foreground" activeProps={{ className: "bg-primary text-primary-foreground" }}>Guide</Link>
+        </a>
+
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Sections">
+          {sections.map((section) => (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              className="rounded-full px-3 py-2 text-xs font-extrabold uppercase text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              {section.label}
+            </a>
+          ))}
         </nav>
+
+        <div className="flex items-center gap-2">
+          <a
+            href="#price"
+            className="hidden rounded-full bg-primary px-5 py-2.5 text-xs font-extrabold uppercase text-primary-foreground transition-colors hover:bg-primary/90 sm:inline-flex"
+          >
+            Book a place
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            className="grid size-10 place-items-center rounded-md border border-border lg:hidden"
+          >
+            {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
+            <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+          </button>
+        </div>
       </div>
+
+      {open && (
+        <nav id="mobile-nav" aria-label="Sections" className="border-t border-border bg-background px-4 pb-5 pt-2 lg:hidden">
+          <ul className="grid gap-1 sm:grid-cols-2">
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a
+                  href={`#${section.id}`}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-md px-3 py-3 text-sm font-bold uppercase text-foreground hover:bg-secondary"
+                >
+                  {section.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a
+            href="#price"
+            onClick={() => setOpen(false)}
+            className="mt-3 flex items-center justify-center rounded-full bg-primary px-5 py-3 text-xs font-extrabold uppercase text-primary-foreground sm:hidden"
+          >
+            Book a place
+          </a>
+        </nav>
+      )}
     </header>
   );
 }
