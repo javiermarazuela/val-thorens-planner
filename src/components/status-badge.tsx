@@ -6,9 +6,17 @@ const labels: Record<GuideStatus, string> = {
   soon: "Coming soon",
 };
 
-export function StatusBadge({ status }: { status: GuideStatus }) {
+const styles: Record<GuideStatus, string> = {
+  confirmed: "bg-primary text-primary-foreground",
+  partial: "bg-accent text-accent-foreground",
+  soon: "border border-primary/25 bg-secondary text-secondary-foreground",
+};
+
+export function StatusBadge({ status, className = "" }: { status: GuideStatus; className?: string }) {
   return (
-    <span className={status === "confirmed" ? "inline-flex rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground" : status === "partial" ? "inline-flex rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground" : "inline-flex rounded-full border border-primary/30 bg-secondary px-3 py-1 text-xs font-bold text-secondary-foreground"}>
+    <span
+      className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide ${styles[status]} ${className}`}
+    >
       {labels[status]}
     </span>
   );
