@@ -1,12 +1,10 @@
 # Roadmap
 
-- [x] Choose an icy-blue design direction with restrained timber contrast
-- [x] Rebuild as one story-first page with sticky section navigation
-- [x] Hero, resort case, accommodation, week calendar, mountain, non-skiers
-- [x] Interactive packing checklist saved on the device
-- [x] Price and booking block with honest placeholder
-- [x] Compact answers and Jonah's organiser contact
-- [x] Redirect the old guide URLs to the matching sections
-- [x] Keep the dormant password boundary for attendee-only detail
-- [ ] Add the final inclusions and booking link (waiting on committee sign-off)
-- [ ] Add the full committee list, WhatsApp link and urgent-help number (waiting on the user)
+See the **Roadmap** section of [CLAUDE.md](./CLAUDE.md), which is the single
+source of truth for phases and their scope.
+
+This file previously tracked its own list, which had drifted into conflict
+with CLAUDE.md's hard rules — it carried open items for a price-inclusions
+breakdown (rule 1), and for publishing a committee contact list, an
+urgent-help number and a WhatsApp invite link on the public page (rules 2
+and 3).
