@@ -14,6 +14,44 @@ export const trip = {
   bookingUrl: "",
 };
 
+// Page copy. Kept here rather than in the components so a later Google Sheet
+// sync has one place to write to — see hard rule 5 in CLAUDE.md.
+export const hero = {
+  titleTop: "Val",
+  titleBottom: "Thorens",
+  peopleSuffix: "of us",
+  tagline: "A week at 2,300m in the world\u2019s largest linked ski area.",
+  imageAlt: "Val Thorens ski resort beneath the French Alps",
+};
+
+export const resortIntro = {
+  eyebrow: "Why Val Thorens",
+  heading: "High, linked, easy.",
+  body: "Europe\u2019s highest ski resort puts 150km of piste at the door and 600km across Les 3 Vall\u00e9es. The village is compact, mostly pedestrian and built for a group this size.",
+  imageAlt: "Friends together on a snowy terrace",
+};
+
+export const mapSection = {
+  eyebrow: "The resort",
+  heading: "Map",
+  intro: "Where we sleep, where the lifts are, where lunch, apr\u00e8s and the late ones happen.",
+};
+
+export const weekSection = {
+  eyebrow: "9\u201416 January",
+  heading: "The week",
+  intro: "Two travel days, six full days in between. Theme details will appear as they are agreed.",
+};
+
+export const guide = {
+  summaryLabel: "See the guide",
+  packingLabel: "Open packing list",
+};
+
+export const faqSection = {
+  eyebrow: "A few answers",
+};
+
 export const sections = [
   { id: "stay", label: "Where we stay" },
   { id: "week", label: "The week" },
@@ -46,25 +84,14 @@ export const resortFacts = [
   },
 ];
 
-export const resortPoints = [
-  "The resort is compact and largely pedestrian — no buses, no valley drives, no car.",
-  "Almost everything is ski-in ski-out: you clip in near your door and clip out at the bar.",
-  "Roughly three hours from Geneva or Lyon, two from Chambéry.",
-  "It sits above the treeline at 2,300m, so the snow is reliable in early January.",
-];
-
 export const stay = {
   status: "partial" as GuideStatus,
-  known: [
-    "Everyone is housed inside Val Thorens itself — nobody is down the valley.",
-    "Accommodation is self-catered apartments, walking distance from the main lifts and the bars.",
-    "Groups are allocated by chalet, and those chalets become your team for the week's games.",
-  ],
-  forthcoming: [
-    "The building names and exact locations",
-    "The rooming list and who you are sharing with",
-    "Check-in and check-out times, and where to collect keys",
-  ],
+  eyebrow: "Where we stay",
+  heading: "Inside the village.",
+  intro:
+    "Self-catered apartments, walking distance from the lifts, the bars and each other. Exact buildings and rooming are still to come.",
+  imageAlt: "Timber-clad alpine accommodation in Val Thorens",
+  mapLabel: "Resort map",
   roomsNote:
     "Rooms are drawn on the Saturday night, together, in the same room. Arriving first does not get you the good one.",
   mapUrl: "https://www.valthorens.com/en/interactive-map/",
@@ -137,17 +164,10 @@ export const week: Array<{
 
 export const mountain = {
   status: "partial" as GuideStatus,
-  known: [
-    "Val Thorens has 150km of its own piste, linked into 600km across Les 3 Vallées.",
-    "There are wide, gentle beginner areas right in the village — day one is not a cliff.",
-    "Most doors are a short walk or a short ski from a lift.",
-  ],
-  forthcoming: [
-    "The official 2026/27 piste map once the resort publishes it",
-    "Rental shop and prices for anyone who did not pre-book skis or a board",
-    "Lesson options and beginner group times",
-    "Where we meet on the first morning",
-  ],
+  title: "Mountain",
+  intro:
+    "Beginner slopes start in town, and the whole of Les 3 Vallées connects from the same lifts.",
+  linksTitle: "Live resort links",
   note: "Last lifts are mid-afternoon. Miss the link back over the ridge and you are looking at an expensive taxi round the valley — plan the last run before you take it.",
   links: [
     { label: "Ski area & piste map", href: "https://www.valthorens.com/en/ski/ski-area/" },
@@ -161,20 +181,15 @@ export const offSnow = {
   status: "soon" as GuideStatus,
   intro:
     "Some people never planned to ski. Some twist a knee on Monday. Some simply need a day that starts after midday. There is a proper daytime programme for all three, running through the week — not a consolation prize.",
-  known: [
-    "Organised daytime activities on every day of the week, open to anyone — including skiers taking a day off.",
-    "The village is walkable, so nothing requires a lift pass or a transfer.",
-    "Lunches and après are shared with everyone coming off the mountain, so you are never eating alone.",
-  ],
-  forthcoming: [
-    "The day-by-day activity list",
-    "Meeting points and times",
-    "Anything that costs extra or needs booking in advance",
-  ],
+  title: "Not skiing",
+  forthcomingNote: "Day-by-day activities and meeting points are coming soon.",
 };
 
 export const goingOut = {
   status: "soon" as GuideStatus,
+  title: "Eating & going out",
+  // Shown in place of each group's body while this section is still "soon".
+  placeholder: "shortlist coming soon.",
   groups: [
     {
       title: "Lunch on the hill",
@@ -246,6 +261,7 @@ export const pricing = {
   amount: "From $2,344",
   unit: "per person",
   label: "Estimate",
+  ctaLabel: "Got a question?",
   note: "An estimate, not a final number. The committee is still signing it off.",
 };
 
@@ -295,6 +311,7 @@ export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
 
 export const contacts = {
   status: "partial" as GuideStatus,
+  title: "Contact",
   // Plain text, no phone numbers, no personal emails, no WhatsApp invite
   // link on the public page — see hard rules 2 and 3 in CLAUDE.md.
   body: "Questions? Message the trip WhatsApp group.",
