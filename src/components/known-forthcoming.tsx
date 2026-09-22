@@ -34,7 +34,10 @@ export function KnownForthcoming({
           <ul className="mt-4 space-y-3 text-sm leading-relaxed text-secondary-foreground">
             {forthcoming.map((item) => (
               <li key={item} className="flex gap-3">
-                <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" />
+                <span
+                  aria-hidden="true"
+                  className="mt-2 size-1.5 shrink-0 rounded-full bg-accent"
+                />
                 <span>{item}</span>
               </li>
             ))}

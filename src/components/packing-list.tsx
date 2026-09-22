@@ -42,11 +42,16 @@ export function PackingList() {
           <p className="font-display text-2xl">
             {done} / {total} packed
           </p>
-          <p className="mt-1 text-sm text-muted-foreground">Your ticks stay on this device, so you can come back to it.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your ticks stay on this device, so you can come back to it.
+          </p>
         </div>
         <div className="flex items-center gap-4">
           <div className="h-2 w-32 overflow-hidden rounded-full bg-secondary" role="presentation">
-            <div className="h-full bg-primary transition-all" style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
+            <div
+              className="h-full bg-primary transition-all"
+              style={{ width: `${total ? (done / total) * 100 : 0}%` }}
+            />
           </div>
           <Button
             type="button"
@@ -76,7 +81,9 @@ export function PackingList() {
                         onChange={() => toggle(item)}
                         className="mt-0.5 size-4 shrink-0 accent-[var(--primary)]"
                       />
-                      <span className={isChecked ? "text-muted-foreground line-through" : ""}>{item}</span>
+                      <span className={isChecked ? "text-muted-foreground line-through" : ""}>
+                        {item}
+                      </span>
                     </label>
                   </li>
                 );

@@ -23,10 +23,26 @@ export const sections = [
 ] as const;
 
 export const resortFacts = [
-  { value: trip.altitude, label: "Highest ski resort in Europe", note: "Snow that actually stays snow in January." },
-  { value: trip.linkedPiste, label: "Linked piste in Les 3 Vallées", note: "The largest linked ski area in the world." },
-  { value: trip.localPiste, label: "Piste in Val Thorens alone", note: "Enough for the week without ever leaving the valley." },
-  { value: String(trip.people), label: "Of us going", note: "One resort, one week, everyone within walking distance." },
+  {
+    value: trip.altitude,
+    label: "Highest ski resort in Europe",
+    note: "Snow that actually stays snow in January.",
+  },
+  {
+    value: trip.linkedPiste,
+    label: "Linked piste in Les 3 Vallées",
+    note: "The largest linked ski area in the world.",
+  },
+  {
+    value: trip.localPiste,
+    label: "Piste in Val Thorens alone",
+    note: "Enough for the week without ever leaving the valley.",
+  },
+  {
+    value: String(trip.people),
+    label: "Of us going",
+    note: "One resort, one week, everyone within walking distance.",
+  },
 ];
 
 export const resortPoints = [
@@ -60,14 +76,62 @@ export const week: Array<{
   status: GuideStatus;
   body: string;
 }> = [
-  { day: "Sat", date: "9 Jan", title: "Travel day & room draw", status: "partial", body: "Land, transfer up the mountain, find your building, draw rooms, then a first, gentle night out. Gentle is a word we use loosely." },
-  { day: "Sun", date: "10 Jan", title: "First day on snow", status: "partial", body: "Lift passes and rentals sorted in the morning, then an easy afternoon finding your legs and your group." },
-  { day: "Mon", date: "11 Jan", title: "Ski day + theme night", status: "soon", body: "A full day on the hill. The evening is a theme night — the theme is still being decided, so hold off on the costume shopping." },
-  { day: "Tue", date: "12 Jan", title: "Ski day", status: "soon", body: "The day we push further into Les 3 Vallées for anyone who wants distance rather than laps." },
-  { day: "Wed", date: "13 Jan", title: "Big mountain day", status: "soon", body: "The long one, weather permitting. Non-skiers get their own full programme on the same day." },
-  { day: "Thu", date: "14 Jan", title: "Ski day + theme night", status: "soon", body: "Second theme night, and the point in the week where the team games usually get decided." },
-  { day: "Fri", date: "15 Jan", title: "Last day & final night", status: "soon", body: "Last laps, closing après, and the night nobody sensibly plans around an early transfer." },
-  { day: "Sat", date: "16 Jan", title: "Home", status: "partial", body: "Pack, clean the apartment, transfer back down to the airport. Times will be published well in advance." },
+  {
+    day: "Sat",
+    date: "9 Jan",
+    title: "Travel day & room draw",
+    status: "partial",
+    body: "Land, transfer up the mountain, find your building, draw rooms, then a first, gentle night out. Gentle is a word we use loosely.",
+  },
+  {
+    day: "Sun",
+    date: "10 Jan",
+    title: "First day on snow",
+    status: "partial",
+    body: "Lift passes and rentals sorted in the morning, then an easy afternoon finding your legs and your group.",
+  },
+  {
+    day: "Mon",
+    date: "11 Jan",
+    title: "Ski day + theme night",
+    status: "soon",
+    body: "A full day on the hill. The evening is a theme night — the theme is still being decided, so hold off on the costume shopping.",
+  },
+  {
+    day: "Tue",
+    date: "12 Jan",
+    title: "Ski day",
+    status: "soon",
+    body: "The day we push further into Les 3 Vallées for anyone who wants distance rather than laps.",
+  },
+  {
+    day: "Wed",
+    date: "13 Jan",
+    title: "Big mountain day",
+    status: "soon",
+    body: "The long one, weather permitting. Non-skiers get their own full programme on the same day.",
+  },
+  {
+    day: "Thu",
+    date: "14 Jan",
+    title: "Ski day + theme night",
+    status: "soon",
+    body: "Second theme night, and the point in the week where the team games usually get decided.",
+  },
+  {
+    day: "Fri",
+    date: "15 Jan",
+    title: "Last day & final night",
+    status: "soon",
+    body: "Last laps, closing après, and the night nobody sensibly plans around an early transfer.",
+  },
+  {
+    day: "Sat",
+    date: "16 Jan",
+    title: "Home",
+    status: "partial",
+    body: "Pack, clean the apartment, transfer back down to the airport. Times will be published well in advance.",
+  },
 ];
 
 export const mountain = {
@@ -111,17 +175,28 @@ export const offSnow = {
 export const goingOut = {
   status: "soon" as GuideStatus,
   groups: [
-    { title: "Lunch on the hill", body: "A shortlist of mountain restaurants worth the stop, including the ones you can reach without being a good skier." },
-    { title: "Dinner", body: "Where 179 people can actually eat, and where a group of six should go instead." },
-    { title: "Après", body: "The meeting points at the bottom of the hill, and the ones that go on far longer than intended." },
-    { title: "Late and home", body: "The clubs, and the honest answer on getting home afterwards in a pedestrian resort." },
+    {
+      title: "Lunch on the hill",
+      body: "A shortlist of mountain restaurants worth the stop, including the ones you can reach without being a good skier.",
+    },
+    {
+      title: "Dinner",
+      body: "Where 179 people can actually eat, and where a group of six should go instead.",
+    },
+    {
+      title: "Après",
+      body: "The meeting points at the bottom of the hill, and the ones that go on far longer than intended.",
+    },
+    {
+      title: "Late and home",
+      body: "The clubs, and the honest answer on getting home afterwards in a pedestrian resort.",
+    },
   ],
 };
 
 export const teamGames = {
   status: "soon" as GuideStatus,
-  body:
-    "Your apartment is your team. Points are earned across the week for challenges on and off the mountain, and the rules and scoring will be published here in full. This site shows the rules only — there is no scoreboard and nothing to submit.",
+  body: "Your apartment is your team. Points are earned across the week for challenges on and off the mountain, and the rules and scoring will be published here in full. This site shows the rules only — there is no scoreboard and nothing to submit.",
 };
 
 export const packing: Array<{ group: string; items: string[] }> = [
@@ -185,20 +260,46 @@ export const transfers = {
 };
 
 export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
-  { q: "Which flights should I book?", a: "Fly into Geneva (GVA). We recommend the Saturday morning arrival and the following Saturday afternoon return; the two recommended flights will be posted here shortly. We run the coaches from Geneva to the resort and back.", status: "partial" },
-  { q: "What time is the last lift?", a: "Mid-afternoon, roughly 16:15–16:45 depending on the lift. Miss the link back over the ridge from Méribel or Courchevel and it is a long, expensive taxi round the valley — start heading home by 15:30.", status: "confirmed" },
-  { q: "What if I get injured?", a: "There is a medical centre in the village and piste rescue on the mountain. Insurance covering winter sports and mountain rescue is mandatory, not optional. Organisers are reachable all week, and the daytime programme means you are not stuck in an apartment alone.", status: "partial" },
-  { q: "What if I don’t ski?", a: "You are in good company — plenty of the group won't be on the mountain every day. The village is compact and pedestrian, a pedestrian lift pass gets you up to the terraces for lunch and après with everyone else, and there is tobogganing, a spa and snowshoeing on top of that.", status: "partial" },
-  { q: "Do I need to have skied before?", a: "No. A good share of the group will be on skis for the first time. The beginner slopes start in the village and lesson options are being arranged.", status: "partial" },
-  { q: "Cash or card?", a: "Card almost everywhere. Bring around €50 in cash for the odd locker, tip or taxi that isn't.", status: "confirmed" },
-  { q: "Can I bring my own skis?", a: "Yes. If you are renting instead, pre-booking is cheaper and faster than queueing in resort on the Sunday morning.", status: "confirmed" },
+  {
+    q: "Which flights should I book?",
+    a: "Fly into Geneva (GVA). We recommend the Saturday morning arrival and the following Saturday afternoon return; the two recommended flights will be posted here shortly. We run the coaches from Geneva to the resort and back.",
+    status: "partial",
+  },
+  {
+    q: "What time is the last lift?",
+    a: "Mid-afternoon, roughly 16:15–16:45 depending on the lift. Miss the link back over the ridge from Méribel or Courchevel and it is a long, expensive taxi round the valley — start heading home by 15:30.",
+    status: "confirmed",
+  },
+  {
+    q: "What if I get injured?",
+    a: "There is a medical centre in the village and piste rescue on the mountain. Insurance covering winter sports and mountain rescue is mandatory, not optional. Organisers are reachable all week, and the daytime programme means you are not stuck in an apartment alone.",
+    status: "partial",
+  },
+  {
+    q: "What if I don’t ski?",
+    a: "You are in good company — plenty of the group won't be on the mountain every day. The village is compact and pedestrian, a pedestrian lift pass gets you up to the terraces for lunch and après with everyone else, and there is tobogganing, a spa and snowshoeing on top of that.",
+    status: "partial",
+  },
+  {
+    q: "Do I need to have skied before?",
+    a: "No. A good share of the group will be on skis for the first time. The beginner slopes start in the village and lesson options are being arranged.",
+    status: "partial",
+  },
+  {
+    q: "Cash or card?",
+    a: "Card almost everywhere. Bring around €50 in cash for the odd locker, tip or taxi that isn't.",
+    status: "confirmed",
+  },
+  {
+    q: "Can I bring my own skis?",
+    a: "Yes. If you are renting instead, pre-booking is cheaper and faster than queueing in resort on the Sunday morning.",
+    status: "confirmed",
+  },
 ];
-
 
 export const contacts = {
   status: "confirmed" as GuideStatus,
-  body:
-    "Jonah is your first point of contact: +1 (202) 557-9599. The full committee list, WhatsApp group link and urgent-help number will be published here before departure.",
+  body: "Jonah is your first point of contact: +1 (202) 557-9599. The full committee list, WhatsApp group link and urgent-help number will be published here before departure.",
 };
 
 export type MapCategory = "base" | "lift" | "lunch" | "apres" | "club";
@@ -219,16 +320,92 @@ export const mapPoints: Array<{
   note: string;
   status: GuideStatus;
 }> = [
-  { name: "Our apartments", category: "base", x: 48, y: 62, note: "Central village, walking distance from the lifts and the bars. Exact buildings confirmed closer to the trip.", status: "partial" },
-  { name: "Funitel Péclet", category: "lift", x: 68, y: 44, note: "Fast way up the east side of the bowl and into the glacier runs.", status: "confirmed" },
-  { name: "Cime Caron cable car", category: "lift", x: 18, y: 30, note: "3,200m and the big view. Queue early on a clear day.", status: "confirmed" },
-  { name: "Beginner carpets", category: "lift", x: 44, y: 70, note: "Gentle slopes at the edge of the village — day one starts here.", status: "confirmed" },
-  { name: "Plein Sud chair", category: "lift", x: 56, y: 56, note: "The main lift out of the village and the route to Les 3 Vallées.", status: "confirmed" },
-  { name: "Chalet de la Marine", category: "lunch", x: 74, y: 30, note: "Long lunch on the terrace, reachable on an easy blue.", status: "soon" },
-  { name: "Chez Pépé Nicolas", category: "lunch", x: 82, y: 56, note: "Old farm, big plates, slightly further out.", status: "soon" },
-  { name: "La Folie Douce", category: "apres", x: 60, y: 40, note: "Top of Plein Sud. Starts mid-afternoon, and you still have to ski down.", status: "soon" },
-  { name: "360 Bar", category: "apres", x: 52, y: 60, note: "Bottom of the slope, first stop coming off the mountain.", status: "soon" },
-  { name: "Le Malaysia", category: "club", x: 46, y: 74, note: "Underground, very large, very late.", status: "soon" },
-  { name: "Klub Summit", category: "club", x: 54, y: 76, note: "In the middle of the village, a short walk from most doors.", status: "soon" },
+  {
+    name: "Our apartments",
+    category: "base",
+    x: 48,
+    y: 62,
+    note: "Central village, walking distance from the lifts and the bars. Exact buildings confirmed closer to the trip.",
+    status: "partial",
+  },
+  {
+    name: "Funitel Péclet",
+    category: "lift",
+    x: 68,
+    y: 44,
+    note: "Fast way up the east side of the bowl and into the glacier runs.",
+    status: "confirmed",
+  },
+  {
+    name: "Cime Caron cable car",
+    category: "lift",
+    x: 18,
+    y: 30,
+    note: "3,200m and the big view. Queue early on a clear day.",
+    status: "confirmed",
+  },
+  {
+    name: "Beginner carpets",
+    category: "lift",
+    x: 44,
+    y: 70,
+    note: "Gentle slopes at the edge of the village — day one starts here.",
+    status: "confirmed",
+  },
+  {
+    name: "Plein Sud chair",
+    category: "lift",
+    x: 56,
+    y: 56,
+    note: "The main lift out of the village and the route to Les 3 Vallées.",
+    status: "confirmed",
+  },
+  {
+    name: "Chalet de la Marine",
+    category: "lunch",
+    x: 74,
+    y: 30,
+    note: "Long lunch on the terrace, reachable on an easy blue.",
+    status: "soon",
+  },
+  {
+    name: "Chez Pépé Nicolas",
+    category: "lunch",
+    x: 82,
+    y: 56,
+    note: "Old farm, big plates, slightly further out.",
+    status: "soon",
+  },
+  {
+    name: "La Folie Douce",
+    category: "apres",
+    x: 60,
+    y: 40,
+    note: "Top of Plein Sud. Starts mid-afternoon, and you still have to ski down.",
+    status: "soon",
+  },
+  {
+    name: "360 Bar",
+    category: "apres",
+    x: 52,
+    y: 60,
+    note: "Bottom of the slope, first stop coming off the mountain.",
+    status: "soon",
+  },
+  {
+    name: "Le Malaysia",
+    category: "club",
+    x: 46,
+    y: 74,
+    note: "Underground, very large, very late.",
+    status: "soon",
+  },
+  {
+    name: "Klub Summit",
+    category: "club",
+    x: 54,
+    y: 76,
+    note: "In the middle of the village, a short walk from most doors.",
+    status: "soon",
+  },
 ];
-

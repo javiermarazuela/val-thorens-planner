@@ -26,7 +26,11 @@ export function SectionIntro({
         <h2 className="mt-4 text-3xl uppercase leading-[1.05] sm:text-5xl">{title}</h2>
         {status && <StatusBadge status={status} className="mt-5" />}
       </div>
-      {lead && <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">{lead}</p>}
+      {lead && (
+        <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {lead}
+        </p>
+      )}
       {children}
     </div>
   );
