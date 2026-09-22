@@ -42,7 +42,7 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: site.homeTitle },
+      { title: site.title },
       {
         name: "description",
         content:

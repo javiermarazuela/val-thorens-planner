@@ -17,16 +17,17 @@ export const trip = {
 // Site identity. The browser tab title, the link-preview title and the
 // header wordmark all read from here — see hard rule 5 in CLAUDE.md.
 // When the PWA lands in phase 4, its manifest name comes from site.name too.
+// The apostrophe is U+2019, matching the rest of the copy.
+const siteName = "Euro Ski ’27";
+
 export const site = {
-  name: "Euroski ’27",
-  // Tab title on every route except the home page (404, /guide redirects).
-  title: "Euroski ’27",
-  // Tab title on the home page.
-  homeTitle: "Euroski ’27 — Ski Club Trip, 9–16 January",
+  name: siteName,
+  // Browser tab title, on every route.
+  title: siteName,
   // Link previews (WhatsApp, iMessage, Slack).
-  ogTitle: "Euroski ’27",
-  homeOgTitle: "Euroski ’27 — Ski Club Trip",
-  backToTopLabel: "Euroski ’27, back to top",
+  ogTitle: siteName,
+  homeOgTitle: `${siteName} — Ski Club Trip`,
+  backToTopLabel: `${siteName}, back to top`,
 };
 
 // Page copy. Kept here rather than in the components so a later Google Sheet
