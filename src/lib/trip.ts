@@ -11,15 +11,16 @@ export const trip = {
   altitude: "2,300m",
   linkedPiste: "600km",
   localPiste: "150km",
-  updated: "21 September 2026",
   bookingUrl: "",
 };
 
 export const sections = [
   { id: "stay", label: "Where we stay" },
   { id: "week", label: "The week" },
+  { id: "map", label: "Map" },
   { id: "guide", label: "Guide" },
   { id: "price", label: "Price" },
+  { id: "contact", label: "Contact" },
 ] as const;
 
 export const resortFacts = [
@@ -240,17 +241,12 @@ export const packing: Array<{ group: string; items: string[] }> = [
 
 export const pricing = {
   status: "partial" as GuideStatus,
-  known: [
-    "Approximate price per person: ~€2,000.",
-    "One price covers accommodation, transfers and the organised programme.",
-    "Payment is staged, not one lump sum.",
-  ],
-  forthcoming: [
-    "Exactly what is and is not included",
-    "Deposit amount and payment dates",
-    "Whether lift pass and rental are bundled or bought separately",
-  ],
-  note: "The final price is still being signed off by the committee. The ~€2,000 figure is the best estimate right now; the confirmed number will replace it here as soon as it is set.",
+  // One number, in US dollars, always labelled an estimate. Deliberately no
+  // breakdown, cost table or line items — see hard rule 1 in CLAUDE.md.
+  amount: "From $2,344",
+  unit: "per person",
+  label: "Estimate",
+  note: "An estimate, not a final number. The committee is still signing it off.",
 };
 
 export const transfers = {
@@ -268,7 +264,7 @@ export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
   {
     q: "What time is the last lift?",
     a: "Mid-afternoon, roughly 16:15–16:45 depending on the lift. Miss the link back over the ridge from Méribel or Courchevel and it is a long, expensive taxi round the valley — start heading home by 15:30.",
-    status: "confirmed",
+    status: "partial",
   },
   {
     q: "What if I get injured?",
@@ -288,18 +284,20 @@ export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
   {
     q: "Cash or card?",
     a: "Card almost everywhere. Bring around €50 in cash for the odd locker, tip or taxi that isn't.",
-    status: "confirmed",
+    status: "partial",
   },
   {
     q: "Can I bring my own skis?",
     a: "Yes. If you are renting instead, pre-booking is cheaper and faster than queueing in resort on the Sunday morning.",
-    status: "confirmed",
+    status: "partial",
   },
 ];
 
 export const contacts = {
-  status: "confirmed" as GuideStatus,
-  body: "Jonah is your first point of contact: +1 (202) 557-9599. The full committee list, WhatsApp group link and urgent-help number will be published here before departure.",
+  status: "partial" as GuideStatus,
+  // Plain text, no phone numbers, no personal emails, no WhatsApp invite
+  // link on the public page — see hard rules 2 and 3 in CLAUDE.md.
+  body: "Questions? Message the trip WhatsApp group.",
 };
 
 export type MapCategory = "base" | "lift" | "lunch" | "apres" | "club";
@@ -334,7 +332,7 @@ export const mapPoints: Array<{
     x: 68,
     y: 44,
     note: "Fast way up the east side of the bowl and into the glacier runs.",
-    status: "confirmed",
+    status: "partial",
   },
   {
     name: "Cime Caron cable car",
@@ -342,7 +340,7 @@ export const mapPoints: Array<{
     x: 18,
     y: 30,
     note: "3,200m and the big view. Queue early on a clear day.",
-    status: "confirmed",
+    status: "partial",
   },
   {
     name: "Beginner carpets",
@@ -350,7 +348,7 @@ export const mapPoints: Array<{
     x: 44,
     y: 70,
     note: "Gentle slopes at the edge of the village — day one starts here.",
-    status: "confirmed",
+    status: "partial",
   },
   {
     name: "Plein Sud chair",
@@ -358,7 +356,7 @@ export const mapPoints: Array<{
     x: 56,
     y: 56,
     note: "The main lift out of the village and the route to Les 3 Vallées.",
-    status: "confirmed",
+    status: "partial",
   },
   {
     name: "Chalet de la Marine",

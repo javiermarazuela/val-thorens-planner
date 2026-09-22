@@ -4,8 +4,8 @@ import {
   ChevronDown,
   ExternalLink,
   MapPin,
+  MessageCircle,
   Mountain,
-  PhoneCall,
   Plane,
   Snowflake,
   Users,
@@ -27,7 +27,6 @@ import {
   pricing,
   resortFacts,
   stay,
-  teamGames,
   transfers,
   trip,
   week,
@@ -88,15 +87,18 @@ function Home() {
       <section id="price" className="scroll-mt-20 border-b border-border bg-card py-8 sm:py-10">
         <div className="mx-auto flex max-w-4xl flex-col items-start justify-between gap-6 px-5 sm:flex-row sm:items-center">
           <div>
-            <p className="text-xs font-bold uppercase text-primary">Approximate price per person</p>
-            <p className="mt-1 font-display text-4xl sm:text-5xl">~€2,000</p>
-            <p className="mt-2 max-w-md text-sm text-muted-foreground">
-              Final inclusions and payment dates are still being confirmed.
-            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-xs font-bold uppercase text-primary">
+                {pricing.label} · {pricing.unit}
+              </p>
+              <StatusBadge status={pricing.status} />
+            </div>
+            <p className="mt-1 font-display text-4xl sm:text-5xl">{pricing.amount}</p>
+            <p className="mt-2 max-w-md text-sm text-muted-foreground">{pricing.note}</p>
           </div>
           <Button asChild className="w-full sm:w-auto">
             <a href="#contact">
-              Book your place <ArrowRight className="size-4" aria-hidden="true" />
+              Got a question? <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </Button>
         </div>
@@ -271,12 +273,6 @@ function Home() {
                   ))}
                 </ul>
               </div>
-              <div>
-                <h3 className="text-xl uppercase">Team games</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {teamGames.body}
-                </p>
-              </div>
               <details className="lg:col-span-2">
                 <summary className="flex cursor-pointer list-none items-center gap-2 font-bold text-primary">
                   <Snowflake className="size-4" aria-hidden="true" /> Open packing list
@@ -329,14 +325,12 @@ function Home() {
             </div>
           </div>
           <div className="md:border-l md:border-border md:pl-10">
-            <PhoneCall className="size-6 text-primary" aria-hidden="true" />
-            <h2 className="mt-4 text-2xl uppercase">Talk to Jonah</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Questions or ready to book? Jonah is your first point of contact.
-            </p>
-            <Button asChild className="mt-6">
-              <a href="tel:+12025579599">+1 (202) 557-9599</a>
-            </Button>
+            <MessageCircle className="size-6 text-primary" aria-hidden="true" />
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <h2 className="text-2xl uppercase">Contact</h2>
+              <StatusBadge status={contacts.status} />
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{contacts.body}</p>
           </div>
         </div>
       </section>

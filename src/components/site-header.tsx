@@ -39,12 +39,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#price"
-            className="hidden rounded-full bg-primary px-5 py-2.5 text-xs font-extrabold uppercase text-primary-foreground transition-colors hover:bg-primary/90 sm:inline-flex"
-          >
-            Book a place
-          </a>
           <Button
             type="button"
             variant="outline"
@@ -83,13 +77,6 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
-          <a
-            href="#price"
-            onClick={() => setOpen(false)}
-            className="mt-3 flex items-center justify-center rounded-full bg-primary px-5 py-3 text-xs font-extrabold uppercase text-primary-foreground sm:hidden"
-          >
-            Book a place
-          </a>
         </nav>
       )}
     </header>
