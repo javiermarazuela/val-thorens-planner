@@ -11,6 +11,7 @@ import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "../components/site-header";
+import { site } from "../lib/trip";
 
 function NotFoundComponent() {
   return (
@@ -74,13 +75,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Val Thorens 2027" },
+      { title: site.title },
       {
         name: "description",
         content: "University ski club trip and attendee guide for Val Thorens, 9–16 January 2027.",
       },
       { name: "author", content: "University Ski Club" },
-      { property: "og:title", content: "Val Thorens 2027" },
+      { property: "og:title", content: site.ogTitle },
       {
         property: "og:description",
         content: "University ski club trip and attendee guide for Val Thorens, 9–16 January 2027.",

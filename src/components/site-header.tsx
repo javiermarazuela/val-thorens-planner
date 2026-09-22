@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, MountainSnow, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { sections, trip } from "@/lib/trip";
+import { sections, site, trip } from "@/lib/trip";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -10,16 +10,12 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <a
-          href="#top"
-          className="flex items-center gap-2.5"
-          aria-label="Val Thorens 2027, back to top"
-        >
+        <a href="#top" className="flex items-center gap-2.5" aria-label={site.backToTopLabel}>
           <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground">
             <MountainSnow aria-hidden="true" className="size-5" />
           </span>
           <span>
-            <span className="block font-display text-sm uppercase leading-none">Val Thorens</span>
+            <span className="block font-display text-sm uppercase leading-none">{site.name}</span>
             <span className="mt-1 block text-[0.65rem] font-bold text-muted-foreground">
               {trip.datesShort}
             </span>

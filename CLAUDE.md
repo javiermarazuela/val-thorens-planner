@@ -30,7 +30,7 @@ These apply to every change, in every phase.
 6. **"Coming soon" is a first-class state.** Use `status-badge`. Unconfirmed items still display. No "last updated" timestamps.
 7. **Current content is placeholder example data.** The committee will replace it. Do not rewrite, improve, or add new specifics (venues, times, prices, flight numbers) unless a task asks for it. Never mark anything as confirmed.
 8. **Tone is committee-to-friends.** Warm, direct, a bit of dry humour. No corporate marketing language.
-9. **Mobile first.** Check every change at phone width before desktop.
+9. **Phone and desktop are both first-class.** Check every change at both widths, not one and then a shrug at the other. Give them different layouts where that serves the content — a wide screen is not a phone with more margin. Neither is the afterthought.
 
 ## Roadmap
 

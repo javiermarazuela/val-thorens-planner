@@ -31,6 +31,7 @@ import {
   pricing,
   resortFacts,
   resortIntro,
+  site,
   stay,
   transfers,
   trip,
@@ -41,13 +42,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Val Thorens 2027 — Ski Club Trip, 9–16 January" },
+      { title: site.title },
       {
         name: "description",
         content:
           "179 of us in Val Thorens from 9–16 January 2027. See the week, accommodation, price and essential trip guide.",
       },
-      { property: "og:title", content: "Val Thorens 2027 — Ski Club Trip" },
+      { property: "og:title", content: site.homeOgTitle },
       { property: "og:description", content: "One week, 179 people, and 600km of linked piste." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
