@@ -346,9 +346,10 @@ export const contacts = {
 // searches Google Maps by name, which resolves to the actual venue.
 export const resortCentre = { lat: 45.298, lng: 6.58, zoom: 14 };
 
-// Colour groups: where we sleep, lifts, and one colour for every venue.
-// Icons go finer than colour — lunch and nightlife are both "venues" but
-// read differently on the hill and in the village.
+// One colour per kind. Drinks & bars is red (#b91c1c) rather than purple:
+// every purple tested collapses into the stay blue under red-green colour
+// blindness, while this red stays distinct from all three others and holds
+// white icons at 6.5:1 contrast.
 export type MapKind = "stay" | "lift" | "lunch" | "nightlife";
 export type MapIcon = "house" | "lift" | "fork" | "glass";
 
@@ -361,7 +362,7 @@ export const mapKinds: Array<{
   { id: "stay", label: "Where we stay", icon: "house", color: "#2563eb" },
   { id: "lift", label: "Lifts", icon: "lift", color: "#10b981" },
   { id: "lunch", label: "Mountain lunch", icon: "fork", color: "#f59e0b" },
-  { id: "nightlife", label: "Après & late", icon: "glass", color: "#f59e0b" },
+  { id: "nightlife", label: "Drinks & bars", icon: "glass", color: "#b91c1c" },
 ];
 
 export const mapPoints: Array<{
