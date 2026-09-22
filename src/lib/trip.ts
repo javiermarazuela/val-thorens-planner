@@ -94,7 +94,7 @@ export const stay = {
   mapLabel: "Resort map",
   roomsNote:
     "Rooms are drawn on the Saturday night, together, in the same room. Arriving first does not get you the good one.",
-  mapUrl: "https://www.valthorens.com/en/interactive-map/",
+  mapUrl: "https://www.valthorens.com/en/map",
 };
 
 export const week: Array<{
@@ -170,10 +170,10 @@ export const mountain = {
   linksTitle: "Live resort links",
   note: "Last lifts are mid-afternoon. Miss the link back over the ridge and you are looking at an expensive taxi round the valley — plan the last run before you take it.",
   links: [
-    { label: "Ski area & piste map", href: "https://www.valthorens.com/en/ski/ski-area/" },
-    { label: "Snow report", href: "https://www.valthorens.com/en/ski/snow-report/" },
+    { label: "Ski area & piste map", href: "https://www.valthorens.com/en/ski/domaine-skiable/" },
+    { label: "Snow report", href: "https://www.valthorens.com/en/infos-neige/" },
     { label: "Webcams", href: "https://www.valthorens.com/en/webcams/" },
-    { label: "Weather", href: "https://www.valthorens.com/en/weather/" },
+    { label: "Weather", href: "https://www.valthorens.com/en/meteo/" },
   ],
 };
 
