@@ -6,6 +6,7 @@ import {
   MapPin,
   Mountain,
   PhoneCall,
+  Plane,
   Snowflake,
   Users,
 } from "lucide-react";
@@ -14,6 +15,7 @@ import heroImage from "@/assets/val-thorens-trip.jpg";
 import stayImage from "@/assets/val-thorens-stay.jpg";
 import offSlopeImage from "@/assets/val-thorens-offslope.jpg";
 import { PackingList } from "@/components/packing-list";
+import { ResortMap } from "@/components/resort-map";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +28,7 @@ import {
   resortFacts,
   stay,
   teamGames,
+  transfers,
   trip,
   week,
 } from "@/lib/trip";
