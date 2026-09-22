@@ -14,20 +14,35 @@ export const trip = {
   bookingUrl: "",
 };
 
+// Site identity. The browser tab title, the link-preview title and the
+// header wordmark all read from here — see hard rule 5 in CLAUDE.md.
+// When the PWA lands in phase 4, its manifest name comes from site.name too.
+export const site = {
+  name: "Euroski ’27",
+  // Tab title on every route except the home page (404, /guide redirects).
+  title: "Euroski ’27",
+  // Tab title on the home page.
+  homeTitle: "Euroski ’27 — Ski Club Trip, 9–16 January",
+  // Link previews (WhatsApp, iMessage, Slack).
+  ogTitle: "Euroski ’27",
+  homeOgTitle: "Euroski ’27 — Ski Club Trip",
+  backToTopLabel: "Euroski ’27, back to top",
+};
+
 // Page copy. Kept here rather than in the components so a later Google Sheet
 // sync has one place to write to — see hard rule 5 in CLAUDE.md.
 export const hero = {
   titleTop: "Val",
   titleBottom: "Thorens",
   peopleSuffix: "of us",
-  tagline: "A week at 2,300m in the world\u2019s largest linked ski area.",
+  tagline: "A week at 2,300m in the world’s largest linked ski area.",
   imageAlt: "Val Thorens ski resort beneath the French Alps",
 };
 
 export const resortIntro = {
   eyebrow: "Why Val Thorens",
   heading: "High, linked, easy.",
-  body: "Europe\u2019s highest ski resort puts 150km of piste at the door and 600km across Les 3 Vall\u00e9es. The village is compact, mostly pedestrian and built for a group this size.",
+  body: "Europe’s highest ski resort puts 150km of piste at the door and 600km across Les 3 Vall\u00e9es. The village is compact, mostly pedestrian and built for a group this size.",
   imageAlt: "Friends together on a snowy terrace",
 };
 
@@ -38,7 +53,7 @@ export const mapSection = {
 };
 
 export const weekSection = {
-  eyebrow: "9\u201416 January",
+  eyebrow: "9—16 January",
   heading: "The week",
   intro: "Two travel days, six full days in between. Theme details will appear as they are agreed.",
 };
