@@ -43,14 +43,19 @@ export const hero = {
 export const resortIntro = {
   eyebrow: "Why Val Thorens",
   heading: "High, linked, easy.",
-  body: "Europe’s highest ski resort puts 150km of piste at the door and 600km across Les 3 Vall\u00e9es. The village is compact, mostly pedestrian and built for a group this size.",
+  body: "Europe’s highest ski resort puts 150km of piste at the door and 600km across Les 3 Vallées. The village is compact, mostly pedestrian and built for a group this size.",
   imageAlt: "Friends together on a snowy terrace",
 };
 
 export const mapSection = {
   eyebrow: "The resort",
   heading: "Map",
-  intro: "Where we sleep, where the lifts are, where lunch, apr\u00e8s and the late ones happen.",
+  intro: "Where we sleep, where the lifts are, where lunch, après and the late ones happen.",
+  allLabel: "Everything",
+  hint: "Tap a pin for what it is, and a link straight to it in Google Maps.",
+  openInMaps: "Open in Google Maps",
+  approxNote:
+    "Pin positions are approximate until the committee confirms them. Each place’s name opens its real location in Google Maps.",
 };
 
 export const weekSection = {
@@ -333,110 +338,134 @@ export const contacts = {
   body: "Questions? Message the trip WhatsApp group.",
 };
 
-export type MapCategory = "base" | "lift" | "lunch" | "apres" | "club";
+// Val Thorens sits at roughly 45.298N, 6.580E. Pin positions below are
+// APPROXIMATE placeholders carried over from the old schematic diagram —
+// they put each place in about the right part of the bowl, not on its real
+// doorstep. The committee should replace lat/lng with real values. Until
+// then the detail card's linked title is the authoritative locator: it
+// searches Google Maps by name, which resolves to the actual venue.
+export const resortCentre = { lat: 45.298, lng: 6.58, zoom: 14 };
 
-export const mapCategories: Array<{ id: MapCategory; label: string; color: string }> = [
-  { id: "base", label: "Where we stay", color: "#2563eb" },
-  { id: "lift", label: "Lifts", color: "#10b981" },
-  { id: "lunch", label: "Mountain lunch", color: "#f59e0b" },
-  { id: "apres", label: "Après", color: "#ef4444" },
-  { id: "club", label: "Late night", color: "#a855f7" },
+// Colour groups: where we sleep, lifts, and one colour for every venue.
+// Icons go finer than colour — lunch and nightlife are both "venues" but
+// read differently on the hill and in the village.
+export type MapKind = "stay" | "lift" | "lunch" | "nightlife";
+export type MapIcon = "house" | "lift" | "fork" | "glass";
+
+export const mapKinds: Array<{
+  id: MapKind;
+  label: string;
+  icon: MapIcon;
+  color: string;
+}> = [
+  { id: "stay", label: "Where we stay", icon: "house", color: "#2563eb" },
+  { id: "lift", label: "Lifts", icon: "lift", color: "#10b981" },
+  { id: "lunch", label: "Mountain lunch", icon: "fork", color: "#f59e0b" },
+  { id: "nightlife", label: "Après & late", icon: "glass", color: "#f59e0b" },
 ];
 
 export const mapPoints: Array<{
   name: string;
-  category: MapCategory;
-  x: number;
-  y: number;
+  kind: MapKind;
+  lat: number;
+  lng: number;
   note: string;
   status: GuideStatus;
 }> = [
   {
     name: "Our apartments",
-    category: "base",
-    x: 48,
-    y: 62,
+    kind: "stay",
+    lat: 45.2956,
+    lng: 6.5818,
     note: "Central village, walking distance from the lifts and the bars. Exact buildings confirmed closer to the trip.",
     status: "partial",
   },
   {
     name: "Funitel Péclet",
-    category: "lift",
-    x: 68,
-    y: 44,
+    kind: "lift",
+    lat: 45.2992,
+    lng: 6.5888,
     note: "Fast way up the east side of the bowl and into the glacier runs.",
     status: "partial",
   },
   {
     name: "Cime Caron cable car",
-    category: "lift",
-    x: 18,
-    y: 30,
+    kind: "lift",
+    lat: 45.302,
+    lng: 6.5713,
     note: "3,200m and the big view. Queue early on a clear day.",
     status: "partial",
   },
   {
     name: "Beginner carpets",
-    category: "lift",
-    x: 44,
-    y: 70,
+    kind: "lift",
+    lat: 45.294,
+    lng: 6.5804,
     note: "Gentle slopes at the edge of the village — day one starts here.",
     status: "partial",
   },
   {
     name: "Plein Sud chair",
-    category: "lift",
-    x: 56,
-    y: 56,
+    kind: "lift",
+    lat: 45.2968,
+    lng: 6.5846,
     note: "The main lift out of the village and the route to Les 3 Vallées.",
     status: "partial",
   },
   {
     name: "Chalet de la Marine",
-    category: "lunch",
-    x: 74,
-    y: 30,
+    kind: "lunch",
+    lat: 45.302,
+    lng: 6.5909,
     note: "Long lunch on the terrace, reachable on an easy blue.",
     status: "soon",
   },
   {
     name: "Chez Pépé Nicolas",
-    category: "lunch",
-    x: 82,
-    y: 56,
+    kind: "lunch",
+    lat: 45.2968,
+    lng: 6.5937,
     note: "Old farm, big plates, slightly further out.",
     status: "soon",
   },
   {
     name: "La Folie Douce",
-    category: "apres",
-    x: 60,
-    y: 40,
+    kind: "nightlife",
+    lat: 45.3,
+    lng: 6.586,
     note: "Top of Plein Sud. Starts mid-afternoon, and you still have to ski down.",
     status: "soon",
   },
   {
     name: "360 Bar",
-    category: "apres",
-    x: 52,
-    y: 60,
+    kind: "nightlife",
+    lat: 45.296,
+    lng: 6.5832,
     note: "Bottom of the slope, first stop coming off the mountain.",
     status: "soon",
   },
   {
     name: "Le Malaysia",
-    category: "club",
-    x: 46,
-    y: 74,
+    kind: "nightlife",
+    lat: 45.2932,
+    lng: 6.5811,
     note: "Underground, very large, very late.",
     status: "soon",
   },
   {
     name: "Klub Summit",
-    category: "club",
-    x: 54,
-    y: 76,
+    kind: "nightlife",
+    lat: 45.2928,
+    lng: 6.5839,
     note: "In the middle of the village, a short walk from most doors.",
     status: "soon",
   },
 ];
+
+// Search by name rather than by our approximate coordinates, so the link
+// lands on the real place even while the pin is still a placeholder.
+export function googleMapsUrl(name: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    `${name} ${trip.destination}`,
+  )}`;
+}
