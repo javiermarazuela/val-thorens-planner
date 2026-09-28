@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "description",
         content: "University ski club trip and attendee guide for Val Thorens, 9–16 January 2027.",
       },
-      { name: "author", content: "University Ski Club" },
+      { name: "author", content: "CBS Snow Sports" },
       { property: "og:title", content: site.ogTitle },
       {
         property: "og:description",

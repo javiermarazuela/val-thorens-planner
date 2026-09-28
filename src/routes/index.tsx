@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  ArrowRight,
+  CalendarDays,
+  Check,
   ChevronDown,
   ExternalLink,
   MapPin,
   MessageCircle,
+  Minus,
   Mountain,
   Plane,
   Snowflake,
@@ -25,6 +27,7 @@ import {
   goingOut,
   guide,
   hero,
+  keyDates,
   mapSection,
   mountain,
   offSnow,
@@ -58,7 +61,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const topFaqs = [faqs[0], faqs[1], faqs[3]].filter((faq) => faq !== undefined);
+  const topFaqs = faqs.filter((faq) => faq.featured);
 
   return (
     <div id="top">
@@ -90,22 +93,74 @@ function Home() {
       </section>
 
       <section id="price" className="scroll-mt-20 border-b border-border bg-card py-8 sm:py-10">
-        <div className="mx-auto flex max-w-4xl flex-col items-start justify-between gap-6 px-5 sm:flex-row sm:items-center">
-          <div>
-            <div className="flex flex-wrap items-center gap-3">
-              <p className="text-xs font-bold uppercase text-primary">
-                {pricing.label} · {pricing.unit}
-              </p>
-              <StatusBadge status={pricing.status} />
+        <div className="mx-auto max-w-4xl px-5">
+          <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <div className="flex flex-wrap items-center gap-3">
+                <p className="text-xs font-bold uppercase text-primary">
+                  {pricing.label} · {pricing.unit}
+                </p>
+                <StatusBadge status={pricing.status} />
+              </div>
+              <p className="mt-1 font-display text-4xl sm:text-5xl">{pricing.amount}</p>
+              <p className="mt-2 text-sm font-semibold">{pricing.nonMemberNote}</p>
             </div>
-            <p className="mt-1 font-display text-4xl sm:text-5xl">{pricing.amount}</p>
-            <p className="mt-2 max-w-md text-sm text-muted-foreground">{pricing.note}</p>
+            <Button asChild className="w-full sm:w-auto">
+              <a href={pricing.signupUrl} target="_blank" rel="noreferrer">
+                {pricing.signupLabel} <ExternalLink className="size-4" aria-hidden="true" />
+              </a>
+            </Button>
           </div>
-          <Button asChild className="w-full sm:w-auto">
-            <a href="#contact">
-              {pricing.ctaLabel} <ArrowRight className="size-4" aria-hidden="true" />
-            </a>
-          </Button>
+
+          <div className="mt-6 grid grid-cols-2 gap-x-4 border-t border-border pt-6 sm:gap-x-10">
+            <div>
+              <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase text-primary">
+                <Check className="size-4" aria-hidden="true" /> {pricing.includesTitle}
+              </p>
+              <ul className="mt-3 space-y-2.5 text-sm leading-snug">
+                {pricing.includes.map((item) => (
+                  <li key={item} className="font-semibold">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase text-muted-foreground">
+                <Minus className="size-4" aria-hidden="true" /> {pricing.excludesTitle}
+              </p>
+              <ul className="mt-3 space-y-2.5 text-sm leading-snug">
+                {pricing.excludes.map((item) => (
+                  <li key={item.label}>
+                    <span className="font-semibold">{item.label}</span>
+                    <span className="block text-xs text-muted-foreground">
+                      {item.price ? `${item.price} · ` : ""}
+                      {item.detail}
+                    </span>
+                    {item.status && <StatusBadge status={item.status} className="mt-1" />}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <p className="mt-5 text-xs leading-relaxed text-muted-foreground">{pricing.note}</p>
+
+          <div className="mt-6 rounded-lg border border-border bg-background p-4 sm:p-5">
+            <div className="flex flex-wrap items-center gap-3">
+              <CalendarDays className="size-4 text-primary" aria-hidden="true" />
+              <p className="text-xs font-extrabold uppercase text-primary">{keyDates.title}</p>
+              <StatusBadge status={keyDates.status} />
+            </div>
+            <ol className="mt-3 grid gap-3 sm:grid-cols-3 sm:gap-5">
+              {keyDates.items.map((d) => (
+                <li key={d.date} className="text-sm leading-snug">
+                  <span className="block font-display text-lg">{d.date}</span>
+                  <span className="text-muted-foreground">{d.label}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </section>
 
@@ -318,6 +373,17 @@ function Home() {
                   <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
                     {faq.a}
                   </p>
+                  {faq.link && (
+                    <a
+                      href={faq.link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-primary"
+                    >
+                      {faq.link.label}
+                      <ExternalLink className="size-3.5" aria-hidden="true" />
+                    </a>
+                  )}
                 </details>
               ))}
             </div>
