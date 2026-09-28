@@ -133,47 +133,52 @@ export function ResortMap() {
     if (p) mapRef.current?.panTo([p.lat, p.lng]);
   };
 
-  return (
-    <div>
-      <div className="flex flex-wrap gap-2">
+  const legend = (
+    <div className="mt-4 flex flex-wrap justify-center gap-2">
+      <button
+        type="button"
+        onClick={() => setActive("all")}
+        className={`rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
+          active === "all"
+            ? "border-foreground bg-foreground text-background"
+            : "border-border hover:border-foreground"
+        }`}
+      >
+        {mapSection.allLabel}
+      </button>
+      {mapKinds.map((kind) => (
         <button
+          key={kind.id}
           type="button"
-          onClick={() => setActive("all")}
-          className={`rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
-            active === "all"
+          onClick={() => setActive(kind.id)}
+          className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
+            active === kind.id
               ? "border-foreground bg-foreground text-background"
               : "border-border hover:border-foreground"
           }`}
         >
-          {mapSection.allLabel}
+          <span
+            className="size-2.5 rounded-full"
+            style={{ background: kind.color }}
+            aria-hidden="true"
+          />
+          {kind.label}
         </button>
-        {mapKinds.map((kind) => (
-          <button
-            key={kind.id}
-            type="button"
-            onClick={() => setActive(kind.id)}
-            className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
-              active === kind.id
-                ? "border-foreground bg-foreground text-background"
-                : "border-border hover:border-foreground"
-            }`}
-          >
-            <span
-              className="size-2.5 rounded-full"
-              style={{ background: kind.color }}
-              aria-hidden="true"
-            />
-            {kind.label}
-          </button>
-        ))}
-      </div>
+      ))}
+    </div>
+  );
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start lg:gap-6">
-        <div
-          ref={containerRef}
-          aria-label="Map of Val Thorens showing where we stay, the lifts and the venues"
-          className="relative z-0 h-[340px] w-full overflow-hidden rounded-lg border border-border bg-secondary sm:h-[420px] lg:h-[520px]"
-        />
+  return (
+    <div>
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start lg:gap-6">
+        <div>
+          <div
+            ref={containerRef}
+            aria-label="Map of Val Thorens showing where we stay, the lifts and the venues"
+            className="relative z-0 h-[340px] w-full overflow-hidden rounded-lg border border-border bg-secondary sm:h-[420px] lg:h-[520px]"
+          />
+          {legend}
+        </div>
 
         <div>
           {point ? (

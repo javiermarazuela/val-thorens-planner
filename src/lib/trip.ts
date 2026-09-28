@@ -50,12 +50,13 @@ export const resortIntro = {
 
 export const mapSection = {
   title: "Map",
-  intro: "Where we sleep, where the lifts are, where lunch, après and the late ones happen.",
   allLabel: "Everything",
   hint: "Tap a pin for what it is, and a link straight to it in Google Maps.",
   openInMaps: "Open in Google Maps",
   approxNote:
     "Pin positions are approximate until the committee confirms them. Each place’s name opens its real location in Google Maps.",
+  officialMapLabel: "See the official resort map",
+  officialMapUrl: "https://www.valthorens.com/en/decouvrir/plan-station/",
 };
 
 export const weekSection = {
@@ -110,10 +111,7 @@ export const stay = {
   intro:
     "Self-catered apartments, walking distance from the lifts, the bars and each other. Exact buildings and rooming are still to come.",
   imageAlt: "Timber-clad alpine accommodation in Val Thorens",
-  mapLabel: "Resort map",
-  roomsNote:
-    "You pick your roommates when you register on SkiSync. Fill the room by the invoice deadline, or the people in it pay the difference.",
-  mapUrl: "https://www.valthorens.com/en/decouvrir/plan-station/",
+  roomsNote: "You pick your roommates when you register on SkiSync.",
 };
 
 export const week: Array<{
@@ -294,8 +292,9 @@ const nonMemberEur = 1747;
 export const pricing = {
   status: "confirmed" as GuideStatus,
   amountEur: memberEur,
+  amountLead: "Starting from",
   amount: usd(memberEur),
-  unit: "Per person · club member price",
+  unit: "per person · club member price",
   nonMemberEur,
   nonMemberNote: `${usd(nonMemberEur)} for non-members`,
   note: "Charged in euros by SkiSync. Dollar figures are approximate and include SkiSync’s 4% card fee.",
@@ -305,7 +304,7 @@ export const pricing = {
   includesTitle: "Included",
   includes: [
     "Seven nights’ lodging",
-    "Every social event",
+    "Daily social event",
     "Resort taxes & fees",
     "SkiSync staff on site",
   ],
