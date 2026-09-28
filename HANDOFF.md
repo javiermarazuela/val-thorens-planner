@@ -39,9 +39,6 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - The terms mention a **"Social Only" ticket**, possibly how +1s join. It's left off the site.
   - The sign-up URL includes the club's `cbssnowsports27` gmail as a referral code, visible to anyone who looks.
 - **Airport:** Geneva (GVA) is still only "likely", and the shuttle is "coming soon" until SkiSync publishes times.
-- **Stale docs:**
-  - CLAUDE.md's _Structure_ section still describes `resort-map.tsx` as an "SVG schematic map"; it's Leaflet now.
-  - `README.md` still contains the old Lovable-era prompt text above _Development_.
 - **Lint warnings:** six `react-refresh/only-export-components` warnings in shadcn `src/components/ui/*`. Harmless.
 - **Unused packages:** 46 shadcn `ui/` components and heavy libraries (`recharts`, `embla-carousel`, `react-day-picker`, …) are installed while the page uses only `button`. Worth trimming, but ask first (CLAUDE.md: ask before changing dependencies).
 
@@ -79,9 +76,8 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 1. **Phone-check and merge PR #5.**
 2. **Confirm the SkiSync unknowns with the committee:** shorter pass/rental options, the Social Only ticket, and the transfer-policy text. Then update `trip.ts`.
 3. **Real map coordinates** from the committee, into `mapPoints`.
-4. **Fix the two stale doc lines:** the CLAUDE.md map description and the README prompt text.
-5. **Phase 2 is blocked on decisions only you can make:**
+4. **Phase 2 is blocked on decisions only you can make:**
    - Create a Supabase project and add its keys to Vercel.
    - Decide whether the gated area (games, WhatsApp link) is a new `/members` route or a section revealed on the single page once signed in. CLAUDE.md documents a single page, so either choice changes the stated architecture.
    - Phase 2 then covers Google login restricted to `columbia.edu` / `gsb.columbia.edu`, plus the +1 allowlist, and it removes `src/lib/guide.functions.ts`.
-6. **Later:** phase 3 is the flight details form; phase 4 is the PWA (its manifest name should read from `site.name`). Only when asked.
+5. **Later:** phase 3 is the flight details form; phase 4 is the PWA (its manifest name should read from `site.name`). Only when asked.
