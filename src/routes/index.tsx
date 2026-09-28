@@ -4,7 +4,6 @@ import {
   Check,
   ChevronDown,
   ExternalLink,
-  MapPin,
   MessageCircle,
   Mountain,
   Plane,
@@ -71,14 +70,14 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/35 to-foreground/20" />
-        <div className="relative mx-auto flex min-h-[55svh] max-w-6xl flex-col justify-end px-5 pb-8 pt-20 text-background sm:min-h-[70svh] sm:pb-16">
+        <div className="relative mx-auto flex min-h-[55svh] max-w-6xl flex-col items-center justify-end px-5 pb-8 pt-20 text-center text-background sm:min-h-[70svh] sm:pb-16">
           <h1 className="whitespace-nowrap text-[clamp(2rem,10.8vw,3rem)] uppercase leading-none sm:text-7xl lg:text-8xl xl:text-9xl">
             {hero.title}
           </h1>
           <p className="mt-3 text-base leading-snug text-background/90 sm:mt-5 sm:text-xl">
             {hero.tagline}
           </p>
-          <p className="mt-3 flex items-center gap-2 text-sm font-bold sm:mt-4 sm:text-base">
+          <p className="mt-3 flex items-center gap-2 text-base font-bold sm:mt-4 sm:text-lg">
             <span>{trip.datesMedium}</span>
             <span aria-hidden="true">·</span>
             <span>
@@ -91,7 +90,10 @@ function Home() {
       <section id="price" className="scroll-mt-20 border-b border-border bg-card py-10 sm:py-14">
         <div className="mx-auto max-w-3xl px-5">
           <div className="text-center">
-            <p className="font-display text-6xl leading-none sm:text-7xl">{pricing.amount}</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+              {pricing.amountLead}
+            </p>
+            <p className="mt-2 font-display text-5xl leading-none sm:text-6xl">{pricing.amount}</p>
             <p className="mt-3 font-semibold">{pricing.unit}</p>
             <p className="mt-1 text-sm text-muted-foreground">{pricing.nonMemberNote}</p>
             <Button asChild className="mt-6 h-12 w-full px-8 text-base sm:w-auto">
@@ -203,21 +205,27 @@ function Home() {
             <p className="mt-5 border-l-4 border-accent pl-4 text-sm leading-relaxed">
               {stay.roomsNote}
             </p>
-            <Button asChild variant="outline" size="sm" className="mt-6">
-              <a href={stay.mapUrl} target="_blank" rel="noreferrer">
-                <MapPin className="size-4" aria-hidden="true" /> {stay.mapLabel}
-              </a>
-            </Button>
           </div>
         </div>
       </section>
 
       <section id="map" className="scroll-mt-20 py-10 sm:py-16 lg:py-24">
         <div className="mx-auto max-w-5xl px-5 xl:max-w-6xl">
-          <SectionIntro title={mapSection.title} intro={mapSection.intro} />
+          <SectionIntro title={mapSection.title} />
           <div className="mt-8">
             <ResortMap />
           </div>
+          <p className="mt-6 text-center text-sm">
+            <a
+              href={mapSection.officialMapUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 font-bold text-primary underline underline-offset-4 hover:no-underline"
+            >
+              {mapSection.officialMapLabel}
+              <ExternalLink className="size-3.5" aria-hidden="true" />
+            </a>
+          </p>
         </div>
       </section>
 
