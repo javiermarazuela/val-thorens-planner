@@ -5,9 +5,10 @@ export const trip = {
   region: "Les 3 Vallées, France",
   dates: "9–16 January 2027",
   datesShort: "9—16 JAN 2027",
+  datesMedium: "9–16 Jan 2027",
   arrival: "Saturday 9 January 2027",
   departure: "Saturday 16 January 2027",
-  people: 179,
+  people: "170+",
   altitude: "2,300m",
   linkedPiste: "600km",
   localPiste: "150km",
@@ -27,28 +28,28 @@ export const site = {
   ogTitle: siteName,
   homeOgTitle: `${siteName} — Ski Club Trip`,
   backToTopLabel: `${siteName}, back to top`,
+  // Search results and link previews for the home page.
+  description: `${trip.people} of us in Val Thorens from ${trip.dates}. See the week, accommodation, price and essential trip guide.`,
+  ogDescription: `One week, ${trip.people} people, and ${trip.linkedPiste} of linked piste.`,
 };
 
 // Page copy. Kept here rather than in the components so a later Google Sheet
 // sync has one place to write to — see hard rule 5 in CLAUDE.md.
 export const hero = {
-  titleTop: "Val",
-  titleBottom: "Thorens",
+  title: "Val Thorens",
   peopleSuffix: "of us",
-  tagline: "A week at 2,300m in the world’s largest linked ski area.",
+  tagline: "A week in the world’s largest ski area.",
   imageAlt: "Val Thorens ski resort beneath the French Alps",
 };
 
 export const resortIntro = {
-  eyebrow: "Why Val Thorens",
-  heading: "High, linked, easy.",
+  title: "Why Val Thorens",
   body: "Europe’s highest ski resort puts 150km of piste at the door and 600km across Les 3 Vallées. The village is compact, mostly pedestrian and built for a group this size.",
   imageAlt: "Friends together on a snowy terrace",
 };
 
 export const mapSection = {
-  eyebrow: "The resort",
-  heading: "Map",
+  title: "Map",
   intro: "Where we sleep, where the lifts are, where lunch, après and the late ones happen.",
   allLabel: "Everything",
   hint: "Tap a pin for what it is, and a link straight to it in Google Maps.",
@@ -58,8 +59,7 @@ export const mapSection = {
 };
 
 export const weekSection = {
-  eyebrow: "9—16 January",
-  heading: "The week",
+  title: "The week",
   intro: "Two travel days, six full days in between. Theme details will appear as they are agreed.",
 };
 
@@ -69,7 +69,7 @@ export const guide = {
 };
 
 export const faqSection = {
-  eyebrow: "A few answers",
+  title: "FAQs",
 };
 
 export const sections = [
@@ -98,7 +98,7 @@ export const resortFacts = [
     note: "Enough for the week without ever leaving the valley.",
   },
   {
-    value: String(trip.people),
+    value: trip.people,
     label: "Of us going",
     note: "One resort, one week, everyone within walking distance.",
   },
@@ -106,8 +106,7 @@ export const resortFacts = [
 
 export const stay = {
   status: "partial" as GuideStatus,
-  eyebrow: "Where we stay",
-  heading: "Inside the village.",
+  title: "Where we stay",
   intro:
     "Self-catered apartments, walking distance from the lifts, the bars and each other. Exact buildings and rooming are still to come.",
   imageAlt: "Timber-clad alpine accommodation in Val Thorens",
@@ -217,7 +216,7 @@ export const goingOut = {
     },
     {
       title: "Dinner",
-      body: "Where 179 people can actually eat, and where a group of six should go instead.",
+      body: `Where ${trip.people} people can actually eat, and where a group of six should go instead.`,
     },
     {
       title: "Après",
@@ -286,20 +285,19 @@ export function usd(eur: number): string {
   return `$${dollars.toLocaleString("en-US")}`;
 }
 
-// Hard rule 1: one headline "From" figure (the cheapest package), then what
-// is and is not included. Optional add-ons show "from $X" using the shortest
-// option SkiSync offers. No per-person total, no full cost table.
+// Hard rule 1: one headline figure (the club member package, the cheapest),
+// then what is and is not included. Optional add-ons show "from $X" using the
+// shortest option SkiSync offers. No per-person total, no full cost table.
 const memberEur = 1697;
 const nonMemberEur = 1747;
 
 export const pricing = {
   status: "confirmed" as GuideStatus,
-  label: "Club member package",
   amountEur: memberEur,
-  amount: `From ${usd(memberEur)}`,
-  unit: "per person",
+  amount: usd(memberEur),
+  unit: "Per person · club member price",
   nonMemberEur,
-  nonMemberNote: `Not a CBS Snow Sports member? ${usd(nonMemberEur)}.`,
+  nonMemberNote: `${usd(nonMemberEur)} for non-members`,
   note: "Charged in euros by SkiSync. Dollar figures are approximate and include SkiSync’s 4% card fee.",
   signupLabel: "Sign up on SkiSync",
   signupUrl:
@@ -307,23 +305,18 @@ export const pricing = {
   includesTitle: "Included",
   includes: [
     "Seven nights’ lodging",
-    "Every CBS Snow Sports social event",
-    "All resort taxes and fees",
-    "SkiSync staff on site for arrivals, departures and help",
+    "Every social event",
+    "Resort taxes & fees",
+    "SkiSync staff on site",
   ],
   excludesTitle: "Not included",
   excludes: [
-    { label: "3 Vallées lift pass", fromEur: 295, detail: "4 days in a row" },
-    { label: "Ski or snowboard rental", fromEur: 120, detail: "4 days in a row" },
-    { label: "Helmet rental", fromEur: 17, detail: "4 days" },
-    { label: "Flights", detail: "Book your own" },
-    {
-      label: "Airport shuttle",
-      detail: "Tickets on SkiSync soon",
-      status: "soon" as GuideStatus,
-    },
-    { label: "Travel insurance", detail: "Strongly recommended" },
-  ].map((item: { label: string; fromEur?: number; detail: string; status?: GuideStatus }) => ({
+    { label: "Lift pass", fromEur: 295 },
+    { label: "Ski rental", fromEur: 120 },
+    { label: "Flights" },
+    { label: "Airport shuttle" },
+    { label: "Travel insurance" },
+  ].map((item: { label: string; fromEur?: number }) => ({
     ...item,
     price: item.fromEur === undefined ? undefined : `from ${usd(item.fromEur)}`,
   })),
@@ -345,9 +338,8 @@ export const keyDates = {
 };
 
 export const transfers = {
-  status: "partial" as GuideStatus,
   headline: "Book your own flights.",
-  body: "Flights aren’t part of the package, so everyone books their own. Tickets for the airport shuttle up to Val Thorens go on sale through SkiSync in the coming weeks. Geneva (GVA) is the likely airport; we’ll confirm once the shuttle times are out.",
+  body: "Recommended flights coming soon.",
 };
 
 export const faqs: Array<{
@@ -360,7 +352,7 @@ export const faqs: Array<{
 }> = [
   {
     q: "Which flights should I book?",
-    a: "Your own — flights aren’t in the package. Aim to land on the Saturday morning and leave the following Saturday afternoon. Geneva (GVA) is the likely airport; shuttle tickets up to the resort go on sale through SkiSync soon, and we’ll confirm the airport with the shuttle times.",
+    a: "Your own — flights aren’t in the package. Aim to land on Saturday 9 January and fly home on Saturday 16 January; Geneva (GVA) is the likely airport.",
     status: "partial",
     featured: true,
   },
