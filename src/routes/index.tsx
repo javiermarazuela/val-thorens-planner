@@ -109,8 +109,8 @@ function Home() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-24">
-        <div className="mx-auto grid max-w-5xl gap-10 px-5 md:grid-cols-2 md:items-center">
+      <section className="py-10 sm:py-16 lg:py-24">
+        <div className="mx-auto grid max-w-5xl gap-8 px-5 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
           <figure className="aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
             <img
               src={offSlopeImage}
@@ -127,7 +127,7 @@ function Home() {
               {resortIntro.heading}
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{resortIntro.body}</p>
-            <div className="mt-7 flex flex-wrap gap-5">
+            <div className="mt-7 grid grid-cols-2 gap-5">
               {resortFacts.slice(0, 2).map((fact) => (
                 <div key={fact.label}>
                   <p className="font-display text-2xl text-primary">{fact.value}</p>
@@ -141,8 +141,11 @@ function Home() {
         </div>
       </section>
 
-      <section id="stay" className="scroll-mt-20 border-y border-border bg-card py-16 sm:py-24">
-        <div className="mx-auto grid max-w-5xl gap-10 px-5 md:grid-cols-2 md:items-center">
+      <section
+        id="stay"
+        className="scroll-mt-20 border-y border-border bg-card py-10 sm:py-16 lg:py-24"
+      >
+        <div className="mx-auto grid max-w-5xl gap-8 px-5 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
           <div className="md:order-2">
             <figure className="aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
               <img
@@ -174,8 +177,8 @@ function Home() {
         </div>
       </section>
 
-      <section id="map" className="scroll-mt-20 py-16 sm:py-24">
-        <div className="mx-auto max-w-5xl px-5">
+      <section id="map" className="scroll-mt-20 py-10 sm:py-16 lg:py-24">
+        <div className="mx-auto max-w-5xl px-5 xl:max-w-6xl">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
               <p className="text-xs font-bold uppercase text-primary">{mapSection.eyebrow}</p>
@@ -191,8 +194,11 @@ function Home() {
         </div>
       </section>
 
-      <section id="week" className="scroll-mt-20 border-y border-border bg-card py-16 sm:py-24">
-        <div className="mx-auto max-w-5xl px-5">
+      <section
+        id="week"
+        className="scroll-mt-20 border-y border-border bg-card py-10 sm:py-16 lg:py-24"
+      >
+        <div className="mx-auto max-w-5xl px-5 xl:max-w-6xl">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
               <p className="text-xs font-bold uppercase text-primary">{weekSection.eyebrow}</p>
@@ -202,7 +208,7 @@ function Home() {
               {weekSection.intro}
             </p>
           </div>
-          <ol className="mt-9 grid gap-px overflow-hidden rounded-lg bg-border sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-border lg:grid-cols-4">
             {week.map((day) => (
               <li key={day.date} className="bg-card p-5">
                 <div className="flex items-baseline justify-between gap-3">
@@ -233,7 +239,7 @@ function Home() {
                 aria-hidden="true"
               />
             </summary>
-            <div className="grid gap-10 border-t border-border py-8 lg:grid-cols-2">
+            <div className="grid gap-8 border-t border-border py-8 sm:gap-10 lg:grid-cols-2 xl:grid-cols-3">
               <div>
                 <h3 className="flex items-center gap-2 text-xl uppercase">
                   <Mountain className="size-5 text-primary" aria-hidden="true" /> {mountain.title}
@@ -265,7 +271,7 @@ function Home() {
                   ))}
                 </ul>
               </div>
-              <details className="lg:col-span-2">
+              <details className="lg:col-span-2 xl:col-span-3">
                 <summary className="flex cursor-pointer list-none items-center gap-2 font-bold text-primary">
                   <Snowflake className="size-4" aria-hidden="true" /> {guide.packingLabel}
                 </summary>
@@ -278,9 +284,9 @@ function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-5 py-10">
+      <section className="mx-auto max-w-5xl px-5 py-8 sm:py-10 xl:max-w-6xl">
         <p className="text-xs font-bold uppercase text-muted-foreground">{mountain.linksTitle}</p>
-        <div className="mt-4 grid gap-2 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {mountain.links.map((link) => (
             <a
               key={link.href}
@@ -296,8 +302,8 @@ function Home() {
         </div>
       </section>
 
-      <section id="contact" className="scroll-mt-20 border-t border-border bg-card py-14">
-        <div className="mx-auto grid max-w-5xl gap-10 px-5 md:grid-cols-[1fr_0.8fr]">
+      <section id="contact" className="scroll-mt-20 border-t border-border bg-card py-10 sm:py-14">
+        <div className="mx-auto grid max-w-5xl gap-10 px-5 md:grid-cols-[1fr_0.8fr] xl:max-w-6xl">
           <div>
             <p className="text-xs font-bold uppercase text-primary">{faqSection.eyebrow}</p>
             <div className="mt-4 divide-y divide-border border-y border-border">
@@ -327,7 +333,7 @@ function Home() {
         </div>
       </section>
 
-      <footer className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground sm:flex-row sm:justify-between">
+      <footer className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground sm:flex-row sm:justify-between xl:max-w-6xl">
         <p>
           {trip.destination} · {trip.dates}
         </p>
