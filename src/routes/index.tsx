@@ -6,11 +6,11 @@ import {
   ExternalLink,
   MapPin,
   MessageCircle,
-  Minus,
   Mountain,
   Plane,
   Snowflake,
   Users,
+  X,
 } from "lucide-react";
 
 import heroImage from "@/assets/val-thorens-trip.jpg";
@@ -18,6 +18,7 @@ import stayImage from "@/assets/val-thorens-stay.jpg";
 import offSlopeImage from "@/assets/val-thorens-offslope.jpg";
 import { PackingList } from "@/components/packing-list";
 import { ResortMap } from "@/components/resort-map";
+import { SectionIntro } from "@/components/section-intro";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,13 +47,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: site.title },
-      {
-        name: "description",
-        content:
-          "179 of us in Val Thorens from 9–16 January 2027. See the week, accommodation, price and essential trip guide.",
-      },
+      { name: "description", content: site.description },
       { property: "og:title", content: site.homeOgTitle },
-      { property: "og:description", content: "One week, 179 people, and 600km of linked piste." },
+      { property: "og:description", content: site.ogDescription },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -65,7 +62,7 @@ function Home() {
 
   return (
     <div id="top">
-      <section className="relative min-h-[78svh] overflow-hidden bg-foreground">
+      <section className="relative min-h-[55svh] overflow-hidden bg-foreground sm:min-h-[70svh]">
         <img
           src={heroImage}
           alt={hero.imageAlt}
@@ -74,77 +71,67 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/35 to-foreground/20" />
-        <div className="relative mx-auto flex min-h-[78svh] max-w-6xl flex-col justify-end px-5 pb-12 pt-20 text-background sm:pb-16">
-          <div className="flex flex-wrap gap-2 text-xs font-bold uppercase">
-            <span className="rounded-full bg-background px-3 py-2 text-foreground">
-              {trip.dates}
-            </span>
-            <span className="rounded-full bg-accent px-3 py-2 text-accent-foreground">
+        <div className="relative mx-auto flex min-h-[55svh] max-w-6xl flex-col justify-end px-5 pb-8 pt-20 text-background sm:min-h-[70svh] sm:pb-16">
+          <h1 className="whitespace-nowrap text-[clamp(2rem,10.8vw,3rem)] uppercase leading-none sm:text-7xl lg:text-8xl xl:text-9xl">
+            {hero.title}
+          </h1>
+          <p className="mt-3 text-base leading-snug text-background/90 sm:mt-5 sm:text-xl">
+            {hero.tagline}
+          </p>
+          <p className="mt-3 flex items-center gap-2 text-sm font-bold sm:mt-4 sm:text-base">
+            <span>{trip.datesMedium}</span>
+            <span aria-hidden="true">·</span>
+            <span>
               {trip.people} {hero.peopleSuffix}
             </span>
-          </div>
-          <h1 className="mt-6 text-5xl uppercase leading-[0.92] sm:text-8xl lg:text-9xl">
-            {hero.titleTop}
-            <br />
-            {hero.titleBottom}
-          </h1>
-          <p className="mt-5 max-w-lg text-lg leading-relaxed text-background/90">{hero.tagline}</p>
+          </p>
         </div>
       </section>
 
-      <section id="price" className="scroll-mt-20 border-b border-border bg-card py-8 sm:py-10">
-        <div className="mx-auto max-w-4xl px-5">
-          <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-            <div>
-              <div className="flex flex-wrap items-center gap-3">
-                <p className="text-xs font-bold uppercase text-primary">
-                  {pricing.label} · {pricing.unit}
-                </p>
-                <StatusBadge status={pricing.status} />
-              </div>
-              <p className="mt-1 font-display text-4xl sm:text-5xl">{pricing.amount}</p>
-              <p className="mt-2 text-sm font-semibold">{pricing.nonMemberNote}</p>
-            </div>
-            <Button asChild className="w-full sm:w-auto">
+      <section id="price" className="scroll-mt-20 border-b border-border bg-card py-10 sm:py-14">
+        <div className="mx-auto max-w-3xl px-5">
+          <div className="text-center">
+            <p className="font-display text-6xl leading-none sm:text-7xl">{pricing.amount}</p>
+            <p className="mt-3 font-semibold">{pricing.unit}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{pricing.nonMemberNote}</p>
+            <Button asChild className="mt-6 h-12 w-full px-8 text-base sm:w-auto">
               <a href={pricing.signupUrl} target="_blank" rel="noreferrer">
                 {pricing.signupLabel} <ExternalLink className="size-4" aria-hidden="true" />
               </a>
             </Button>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-x-4 border-t border-border pt-6 sm:gap-x-10">
+          <div className="mt-8 grid grid-cols-2 gap-x-5 border-t border-border pt-6 sm:gap-x-10">
             <div>
-              <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase text-primary">
-                <Check className="size-4" aria-hidden="true" /> {pricing.includesTitle}
+              <p className="flex items-center gap-1.5 font-display text-base uppercase">
+                <Check className="size-5 text-primary" strokeWidth={3} aria-hidden="true" />
+                {pricing.includesTitle}
               </p>
-              <ul className="mt-3 space-y-2.5 text-sm leading-snug">
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-snug marker:text-muted-foreground">
                 {pricing.includes.map((item) => (
-                  <li key={item} className="font-semibold">
-                    {item}
-                  </li>
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
             <div>
-              <p className="flex items-center gap-1.5 text-xs font-extrabold uppercase text-muted-foreground">
-                <Minus className="size-4" aria-hidden="true" /> {pricing.excludesTitle}
+              <p className="flex items-center gap-1.5 font-display text-base uppercase">
+                <X className="size-5 text-muted-foreground" strokeWidth={3} aria-hidden="true" />
+                {pricing.excludesTitle}
               </p>
-              <ul className="mt-3 space-y-2.5 text-sm leading-snug">
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-snug marker:text-muted-foreground">
                 {pricing.excludes.map((item) => (
                   <li key={item.label}>
                     <span className="font-semibold">{item.label}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {item.price ? `${item.price} · ` : ""}
-                      {item.detail}
-                    </span>
-                    {item.status && <StatusBadge status={item.status} className="mt-1" />}
+                    {item.price && <span className="text-muted-foreground"> ({item.price})</span>}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <p className="mt-5 text-xs leading-relaxed text-muted-foreground">{pricing.note}</p>
+          <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
+            {pricing.note}
+          </p>
 
           <div className="mt-6 rounded-lg border border-border bg-background p-4 sm:p-5">
             <div className="flex flex-wrap items-center gap-3">
@@ -165,7 +152,8 @@ function Home() {
       </section>
 
       <section className="py-10 sm:py-16 lg:py-24">
-        <div className="mx-auto grid max-w-5xl gap-8 px-5 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
+        <SectionIntro title={resortIntro.title} />
+        <div className="mx-auto mt-8 grid max-w-5xl gap-8 px-5 sm:mt-10 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
           <figure className="aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
             <img
               src={offSlopeImage}
@@ -177,11 +165,7 @@ function Home() {
             />
           </figure>
           <div>
-            <p className="text-xs font-bold uppercase text-primary">{resortIntro.eyebrow}</p>
-            <h2 className="mt-3 text-3xl uppercase leading-tight sm:text-4xl">
-              {resortIntro.heading}
-            </h2>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{resortIntro.body}</p>
+            <p className="text-lg leading-relaxed text-muted-foreground">{resortIntro.body}</p>
             <div className="mt-7 grid grid-cols-2 gap-5">
               {resortFacts.slice(0, 2).map((fact) => (
                 <div key={fact.label}>
@@ -200,7 +184,8 @@ function Home() {
         id="stay"
         className="scroll-mt-20 border-y border-border bg-card py-10 sm:py-16 lg:py-24"
       >
-        <div className="mx-auto grid max-w-5xl gap-8 px-5 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
+        <SectionIntro title={stay.title} />
+        <div className="mx-auto mt-8 grid max-w-5xl gap-8 px-5 sm:mt-10 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
           <div className="md:order-2">
             <figure className="aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
               <img
@@ -214,12 +199,7 @@ function Home() {
             </figure>
           </div>
           <div>
-            <div className="flex flex-wrap items-center gap-3">
-              <p className="text-xs font-bold uppercase text-primary">{stay.eyebrow}</p>
-              <StatusBadge status={stay.status} />
-            </div>
-            <h2 className="mt-3 text-3xl uppercase leading-tight sm:text-4xl">{stay.heading}</h2>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{stay.intro}</p>
+            <p className="text-lg leading-relaxed text-muted-foreground">{stay.intro}</p>
             <p className="mt-5 border-l-4 border-accent pl-4 text-sm leading-relaxed">
               {stay.roomsNote}
             </p>
@@ -234,15 +214,7 @@ function Home() {
 
       <section id="map" className="scroll-mt-20 py-10 sm:py-16 lg:py-24">
         <div className="mx-auto max-w-5xl px-5 xl:max-w-6xl">
-          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-xs font-bold uppercase text-primary">{mapSection.eyebrow}</p>
-              <h2 className="mt-3 text-3xl uppercase sm:text-4xl">{mapSection.heading}</h2>
-            </div>
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              {mapSection.intro}
-            </p>
-          </div>
+          <SectionIntro title={mapSection.title} intro={mapSection.intro} />
           <div className="mt-8">
             <ResortMap />
           </div>
@@ -254,15 +226,7 @@ function Home() {
         className="scroll-mt-20 border-y border-border bg-card py-10 sm:py-16 lg:py-24"
       >
         <div className="mx-auto max-w-5xl px-5 xl:max-w-6xl">
-          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-xs font-bold uppercase text-primary">{weekSection.eyebrow}</p>
-              <h2 className="mt-3 text-3xl uppercase sm:text-4xl">{weekSection.heading}</h2>
-            </div>
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              {weekSection.intro}
-            </p>
-          </div>
+          <SectionIntro title={weekSection.title} intro={weekSection.intro} />
           <ol className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-border lg:grid-cols-4">
             {week.map((day) => (
               <li key={day.date} className="bg-card p-5">
@@ -275,14 +239,11 @@ function Home() {
             ))}
           </ol>
 
-          <div className="mt-8 rounded-lg border border-border bg-background p-5">
-            <div className="flex flex-wrap items-center gap-3">
-              <Plane className="size-5 text-primary" aria-hidden="true" />
-              <p className="font-semibold">{transfers.headline}</p>
-              <StatusBadge status={transfers.status} />
-            </div>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              {transfers.body}
+          <div className="mt-8 flex items-center gap-3 rounded-lg border border-border bg-background px-5 py-4">
+            <Plane className="size-5 shrink-0 text-primary" aria-hidden="true" />
+            <p className="text-sm leading-snug">
+              <span className="font-semibold">{transfers.headline}</span>{" "}
+              <span className="text-muted-foreground">{transfers.body}</span>
             </p>
           </div>
 
@@ -358,10 +319,10 @@ function Home() {
       </section>
 
       <section id="contact" className="scroll-mt-20 border-t border-border bg-card py-10 sm:py-14">
-        <div className="mx-auto grid max-w-5xl gap-10 px-5 md:grid-cols-[1fr_0.8fr] xl:max-w-6xl">
+        <SectionIntro title={faqSection.title} />
+        <div className="mx-auto mt-8 grid max-w-5xl gap-10 px-5 md:grid-cols-[1fr_0.8fr] xl:max-w-6xl">
           <div>
-            <p className="text-xs font-bold uppercase text-primary">{faqSection.eyebrow}</p>
-            <div className="mt-4 divide-y divide-border border-y border-border">
+            <div className="divide-y divide-border border-y border-border">
               {topFaqs.map((faq) => (
                 <details key={faq.q} className="group py-4">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">

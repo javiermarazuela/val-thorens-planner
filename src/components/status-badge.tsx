@@ -1,17 +1,7 @@
 import type { GuideStatus } from "@/lib/trip";
 
-const labels: Record<GuideStatus, string> = {
-  confirmed: "Confirmed",
-  partial: "Partly confirmed",
-  soon: "Coming soon",
-};
-
-const styles: Record<GuideStatus, string> = {
-  confirmed: "bg-primary text-primary-foreground",
-  partial: "bg-accent text-accent-foreground",
-  soon: "border border-primary/25 bg-secondary text-secondary-foreground",
-};
-
+// Only pending content gets a badge. Confirmed and partly confirmed content
+// reads as plain content; its status still lives in trip.ts (rules 6 and 7).
 export function StatusBadge({
   status,
   className = "",
@@ -19,11 +9,13 @@ export function StatusBadge({
   status: GuideStatus;
   className?: string;
 }) {
+  if (status !== "soon") return null;
+
   return (
     <span
-      className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide ${styles[status]} ${className}`}
+      className={`inline-flex shrink-0 items-center rounded-full border border-primary/25 bg-secondary px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-secondary-foreground ${className}`}
     >
-      {labels[status]}
+      Coming soon
     </span>
   );
 }
