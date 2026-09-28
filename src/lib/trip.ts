@@ -11,7 +11,6 @@ export const trip = {
   altitude: "2,300m",
   linkedPiste: "600km",
   localPiste: "150km",
-  bookingUrl: "",
 };
 
 // Site identity. The browser tab title, the link-preview title and the
@@ -114,7 +113,7 @@ export const stay = {
   imageAlt: "Timber-clad alpine accommodation in Val Thorens",
   mapLabel: "Resort map",
   roomsNote:
-    "Rooms are drawn on the Saturday night, together, in the same room. Arriving first does not get you the good one.",
+    "You pick your roommates when you register on SkiSync. Fill the room by the invoice deadline, or the people in it pay the difference.",
   mapUrl: "https://www.valthorens.com/en/map",
 };
 
@@ -128,9 +127,9 @@ export const week: Array<{
   {
     day: "Sat",
     date: "9 Jan",
-    title: "Travel day & room draw",
+    title: "Travel day & check-in",
     status: "partial",
-    body: "Land, transfer up the mountain, find your building, draw rooms, then a first, gentle night out. Gentle is a word we use loosely.",
+    body: "Land, transfer up the mountain, find your building, check in, then a first, gentle night out. Gentle is a word we use loosely.",
   },
   {
     day: "Sun",
@@ -265,7 +264,7 @@ export const packing: Array<{ group: string; items: string[] }> = [
   {
     group: "Documents & essentials",
     items: [
-      "Passport, valid well beyond January 2027",
+      "Passport valid 6+ months after 16 Jan 2027, with 2 blank pages",
       "Travel insurance with winter sports cover",
       "GHIC or EHIC card",
       "Bank card, plus a small amount of euros as backup",
@@ -275,28 +274,95 @@ export const packing: Array<{ group: string; items: string[] }> = [
   },
 ];
 
+// Money. SkiSync charges in euros; the site shows dollars. Euro amounts are
+// the source of truth (what a Google Sheet would hold) and every dollar
+// figure is derived here, so a rate change is one edit. The rate is SkiSync's
+// own: their checkout shows €2,071.68 as $2,444.58, exactly 1.18. Dollar
+// figures include SkiSync's non-refundable 4% card fee.
+export const money = { eurToUsd: 1.18, cardFee: 0.04 };
+
+export function usd(eur: number): string {
+  const dollars = Math.round(eur * (1 + money.cardFee) * money.eurToUsd);
+  return `$${dollars.toLocaleString("en-US")}`;
+}
+
+// Hard rule 1: one headline "From" figure (the cheapest package), then what
+// is and is not included. Optional add-ons show "from $X" using the shortest
+// option SkiSync offers. No per-person total, no full cost table.
+const memberEur = 1697;
+const nonMemberEur = 1747;
+
 export const pricing = {
-  status: "partial" as GuideStatus,
-  // One number, in US dollars, always labelled an estimate. Deliberately no
-  // breakdown, cost table or line items — see hard rule 1 in CLAUDE.md.
-  amount: "From $2,344",
+  status: "confirmed" as GuideStatus,
+  label: "Club member package",
+  amountEur: memberEur,
+  amount: `From ${usd(memberEur)}`,
   unit: "per person",
-  label: "Estimate",
-  ctaLabel: "Got a question?",
-  note: "An estimate, not a final number. The committee is still signing it off.",
+  nonMemberEur,
+  nonMemberNote: `Not a CBS Snow Sports member? ${usd(nonMemberEur)}.`,
+  note: "Charged in euros by SkiSync. Dollar figures are approximate and include SkiSync’s 4% card fee.",
+  signupLabel: "Sign up on SkiSync",
+  signupUrl:
+    "https://gw.skisync.com/register?tripid=752&rep=cbssnowsports27%40gmail.com&tripName=SocialTrip",
+  includesTitle: "Included",
+  includes: [
+    "Seven nights’ lodging",
+    "Every CBS Snow Sports social event",
+    "All resort taxes and fees",
+    "SkiSync staff on site for arrivals, departures and help",
+  ],
+  excludesTitle: "Not included",
+  excludes: [
+    { label: "3 Vallées lift pass", fromEur: 295, detail: "4 days in a row" },
+    { label: "Ski or snowboard rental", fromEur: 120, detail: "4 days in a row" },
+    { label: "Helmet rental", fromEur: 17, detail: "4 days" },
+    { label: "Flights", detail: "Book your own" },
+    {
+      label: "Airport shuttle",
+      detail: "Tickets on SkiSync soon",
+      status: "soon" as GuideStatus,
+    },
+    { label: "Travel insurance", detail: "Strongly recommended" },
+  ].map((item: { label: string; fromEur?: number; detail: string; status?: GuideStatus }) => ({
+    ...item,
+    price: item.fromEur === undefined ? undefined : `from ${usd(item.fromEur)}`,
+  })),
+};
+
+// Deadlines from SkiSync's cancellation and transfer policy.
+export const keyDates = {
+  status: "confirmed" as GuideStatus,
+  title: "Key dates",
+  items: [
+    {
+      date: "10 Dec",
+      label:
+        "Last day to cancel your lift pass or rentals for a refund. Also check your booking: names must match your passport.",
+    },
+    { date: "20 Dec", label: "Fee to transfer your place rises from €75 to €225." },
+    { date: "26 Dec", label: "No more transfers." },
+  ],
 };
 
 export const transfers = {
   status: "partial" as GuideStatus,
-  headline: "Fly to Geneva (GVA).",
-  body: "Book your flights to Geneva Airport. We recommend the morning arrivals on Saturday 9 January and the afternoon departures on Saturday 16 January — exact flight numbers are being confirmed. We organise the coaches from Geneva up to Val Thorens, both ways.",
+  headline: "Book your own flights.",
+  body: "Flights aren’t part of the package, so everyone books their own. Tickets for the airport shuttle up to Val Thorens go on sale through SkiSync in the coming weeks. Geneva (GVA) is the likely airport; we’ll confirm once the shuttle times are out.",
 };
 
-export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
+export const faqs: Array<{
+  q: string;
+  a: string;
+  status: GuideStatus;
+  // Shown on the page; the rest wait for the full guide.
+  featured?: boolean;
+  link?: { label: string; href: string };
+}> = [
   {
     q: "Which flights should I book?",
-    a: "Fly into Geneva (GVA). We recommend the Saturday morning arrival and the following Saturday afternoon return; the two recommended flights will be posted here shortly. We run the coaches from Geneva to the resort and back.",
+    a: "Your own — flights aren’t in the package. Aim to land on the Saturday morning and leave the following Saturday afternoon. Geneva (GVA) is the likely airport; shuttle tickets up to the resort go on sale through SkiSync soon, and we’ll confirm the airport with the shuttle times.",
     status: "partial",
+    featured: true,
   },
   {
     q: "What time is the last lift?",
@@ -310,6 +376,7 @@ export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
   },
   {
     q: "What if I don’t ski?",
+    featured: true,
     a: "You are in good company — plenty of the group won't be on the mountain every day. The village is compact and pedestrian, a pedestrian lift pass gets you up to the terraces for lunch and après with everyone else, and there is tobogganing, a spa and snowshoeing on top of that.",
     status: "partial",
   },
@@ -327,6 +394,37 @@ export const faqs: Array<{ q: string; a: string; status: GuideStatus }> = [
     q: "Can I bring my own skis?",
     a: "Yes. If you are renting instead, pre-booking is cheaper and faster than queueing in resort on the Sunday morning.",
     status: "partial",
+  },
+  {
+    q: "How many days does the lift pass cover?",
+    a: "Four days in a row, and rentals work the same way. You choose your first day when you register, so if you want a day off mid-week, plan it before or after your four.",
+    status: "confirmed",
+    featured: true,
+  },
+  {
+    q: "Can I cancel?",
+    a: "Lodging, the social package and the deposit are non-refundable, and every cancellation carries a €75 fee. Lift passes and rentals are refundable (minus the 4% card fee) until 10 December; after that, nothing comes back.",
+    status: "confirmed",
+    featured: true,
+    link: {
+      label: "Full terms on SkiSync",
+      href: "https://gw.skisync.com/register?tripid=752&rep=cbssnowsports27%40gmail.com&tripName=SocialTrip",
+    },
+  },
+  {
+    q: "Can I transfer my place?",
+    a: "Yes, to someone who isn’t already booked, through SkiSync. It costs €75, rising to €225 on 20 December, and transfers close on 26 December. The new person may not get the same lodging rate.",
+    status: "confirmed",
+    featured: true,
+    link: {
+      label: "Full terms on SkiSync",
+      href: "https://gw.skisync.com/register?tripid=752&rep=cbssnowsports27%40gmail.com&tripName=SocialTrip",
+    },
+  },
+  {
+    q: "How much luggage can I bring?",
+    a: "On the coach: one large suitcase, your ski or board gear if you’re not renting, and one small bag.",
+    status: "confirmed",
   },
 ];
 
