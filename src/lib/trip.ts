@@ -114,7 +114,7 @@ export const stay = {
   mapLabel: "Resort map",
   roomsNote:
     "You pick your roommates when you register on SkiSync. Fill the room by the invoice deadline, or the people in it pay the difference.",
-  mapUrl: "https://www.valthorens.com/en/map",
+  mapUrl: "https://www.valthorens.com/en/decouvrir/plan-station/",
 };
 
 export const week: Array<{

@@ -29,11 +29,9 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 ## Open issues and unverified items
 
 - **Map pin coordinates are approximate.** They're carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
-- **Never checked in a browser:**
-  - the four corrected valthorens.com links
-  - the OpenStreetMap tiles
-
-  The cloud sandbox blocked both domains, so every test render showed pins on a grey background. Check both locally, and check the live site.
+- **Checked in a local browser** (the cloud sandbox blocks both domains):
+  - The valthorens.com links all open the right English pages. `/en/map` turned out to redirect to the French resort map, so it now points at `/en/decouvrir/plan-station/`.
+  - OpenStreetMap tiles load locally and on the live site, with real streets behind all 11 pins.
 
 - **SkiSync unknowns** (committee to confirm):
   - Only **4-day** lift passes and rentals appeared in the screenshots. Shorter options would lower the "from $362 / $147 / $21" figures.
