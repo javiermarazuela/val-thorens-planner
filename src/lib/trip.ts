@@ -108,9 +108,13 @@ export const resortFacts = [
 export const stay = {
   status: "partial" as GuideStatus,
   title: "Where we stay",
+  name: "Résidence L’Oxalys",
+  address: "Entrée station, 73440 Val Thorens, France",
+  directionsLabel: "Open in Google Maps",
   intro:
-    "Self-catered apartments, walking distance from the lifts, the bars and each other. Exact buildings and rooming are still to come.",
-  imageAlt: "Timber-clad alpine accommodation in Val Thorens",
+    "Self-catered apartments at the entrance to the resort, walking distance from the lifts, the bars and each other.",
+  imageAlt:
+    "Résidence L’Oxalys’ timber chalet buildings in Val Thorens, with a gondola passing overhead",
   roomsNote: "You pick your roommates when you register on SkiSync.",
 };
 
@@ -477,11 +481,13 @@ export const mapPoints: Array<{
   status: GuideStatus;
 }> = [
   {
-    name: "Our apartments",
+    // Real position, from OpenStreetMap (Voie de la Boucle, at the entrance
+    // to the resort). The other pins are still approximate.
+    name: "Résidence L’Oxalys",
     kind: "stay",
-    lat: 45.2956,
-    lng: 6.5818,
-    note: "Central village, walking distance from the lifts and the bars. Exact buildings confirmed closer to the trip.",
+    lat: 45.29784,
+    lng: 6.57711,
+    note: "Where we stay: self-catered apartments at the entrance to the resort.",
     status: "partial",
   },
   {

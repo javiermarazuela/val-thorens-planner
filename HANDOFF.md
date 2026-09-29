@@ -27,11 +27,11 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - A Gamma-style price block: the price alone, then Included / Not included with one line per item.
   - One centred title per section, and badges only for "Coming soon".
   - 179 became 170+ everywhere, and the flights box is one line.
-- **Where we stay is still placeholder.** It needs the property name, a photo and the address from the committee. Then the section, the photo and the "Our apartments" pin all change.
+- **Where we stay: Résidence L’Oxalys** (Entrée station, 73440 Val Thorens), "for now" per the committee, so its status stays `partial`. The photo is a Val Thorens marketing image, cropped to keep its logos out of frame; swap it if the committee has one of its own.
 
 ## Open issues and unverified items
 
-- **Map pin coordinates are approximate.** They're carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
+- **Map pin coordinates are approximate, except the residence.** L’Oxalys is at its OpenStreetMap position (45.29784, 6.57711). The rest're carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
 - **Checked in a local browser** (the cloud sandbox blocks both domains):
   - The valthorens.com links all open the right English pages. `/en/map` turned out to redirect to the French resort map, so it now points at `/en/decouvrir/plan-station/`.
   - The map now runs on MapLibre with OpenFreeMap’s keyless Positron style (CARTO’s Positron needs a key since September 2026).
