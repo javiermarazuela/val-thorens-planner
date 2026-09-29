@@ -20,6 +20,19 @@ import {
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
 const HIDDEN_LABELS = /^(waterway_line_label|water_name_|highway-shield|road_shield|airport)/;
 
+// Positron doesn't draw ski lifts, but the tiles carry them (OpenMapTiles'
+// transportation class "aerialway"). A faint dashed line puts the lift pins
+// on their cables without competing with them.
+const LIFT_LINES = {
+  id: "aerialway",
+  type: "line",
+  source: "openmaptiles",
+  "source-layer": "transportation",
+  filter: ["==", ["get", "class"], "aerialway"],
+  layout: { "line-cap": "round" },
+  paint: { "line-color": "#64748b", "line-width": 1.4, "line-dasharray": [3, 2] },
+};
+
 // Minimal glyphs, drawn at 24x24 inside each marker. Kept as raw paths rather
 // than components because the marker element is built as an HTML string.
 const GLYPH: Record<MapIcon, string> = {
@@ -45,8 +58,12 @@ async function loadStyle(): Promise<StyleInput> {
   try {
     const res = await fetch(STYLE_URL);
     if (!res.ok) return STYLE_URL;
-    const style = (await res.json()) as { layers: Array<{ id: string }> };
-    style.layers = style.layers.filter((layer) => !HIDDEN_LABELS.test(layer.id));
+    const style = (await res.json()) as { layers: Array<{ id: string; type: string }> };
+    const layers = style.layers.filter((layer) => !HIDDEN_LABELS.test(layer.id));
+    // Lift lines go under the first label layer, so names stay on top.
+    const firstLabel = layers.findIndex((layer) => layer.type === "symbol");
+    layers.splice(firstLabel === -1 ? layers.length : firstLabel, 0, LIFT_LINES);
+    style.layers = layers;
     return style as unknown as StyleInput;
   } catch {
     // Fall back to the unfiltered style rather than no map at all.
