@@ -16,13 +16,15 @@ type Layer = {
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
 const HIDDEN_LABELS = /^(waterway_line_label|water_name_|highway-shield|road_shield|airport)/;
 
-// Winter palette, in the spirit of Google Maps but for January: cool
-// blue-whites for the snow, with rock a shade darker so the mountain still
-// has shape; blue water; a warm village so it reads apart from the snow.
+// Winter palette, in the spirit of Google Maps but for January: the
+// mountainsides white with snow, the unmapped valley floor grey, blue water,
+// and a warm village so it reads apart from both.
 const PALETTE = {
-  snow: "#f4f8fc",
-  snowfield: "#eaf2fa",
-  rock: "#d5dfea",
+  // Land OpenStreetMap has no land cover for, mostly the valley floor and
+  // around the village.
+  ground: "#e2e7ed",
+  // The mountainsides, which OSM maps as grassland, bare rock or scree.
+  snow: "#ffffff",
   glacier: "#ffffff",
   lake: "#9ccbee",
   stream: "#5fa8e0",
@@ -39,7 +41,7 @@ const PALETTE = {
 // Paint changes to Positron's own layers, by id. A layer Positron renames is
 // skipped rather than breaking the map.
 const REPAINT: Record<string, Record<string, unknown>> = {
-  background: { "background-color": PALETTE.snow },
+  background: { "background-color": PALETTE.ground },
   // The Vanoise national park zone covers the whole map; Positron fills it
   // grey, which is most of the grey haze.
   park: { "fill-opacity": 0 },
@@ -55,18 +57,16 @@ const REPAINT: Record<string, Record<string, unknown>> = {
   highway_path: { "line-color": PALETTE.path },
 };
 
-// Positron doesn't draw grass or rock; the tiles carry both. Under snow,
-// grassland is smooth snowfield and bare rock and scree show through darker.
-function landcover(id: string, cls: string, color: string): Layer {
-  return {
-    id,
-    type: "fill",
-    source: "openmaptiles",
-    "source-layer": "landcover",
-    filter: ["==", ["get", "class"], cls],
-    paint: { "fill-color": color },
-  };
-}
+// Positron doesn't draw grass or rock; the tiles carry both. In January the
+// mountainsides they cover are snow, so both are one white.
+const SNOW: Layer = {
+  id: "landcover_snow",
+  type: "fill",
+  source: "openmaptiles",
+  "source-layer": "landcover",
+  filter: ["match", ["get", "class"], ["grass", "rock"], true, false],
+  paint: { "fill-color": PALETTE.snow },
+};
 
 // Positron doesn't draw ski lifts either, but the tiles carry them
 // (OpenMapTiles' transportation class "aerialway"), with their names. The
@@ -113,16 +113,11 @@ export async function loadStyle(): Promise<StyleInput> {
       if (paint) layer.paint = { ...layer.paint, ...paint };
     }
 
-    // Snow and rock go straight after the park layer (or the background, if
-    // Positron drops it), so water, the village and buildings draw on top.
+    // Snow goes straight after the park layer (or the background, if Positron
+    // drops it), so water, the village and buildings draw on top.
     const park = layers.findIndex((layer) => layer.id === "park");
     const background = layers.findIndex((layer) => layer.id === "background");
-    layers.splice(
-      (park === -1 ? background : park) + 1,
-      0,
-      landcover("landcover_snowfield", "grass", PALETTE.snowfield),
-      landcover("landcover_rock", "rock", PALETTE.rock),
-    );
+    layers.splice((park === -1 ? background : park) + 1, 0, SNOW);
 
     // Lift lines go under the first label layer, so names stay on top; lift
     // names go last, so they win a label collision.
