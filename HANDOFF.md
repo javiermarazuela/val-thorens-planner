@@ -34,7 +34,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 - **Map pin coordinates are approximate.** They're carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
 - **Checked in a local browser** (the cloud sandbox blocks both domains):
   - The valthorens.com links all open the right English pages. `/en/map` turned out to redirect to the French resort map, so it now points at `/en/decouvrir/plan-station/`.
-  - OpenStreetMap tiles load locally and on the live site, with real streets behind all 11 pins.
+  - The map now runs on MapLibre with OpenFreeMap’s keyless Positron style (CARTO’s Positron needs a key since September 2026).
 
 - **SkiSync unknowns** (committee to confirm):
   - Only **4-day** lift passes and rentals appeared in the screenshots. Shorter options would lower the "from $362 / $147 / $21" figures.
@@ -60,7 +60,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 - **Map colours:**
   - stay blue `#2563eb`, lifts green `#10b981`, lunch orange `#f59e0b`, drinks & bars red `#b91c1c`
   - Red was chosen over purple by measurement: purples collapse into the stay blue under red-green colour blindness.
-- **Leaflet is browser-only.** It touches `window`, so it's dynamically imported inside a `useEffect` in `resort-map.tsx`. Keep it there, or server-side rendering breaks. It ships as its own lazy chunk and CSS file.
+- **MapLibre is browser-only.** It needs `window` and WebGL, so `resort-map.tsx` imports it inside a `useEffect`, once the map is within 800px of the screen (it is ~430 KB gzipped, worker included). Keep it there, or server-side rendering breaks and every visitor pays for the map. Its worker is imported with Vite’s `?worker&url` and passed to `setWorkerUrl`, because MapLibre’s own lookup expects files Vite moves. The map is held inside `mapArea.bounds` in `trip.ts`, and water, road-shield and airport labels are filtered out of the style before it draws.
 - **Contact:** the only contact line is "Questions? Message the trip WhatsApp group." No phone numbers anywhere, which is why SkiSync's 855 number is left out (rule 2).
 - **Build output** is `.vercel/output`, ignored by git, eslint and prettier.
 - **Before pushing:** `bun run typecheck`, `bun run lint` (expect 0 errors), `bun run build` (look for `preset: vercel`).

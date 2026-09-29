@@ -1,20 +1,40 @@
 import { useEffect, useRef, useState } from "react";
-import type { Map as LeafletMap, Marker } from "leaflet";
+import type { Map as MapLibreMap, MapOptions, Marker } from "maplibre-gl";
 import { ExternalLink } from "lucide-react";
 
 import { StatusBadge } from "@/components/status-badge";
 import {
   googleMapsUrl,
+  mapArea,
   mapKinds,
   mapPoints,
   mapSection,
-  resortCentre,
   type MapIcon,
   type MapKind,
 } from "@/lib/trip";
 
-// Minimal glyphs, drawn at 24x24 and dropped into a Leaflet divIcon. Kept as
-// raw paths rather than components because Leaflet takes an HTML string.
+// OpenFreeMap's Positron: a pale, low-detail vector style with no POI layer,
+// free and keyless. The labels below add nothing at resort scale (rivers and
+// lakes, road shields, airports), so they are dropped before the map draws.
+// Street and place names stay, for finding your way.
+const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
+const HIDDEN_LABELS = /^(waterway_line_label|water_name_|highway-shield|road_shield|airport)/;
+
+// Positron doesn't draw ski lifts, but the tiles carry them (OpenMapTiles'
+// transportation class "aerialway"). A faint dashed line puts the lift pins
+// on their cables without competing with them.
+const LIFT_LINES = {
+  id: "aerialway",
+  type: "line",
+  source: "openmaptiles",
+  "source-layer": "transportation",
+  filter: ["==", ["get", "class"], "aerialway"],
+  layout: { "line-cap": "round" },
+  paint: { "line-color": "#64748b", "line-width": 1.4, "line-dasharray": [3, 2] },
+};
+
+// Minimal glyphs, drawn at 24x24 inside each marker. Kept as raw paths rather
+// than components because the marker element is built as an HTML string.
 const GLYPH: Record<MapIcon, string> = {
   house: '<path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9.5 21v-6h5v6"/>',
   lift: '<path d="M4 4h16"/><path d="M12 4v6"/><path d="M7 10h10l-1.5 8h-7z"/>',
@@ -32,69 +52,119 @@ function kindOf(id: MapKind) {
   return mapKinds.find((k) => k.id === id) ?? mapKinds[0]!;
 }
 
+type StyleInput = NonNullable<MapOptions["style"]>;
+
+async function loadStyle(): Promise<StyleInput> {
+  try {
+    const res = await fetch(STYLE_URL);
+    if (!res.ok) return STYLE_URL;
+    const style = (await res.json()) as { layers: Array<{ id: string; type: string }> };
+    const layers = style.layers.filter((layer) => !HIDDEN_LABELS.test(layer.id));
+    // Lift lines go under the first label layer, so names stay on top.
+    const firstLabel = layers.findIndex((layer) => layer.type === "symbol");
+    layers.splice(firstLabel === -1 ? layers.length : firstLabel, 0, LIFT_LINES);
+    style.layers = layers;
+    return style as unknown as StyleInput;
+  } catch {
+    // Fall back to the unfiltered style rather than no map at all.
+    return STYLE_URL;
+  }
+}
+
 export function ResortMap() {
   const [active, setActive] = useState<MapKind | "all">("all");
   const [selected, setSelected] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<LeafletMap | null>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Record<string, Marker>>({});
-  const leafletRef = useRef<typeof import("leaflet") | null>(null);
 
   const point = mapPoints.find((p) => p.name === selected) ?? null;
 
-  // Leaflet touches `window`, so it is imported only in the browser. The
-  // container renders on the server as an empty box and fills in on mount.
+  // MapLibre needs `window` and WebGL, so it is imported only in the browser.
+  // The container renders on the server as an empty box and fills in once it
+  // comes near the screen: the library is ~430 KB gzipped, and most phones
+  // opening the page for the price never scroll this far.
   useEffect(() => {
     let cancelled = false;
 
-    (async () => {
-      const L = (await import("leaflet")).default;
-      await import("leaflet/dist/leaflet.css");
+    const init = async () => {
+      const [ml, worker, style] = await Promise.all([
+        import("maplibre-gl"),
+        // Vite bundles the worker with the code it imports and returns its URL;
+        // MapLibre's own lookup expects files Vite has moved.
+        import("maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url"),
+        loadStyle(),
+        import("maplibre-gl/dist/maplibre-gl.css"),
+      ]);
       const el = containerRef.current;
       if (cancelled || !el || mapRef.current) return;
-      leafletRef.current = L;
+      ml.setWorkerUrl(worker.default);
 
-      const map = L.map(el, { scrollWheelZoom: false }).setView(
-        [resortCentre.lat, resortCentre.lng],
-        resortCentre.zoom,
-      );
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(map);
+      const [[south, west], [north, east]] = mapArea.bounds;
+      const lats = mapPoints.map((p) => p.lat);
+      const lngs = mapPoints.map((p) => p.lng);
+
+      const map = new ml.Map({
+        container: el,
+        style,
+        // Open at the tightest view that still shows every pin, so the village
+        // cluster spreads out as far as each screen width allows.
+        bounds: [
+          [Math.min(...lngs), Math.min(...lats)],
+          [Math.max(...lngs), Math.max(...lats)],
+        ],
+        fitBoundsOptions: { padding: 28, maxZoom: mapArea.fitMaxZoom },
+        maxBounds: [
+          [west, south],
+          [east, north],
+        ],
+        minZoom: mapArea.minZoom,
+        maxZoom: mapArea.maxZoom,
+        scrollZoom: false,
+        dragRotate: false,
+        pitchWithRotate: false,
+        touchPitch: false,
+        attributionControl: { compact: true },
+      });
+      map.touchZoomRotate.disableRotation();
+      map.keyboard.disableRotation();
+      map.addControl(new ml.NavigationControl({ showCompass: false }), "top-left");
 
       for (const p of mapPoints) {
         const kind = kindOf(p.kind);
-        markersRef.current[p.name] = L.marker([p.lat, p.lng], {
-          title: p.name,
-          alt: p.name,
-          keyboard: true,
-          icon: L.divIcon({
-            className: "vt-pin",
-            html: markerHtml(kind.color, kind.icon, false),
-            iconSize: [30, 30],
-            iconAnchor: [15, 15],
-          }),
-        })
-          .addTo(map)
-          .on("click", () => setSelected(p.name));
+        const pin = document.createElement("button");
+        pin.type = "button";
+        pin.title = p.name;
+        pin.setAttribute("aria-label", p.name);
+        pin.style.cssText = "background:none;border:0;padding:0;cursor:pointer;";
+        pin.innerHTML = markerHtml(kind.color, kind.icon, false);
+        pin.addEventListener("click", () => setSelected(p.name));
+        markersRef.current[p.name] = new ml.Marker({ element: pin })
+          .setLngLat([p.lng, p.lat])
+          .addTo(map);
       }
-
-      // Open at the tightest view that still shows every pin, so the village
-      // cluster spreads out as far as each screen width allows.
-      map.fitBounds(L.latLngBounds(mapPoints.map((p) => [p.lat, p.lng] as [number, number])), {
-        padding: [28, 28],
-        maxZoom: 16,
-      });
 
       mapRef.current = map;
       setReady(true);
-    })();
+    };
+
+    const box = containerRef.current;
+    if (!box) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        observer.disconnect();
+        void init();
+      },
+      { rootMargin: "800px 0px" },
+    );
+    observer.observe(box);
 
     return () => {
       cancelled = true;
+      observer.disconnect();
       mapRef.current?.remove();
       mapRef.current = null;
       markersRef.current = {};
@@ -103,34 +173,22 @@ export function ResortMap() {
 
   // Keep pins in step with the filter and the selection.
   useEffect(() => {
-    const map = mapRef.current;
-    const L = leafletRef.current;
-    if (!map || !L || !ready) return;
+    if (!ready) return;
     for (const p of mapPoints) {
-      const marker = markersRef.current[p.name];
-      if (!marker) continue;
-      const visible = active === "all" || p.kind === active;
-      if (visible && !map.hasLayer(marker)) marker.addTo(map);
-      if (!visible && map.hasLayer(marker)) marker.remove();
+      const pin = markersRef.current[p.name]?.getElement();
+      if (!pin) continue;
       const kind = kindOf(p.kind);
       const isSel = selected === p.name;
-      const size = isSel ? 38 : 30;
-      marker.setIcon(
-        L.divIcon({
-          className: "vt-pin",
-          html: markerHtml(kind.color, kind.icon, isSel),
-          iconSize: [size, size],
-          iconAnchor: [size / 2, size / 2],
-        }),
-      );
-      marker.setZIndexOffset(isSel ? 1000 : 0);
+      pin.style.display = active === "all" || p.kind === active ? "" : "none";
+      pin.style.zIndex = isSel ? "1" : "";
+      pin.innerHTML = markerHtml(kind.color, kind.icon, isSel);
     }
   }, [active, selected, ready]);
 
   const choose = (name: string) => {
     setSelected(name);
     const p = mapPoints.find((x) => x.name === name);
-    if (p) mapRef.current?.panTo([p.lat, p.lng]);
+    if (p) mapRef.current?.panTo([p.lng, p.lat]);
   };
 
   const legend = (
