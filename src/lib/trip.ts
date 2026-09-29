@@ -433,7 +433,21 @@ export const contacts = {
 // doorstep. The committee should replace lat/lng with real values. Until
 // then the detail card's linked title is the authoritative locator: it
 // searches Google Maps by name, which resolves to the actual venue.
-export const resortCentre = { lat: 45.298, lng: 6.58, zoom: 14 };
+//
+// The map stays inside `bounds`, the village and the slopes around the pins
+// (about 3 by 5 km), [south, west] to [north, east]. MapLibre also raises the
+// zoom floor on wide screens so the view never shows past the edge of the
+// box. Zooms are MapLibre's, one lower than Leaflet's for the same scale.
+export const mapArea = {
+  bounds: [
+    [45.283, 6.55],
+    [45.312, 6.615],
+  ] as [[number, number], [number, number]],
+  minZoom: 13,
+  maxZoom: 17,
+  // Opening view: every pin in frame, zoomed in no further than this.
+  fitMaxZoom: 15,
+};
 
 // One colour per kind. Drinks & bars is red (#b91c1c) rather than purple:
 // every purple tested collapses into the stay blue under red-green colour
