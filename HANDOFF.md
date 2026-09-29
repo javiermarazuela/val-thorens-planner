@@ -61,6 +61,9 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - stay blue `#2563eb`, lifts green `#10b981`, lunch orange `#f59e0b`, drinks & bars red `#b91c1c`
   - Red was chosen over purple by measurement: purples collapse into the stay blue under red-green colour blindness.
 - **MapLibre is browser-only.** It needs `window` and WebGL, so `resort-map.tsx` imports it inside a `useEffect`, once the map is within 800px of the screen (it is ~430 KB gzipped, worker included). Keep it there, or server-side rendering breaks and every visitor pays for the map. Its worker is imported with Vite’s `?worker&url` and passed to `setWorkerUrl`, because MapLibre’s own lookup expects files Vite moves. The map is held inside `mapArea.bounds` in `trip.ts`, and water, road-shield and airport labels are filtered out of the style before it draws.
+- **Map palette (winter):** `src/components/map-style.ts` fetches Positron and repaints it before the map draws. Snow is blue-white, with bare rock and scree a shade darker so the mountain has shape. Lakes and streams are blue, and the village and buildings are warm beige so they read apart from the snow. The grey Vanoise national park fill is switched off.
+  - Ski lifts are drawn as `#c81e64` pink-red lines with their names along them, a different hue from every pin.
+  - The tiles have lift names but no "VT3" numbers, and no pistes, so neither can be shown.
 - **Contact:** the only contact line is "Questions? Message the trip WhatsApp group." No phone numbers anywhere, which is why SkiSync's 855 number is left out (rule 2).
 - **Build output** is `.vercel/output`, ignored by git, eslint and prettier.
 - **Before pushing:** `bun run typecheck`, `bun run lint` (expect 0 errors), `bun run build` (look for `preset: vercel`).
