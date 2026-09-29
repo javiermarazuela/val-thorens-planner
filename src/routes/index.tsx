@@ -4,6 +4,7 @@ import {
   Check,
   ChevronDown,
   ExternalLink,
+  MapPin,
   MessageCircle,
   Mountain,
   Plane,
@@ -13,7 +14,7 @@ import {
 } from "lucide-react";
 
 import heroImage from "@/assets/val-thorens-trip.jpg";
-import stayImage from "@/assets/val-thorens-stay.jpg";
+import stayImage from "@/assets/residence-oxalys.jpg";
 import offSlopeImage from "@/assets/val-thorens-offslope.jpg";
 import { PackingList } from "@/components/packing-list";
 import { ResortMap } from "@/components/resort-map";
@@ -22,6 +23,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import {
   contacts,
+  googleMapsUrl,
   faqSection,
   faqs,
   goingOut,
@@ -190,18 +192,32 @@ function Home() {
         <div className="mx-auto mt-8 grid max-w-5xl gap-8 px-5 sm:mt-10 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
           <div className="md:order-2">
             <figure className="aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
+              {/* The photo is 1500x685; in a 4:3 frame this crop keeps the
+                  building and the gondola and leaves out the logos in the
+                  bottom-right corner. */}
               <img
                 src={stayImage}
                 alt={stay.imageAlt}
-                width={1600}
-                height={1104}
+                width={1500}
+                height={685}
                 loading="lazy"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover object-[34%_50%]"
               />
             </figure>
           </div>
           <div>
-            <p className="text-lg leading-relaxed text-muted-foreground">{stay.intro}</p>
+            <h3 className="text-2xl uppercase leading-tight sm:text-3xl">{stay.name}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{stay.address}</p>
+            <a
+              href={googleMapsUrl(stay.name)}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
+            >
+              <MapPin className="size-4" aria-hidden="true" />
+              {stay.directionsLabel}
+            </a>
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{stay.intro}</p>
             <p className="mt-5 border-l-4 border-accent pl-4 text-sm leading-relaxed">
               {stay.roomsNote}
             </p>
