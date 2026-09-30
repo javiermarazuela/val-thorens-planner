@@ -18,7 +18,7 @@ Bookings run through SkiSync (trip 752, organiser CBS Snow Sports). The registra
 - All trip content lives in `src/lib/trip.ts`
 - Fonts: Archivo Black for headings, Hind for body, set in `src/styles.css` and loaded in `src/routes/__root.tsx`
 - Key components: `resort-map.tsx` (interactive MapLibre map on OpenFreeMap’s Positron style, pins from `mapPoints`, held inside `mapArea`, repainted for winter in `map-style.ts`, which holds the map palette; MapLibre is imported inside a `useEffect`, once the map nears the screen, because it only runs in the browser), `packing-list.tsx` (tick list saved to localStorage), `status-badge.tsx` (shows "Coming soon" only), `section-intro.tsx` (the one centred title each section gets)
-- `src/lib/guide.functions.ts` holds a dormant password gate. It will be replaced by Google login in phase 2. Do not extend it.
+- `/members` (`src/routes/members.tsx`) is the signed-in area. Login is Google via Supabase Auth (`src/lib/supabase.ts`). Who gets in is decided in the database (`supabase/migrations/0001_columbia_login.sql`): `columbia.edu` and `gsb.columbia.edu`, plus the `allowed_emails` table the committee edits in the Supabase dashboard. Members-only links (WhatsApp) live in the `member_links` table, never in the repo.
 
 ## Hard rules
 
