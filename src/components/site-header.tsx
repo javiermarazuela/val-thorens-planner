@@ -35,6 +35,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Button asChild variant="outline" size="sm" className="rounded-md">
+            <a href="/members">Members</a>
+          </Button>
           <Button
             type="button"
             variant="outline"
