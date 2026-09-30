@@ -6,7 +6,7 @@ Snapshot for picking this project up in a new session. **CLAUDE.md is the source
 
 Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thorens, 9–16 January 2027, 170+ people. It's a single page, and most visitors are on a phone. Bookings run through SkiSync (trip 752).
 
-- Live: https://val-thorens-planner.vercel.app
+- Live: https://cbseuroski.com (`www` redirects to it). The old https://val-thorens-planner.vercel.app still works.
 - Repo: `javiermarazuela/val-thorens-planner`. Vercel builds a preview for every PR.
 
 ## What we've built
@@ -18,6 +18,22 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 | [#3](https://github.com/javiermarazuela/val-thorens-planner/pull/3) | **Renamed the site "Euro Ski ’27"** everywhere: tab titles, link previews and the header wordmark. The name is one `siteName` constant, and the apostrophe is U+2019. **Rewrote CLAUDE.md rule 9**: phone and desktop are both first-class. Deleted a dead component.                                                                                                                                                                                                                                                                                                                                           |
 | [#4](https://github.com/javiermarazuela/val-thorens-planner/pull/4) | **Separate phone and desktop layouts.** The phone page is 15% shorter, with tighter padding and two-column grids; desktop gets wider containers and a three-column guide. **Real interactive map:** Leaflet on OpenStreetMap tiles, replacing a decorative SVG. It has icon pins (house, gondola, fork, glass) in four colours, and tapping a pin or name opens a card with a linked title and "Open in Google Maps". Adds the only new dependency, `leaflet`.                                                                                                                                                  |
 | [#5](https://github.com/javiermarazuela/val-thorens-planner/pull/5) | **Official SkiSync information.** The price section shows "From $2,083 per person" (club member package), the non-member price, _Included_ / _Not included_ columns with add-on "from" prices, a **Sign up on SkiSync** button, and a **Key dates** strip (10, 20 and 26 Dec). It corrects copy SkiSync contradicts: you book your own flights, the club doesn't run the coaches, roommates are chosen at registration rather than drawn on arrival, and the passport rule is now in. It adds four confirmed FAQs, and updates CLAUDE.md rules 1 and 7 plus a context line. This HANDOFF.md is also on this PR. |
+
+## Phase 2: Google login (done, PR #13)
+
+- **Who gets in:** `columbia.edu` and `gsb.columbia.edu`, plus exceptions in the Supabase `allowed_emails` table (Table Editor → Insert row, email in lowercase). It is enforced in the database by a sign-up trigger and row level security, not in the browser. Removing someone from `allowed_emails` locks them out at once. Schema: `supabase/migrations/0001_columbia_login.sql`.
+- **Code:** `src/routes/members.tsx` (client-only, `ssr: false`), `src/lib/supabase.ts`, `src/routes/privacy.tsx` (copy in `privacy` in `trip.ts`), and a Members button in the header. `guide.functions.ts` is deleted.
+- **Setup outside the repo:**
+  - Supabase project `lturqfowogbkedhldhop`: Google provider on, Email off.
+  - Google Cloud project `euro-ski`: external, in production, basic scopes only (so the 100-user cap doesn't apply), with the Supabase callback as its redirect URI.
+  - Vercel env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, with Config visibility because `VITE_` values are public.
+  - `cbseuroski.com` verified in Google Search Console.
+- **Tested:** a Columbia account signs in and sees the members page. Not yet tested: a rejected personal Gmail, and an `allowed_emails` exception.
+- **Gotchas:**
+  - "Unable to exchange external code" on return means the Google client ID or secret in Supabase is wrong.
+  - `redirect_uri_mismatch` means the Google client's redirect URI isn't exactly `https://lturqfowogbkedhldhop.supabase.co/auth/v1/callback`.
+  - `/members` shows its generic "isn't on the list" message for any sign-in error. Read `error_description` in the URL or the Supabase Auth logs to find the real cause.
+  - Supabase's redirect URLs must include every address sign-in can return to.
 
 ## Current state
 
@@ -82,8 +98,5 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 1. **Phone-check and merge PR #5.**
 2. **Confirm the SkiSync unknowns with the committee:** shorter pass/rental options, the Social Only ticket, and the transfer-policy text. Then update `trip.ts`.
 3. **Real map coordinates** from the committee, into `mapPoints`.
-4. **Phase 2 is blocked on decisions only you can make:**
-   - Create a Supabase project and add its keys to Vercel.
-   - Decide whether the gated area (games, WhatsApp link) is a new `/members` route or a section revealed on the single page once signed in. CLAUDE.md documents a single page, so either choice changes the stated architecture.
-   - Phase 2 then covers Google login restricted to `columbia.edu` / `gsb.columbia.edu`, plus the +1 allowlist, and it removes `src/lib/guide.functions.ts`.
+4. **Finish phase 2:** test a personal Gmail (should be rejected) and an `allowed_emails` exception. Add the WhatsApp link as a `member_links` row once someone who administers the group has it. Bring the games back behind login.
 5. **Later:** phase 3 is the flight details form; phase 4 is the PWA (its manifest name should read from `site.name`). Only when asked.

@@ -8,8 +8,8 @@ Bookings run through SkiSync (trip 752, organiser CBS Snow Sports). The registra
 
 - TanStack Start v1, React 19, Vite, Tailwind CSS v4, @tanstack/react-router
 - Package manager: bun
-- Hosting: Vercel, connected to this GitHub repo, preview deploys on every pull request
-- Supabase comes in phase 2 (see roadmap). Do not add it before then.
+- Hosting: Vercel, connected to this GitHub repo, preview deploys on every pull request. Live at https://cbseuroski.com (`www` redirects to it).
+- Supabase (Auth and database) is in use since phase 2. Browser env vars: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (see `.env.example`). Never expose the `service_role` key.
 
 ## Structure
 
@@ -26,8 +26,8 @@ These apply to every change, in every phase.
 
 1. **One headline price, then what it covers.** The headline is a single "$X" figure in US dollars for the cheapest package: the club member package, including SkiSync's 4% card fee. A small "Starting from" sits above it; a small line under it says it is per person and the club member price, then the non-member price. Underneath, two columns: *Included* and *Not included*, one line per item. Optional add-ons in *Not included* show "(from $X)", using the shortest option SkiSync offers. Every dollar figure is derived from a euro amount in `trip.ts` by one helper at one stated rate. Never show a per-person total, a cost table, or how a total is calculated.
 2. **No personal contact details anywhere.** No phone numbers, personal emails, or links to anyone's personal WhatsApp chat. The contact line is: "Questions? Message the trip WhatsApp group." as plain text.
-3. **No WhatsApp group invite link on the public page.** It goes behind login in phase 2.
-4. **Games never appear on the public page.** They come back behind login in phase 2.
+3. **No WhatsApp group invite link on the public page.** It goes in the `member_links` table, behind login.
+4. **Games never appear on the public page.** They come back behind login, in the members area.
 5. **Content lives in `src/lib/trip.ts`, not in components.** Components read from it and render whatever it holds. This will later be replaced by a Google Sheet sync, so keep the data shape clean and the read path simple.
 6. **"Coming soon" is a first-class state.** Use `status-badge`, which only shows a badge for "Coming soon". Confirmed and partly confirmed content displays without a badge. Unconfirmed items still display. No "last updated" timestamps.
 7. **Content is partly official, partly placeholder.** Facts taken from SkiSync's official booking pages may have status `confirmed` in `trip.ts`. Nothing else may. Everything else is placeholder the committee will replace: do not rewrite, improve, or add new specifics (venues, times, prices, flight numbers) unless a task asks for it.
@@ -39,7 +39,7 @@ These apply to every change, in every phase.
 Only work on the phase you are asked for. Do not scaffold later phases early.
 
 - **Phase 1:** fix the build, content corrections, deploy to Vercel
-- **Phase 2:** Supabase, Google login restricted to Columbia accounts (`columbia.edu`, `gsb.columbia.edu`) plus a committee-managed allowlist for +1s. Gated area for games and the WhatsApp link. Remove the old password gate.
+- **Phase 2 (done, PR #13):** Supabase, Google login restricted to Columbia accounts (`columbia.edu`, `gsb.columbia.edu`) plus a committee-managed `allowed_emails` allowlist for +1s. `/members` gated area; old password gate removed. Still to do inside it: add the WhatsApp link as a `member_links` row once the committee has it, and bring the games back behind login.
 - **Phase 3:** signed-in flight details form, one editable entry per person, stored in Supabase and synced to a committee Google Sheet
 - **Phase 4:** PWA, installable, schedule and key info available offline
 
