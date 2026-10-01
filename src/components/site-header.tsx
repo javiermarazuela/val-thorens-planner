@@ -10,7 +10,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <a href="#top" className="flex items-center gap-2.5" aria-label={site.backToTopLabel}>
+        <a href="/#top" className="flex items-center gap-2.5" aria-label={site.backToTopLabel}>
           <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground">
             <MountainSnow aria-hidden="true" className="size-5" />
           </span>
@@ -26,7 +26,7 @@ export function SiteHeader() {
           {sections.map((section) => (
             <a
               key={section.id}
-              href={`#${section.id}`}
+              href={`/#${section.id}`}
               className="rounded-full px-3 py-2 text-xs font-extrabold uppercase text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               {section.label}
@@ -67,7 +67,7 @@ export function SiteHeader() {
             {sections.map((section) => (
               <li key={section.id}>
                 <a
-                  href={`#${section.id}`}
+                  href={`/#${section.id}`}
                   onClick={() => setOpen(false)}
                   className="block rounded-md px-3 py-3 text-sm font-bold uppercase text-foreground hover:bg-secondary"
                 >
