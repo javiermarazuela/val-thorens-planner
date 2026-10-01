@@ -28,7 +28,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - Google Cloud project `euro-ski`: external, in production, basic scopes only (so the 100-user cap doesn't apply), with the Supabase callback as its redirect URI.
   - Vercel env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, with Config visibility because `VITE_` values are public.
   - `cbseuroski.com` verified in Google Search Console.
-- **Tested:** a Columbia account signs in and sees the members page. A personal Gmail is rejected (checked). Not yet tested: an `allowed_emails` exception.
+- **Tested:** a Columbia account signs in and sees the members page. A personal Gmail is rejected, and an address added to `allowed_emails` gets in (both checked). The remove-then-locked-out step is not yet checked. To add many people at once, run `supabase/add_allowed_emails.sql` in the SQL Editor.
 - **Gotchas:**
   - "Unable to exchange external code" on return means the Google client ID or secret in Supabase is wrong.
   - `redirect_uri_mismatch` means the Google client's redirect URI isn't exactly `https://lturqfowogbkedhldhop.supabase.co/auth/v1/callback`.
@@ -88,5 +88,5 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 ## Next steps
 
 1. **Real map coordinates** from the committee, into `mapPoints`.
-2. **Finish phase 2:** test an `allowed_emails` exception. Add the WhatsApp link as a `member_links` row once someone who administers the group has it. Bring the games back behind login.
+2. **Finish phase 2:** check that removing an `allowed_emails` row locks that person out. Add the WhatsApp link as a `member_links` row once someone who administers the group has it. Bring the games back behind login.
 3. **Later:** phase 3 is the flight details form; phase 4 is the PWA (its manifest name should read from `site.name`). Only when asked.
