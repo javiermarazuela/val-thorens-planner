@@ -33,9 +33,10 @@ const PALETTE = {
   buildingOutline: "#d2c4b0",
   street: "#c9d3df",
   path: "#d8dfe8",
-  // Deep pink-red, close to Google's lifts: about 5:1 against the snow, and a
-  // different hue from every pin, including the brick-red Drinks & bars.
-  lift: "#c81e64",
+  // Slate grey, dashed: the lifts stay quiet under the coloured pins. Names
+  // are a shade darker so they stay readable on white and on grey.
+  lift: "#64748b",
+  liftLabel: "#475569",
 };
 
 // Paint changes to Positron's own layers, by id. A layer Positron renames is
@@ -78,10 +79,7 @@ const LIFT_LINES: Layer = {
   "source-layer": "transportation",
   filter: ["==", ["get", "class"], "aerialway"],
   layout: { "line-cap": "round" },
-  paint: {
-    "line-color": PALETTE.lift,
-    "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.2, 17, 2.5],
-  },
+  paint: { "line-color": PALETTE.lift, "line-width": 1.4, "line-dasharray": [3, 2] },
 };
 
 const LIFT_LABELS: Layer = {
@@ -98,7 +96,11 @@ const LIFT_LABELS: Layer = {
     "text-size": 11,
     "text-letter-spacing": 0.02,
   },
-  paint: { "text-color": PALETTE.lift, "text-halo-color": "#ffffff", "text-halo-width": 1.5 },
+  paint: {
+    "text-color": PALETTE.liftLabel,
+    "text-halo-color": "#ffffff",
+    "text-halo-width": 1.5,
+  },
 };
 
 export async function loadStyle(): Promise<StyleInput> {

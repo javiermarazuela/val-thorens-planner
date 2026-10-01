@@ -490,20 +490,25 @@ export const mapPoints: Array<{
     note: "Where we stay: self-catered apartments at the entrance to the resort.",
     status: "partial",
   },
+  // Lift pins sit on each lift's village station, taken from OpenStreetMap's
+  // lift lines, so they meet the lines the map draws. Beginner carpets aren't
+  // in that data and stay approximate.
   {
     name: "Funitel Péclet",
     kind: "lift",
-    lat: 45.2992,
-    lng: 6.5888,
+    lat: 45.29547,
+    lng: 6.57589,
     note: "Fast way up the east side of the bowl and into the glacier runs.",
     status: "partial",
   },
   {
-    name: "Cime Caron cable car",
+    // The Cime Caron cable car starts outside the map, at the top of this
+    // gondola; the village station is where the trip up begins.
+    name: "Caron gondola (to Cime Caron)",
     kind: "lift",
-    lat: 45.302,
-    lng: 6.5713,
-    note: "3,200m and the big view. Queue early on a clear day.",
+    lat: 45.29428,
+    lng: 6.56455,
+    note: "Up to the Cime Caron cable car: 3,200m and the big view. Queue early on a clear day.",
     status: "partial",
   },
   {
@@ -517,8 +522,8 @@ export const mapPoints: Array<{
   {
     name: "Plein Sud chair",
     kind: "lift",
-    lat: 45.2968,
-    lng: 6.5846,
+    lat: 45.29519,
+    lng: 6.57198,
     note: "The main lift out of the village and the route to Les 3 Vallées.",
     status: "partial",
   },

@@ -47,7 +47,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 
 ## Open issues and unverified items
 
-- **Map pin coordinates are approximate, except the residence.** L’Oxalys is at its OpenStreetMap position (45.29784, 6.57711). The rest're carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
+- **Map pin coordinates are approximate, except the residence and three lifts.** L’Oxalys is at its OpenStreetMap position (45.29784, 6.57711). Funitel Péclet, Plein Sud and the Caron gondola (renamed from "Cime Caron cable car", which starts outside the map at the top of that gondola) sit on their village stations, taken from OSM's lift lines. Beginner carpets and the lunch and bar pins are carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
 - **Checked in a local browser** (the cloud sandbox blocks both domains):
   - The valthorens.com links all open the right English pages. `/en/map` turned out to redirect to the French resort map, so it now points at `/en/decouvrir/plan-station/`.
   - The map now runs on MapLibre with OpenFreeMap’s keyless Positron style (CARTO’s Positron needs a key since September 2026).
@@ -78,7 +78,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - Red was chosen over purple by measurement: purples collapse into the stay blue under red-green colour blindness.
 - **MapLibre is browser-only.** It needs `window` and WebGL, so `resort-map.tsx` imports it inside a `useEffect`, once the map is within 800px of the screen (it is ~430 KB gzipped, worker included). Keep it there, or server-side rendering breaks and every visitor pays for the map. Its worker is imported with Vite’s `?worker&url` and passed to `setWorkerUrl`, because MapLibre’s own lookup expects files Vite moves. The map is held inside `mapArea.bounds` in `trip.ts`, and water, road-shield and airport labels are filtered out of the style before it draws.
 - **Map palette (winter):** `src/components/map-style.ts` fetches Positron and repaints it before the map draws. The mountainsides OSM maps as grassland, bare rock or scree are white snow; land with no land-cover data (mostly the valley floor and around the village) is grey `#e2e7ed`. Lakes and streams are blue, and the village and buildings are warm beige so they read apart from both. The grey Vanoise national park fill is switched off.
-  - Ski lifts are drawn as `#c81e64` pink-red lines with their names along them, a different hue from every pin.
+  - Ski lifts are grey dashed lines (`#64748b`) with their names along them in darker slate, quiet under the coloured pins.
   - The tiles have lift names but no "VT3" numbers, and no pistes, so neither can be shown.
 - **Contact:** the only contact line is "Questions? Message the trip WhatsApp group." No phone numbers anywhere, which is why SkiSync's 855 number is left out (rule 2).
 - **Build output** is `.vercel/output`, ignored by git, eslint and prettier.
