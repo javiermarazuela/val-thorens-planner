@@ -38,11 +38,13 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 ## Current state
 
 - **`main`:** everything through PR #12 is merged and live, including the phone-first cleanup (shorter hero, Gamma-style price block, 170+). The members page has a "Back to Euro Ski ’27" link.
-- **Where we stay: Résidence L’Oxalys** (Entrée station, 73440 Val Thorens), "for now" per the committee, so its status stays `partial`. The photo is a Val Thorens marketing image, cropped to keep its logos out of frame; swap it if the committee has one of its own.
+- **Where we stay: Résidence Village Montana** (453 Rue du Soleil, 73440 Les Belleville), "for now" per the committee, so its status stays `partial`. The photo is the residence's own marketing image.
+
+- **Map venues:** categories are Après, Bars, Clubs and Restaurants (colours in `mapKinds`, `trip.ts`). Venue pins were checked against OpenStreetMap and Google Maps on 30 Sep 2026. Saloon and Igloo de Thorens are not in OSM, so they use Google's position. Left off the map: Clos Bernard (the only Google match is in Méribel, about 7 km north) and Chez Pépé Nicolas (on the D117 road, just outside `mapArea`).
 
 ## Open issues and unverified items
 
-- **Map pin coordinates are approximate, except the residence and three lifts.** L’Oxalys is at its OpenStreetMap position (45.29784, 6.57711). Funitel Péclet, Plein Sud and the Caron gondola (renamed from "Cime Caron cable car", which starts outside the map at the top of that gondola) sit on their village stations, taken from OSM's lift lines. Beginner carpets and the lunch and bar pins are carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
+- **Map pin coordinates are approximate, except the residence and three lifts.** Village Montana is at its OpenStreetMap position (45.29731, 6.57608). Funitel Péclet, Plein Sud and the Caron gondola (renamed from "Cime Caron cable car", which starts outside the map at the top of that gondola) sit on their village stations, taken from OSM's lift lines. Beginner carpets and the lunch and bar pins are carried over from the old diagram's layout onto the real resort centre (45.298N, 6.580E), and the page says so. The committee should put real lat/lng into `mapPoints` in `trip.ts`. The Google Maps links search **by name**, so they reach the real venue even while a pin is off.
 - **Checked in a local browser** (the cloud sandbox blocks both domains):
   - The valthorens.com links all open the right English pages. `/en/map` turned out to redirect to the French resort map, so it now points at `/en/decouvrir/plan-station/`.
   - The map now runs on MapLibre with OpenFreeMap’s keyless Positron style (CARTO’s Positron needs a key since September 2026).

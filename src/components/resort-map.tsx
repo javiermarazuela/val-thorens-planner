@@ -21,6 +21,8 @@ const GLYPH: Record<MapIcon, string> = {
   lift: '<path d="M4 4h16"/><path d="M12 4v6"/><path d="M7 10h10l-1.5 8h-7z"/>',
   fork: '<path d="M7 3v8a2 2 0 0 0 4 0V3"/><path d="M9 11v10"/><path d="M17 3c-1.5 2-2 4-2 6h4c0-2-.5-4-2-6z"/><path d="M17 9v12"/>',
   glass: '<path d="M5 3h14l-6 8v7"/><path d="M9 21h6"/>',
+  mug: '<path d="M5 6h10v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M15 9h2.5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H15"/><path d="M8 3v1.5M12 3v1.5"/>',
+  note: '<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
 };
 
 function markerHtml(color: string, icon: MapIcon, selected: boolean): string {

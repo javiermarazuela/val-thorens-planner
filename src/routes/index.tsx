@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import heroImage from "@/assets/val-thorens-trip.jpg";
-import stayImage from "@/assets/residence-oxalys.jpg";
+import stayImage from "@/assets/residence-village-montana.jpg";
 import offSlopeImage from "@/assets/val-thorens-offslope.jpg";
 import { PackingList } from "@/components/packing-list";
 import { ResortMap } from "@/components/resort-map";
@@ -192,16 +192,14 @@ function Home() {
         <div className="mx-auto mt-8 grid max-w-5xl gap-8 px-5 sm:mt-10 sm:gap-10 md:grid-cols-2 md:items-center xl:max-w-6xl">
           <div className="md:order-2">
             <figure className="aspect-[4/3] overflow-hidden rounded-lg bg-secondary">
-              {/* The photo is 1500x685; in a 4:3 frame this crop keeps the
-                  building and the gondola and leaves out the logos in the
-                  bottom-right corner. */}
+              {/* The photo is 2048x1366, close to the 4:3 frame. */}
               <img
                 src={stayImage}
                 alt={stay.imageAlt}
-                width={1500}
-                height={685}
+                width={2048}
+                height={1366}
                 loading="lazy"
-                className="h-full w-full object-cover object-[34%_50%]"
+                className="h-full w-full object-cover object-[55%_50%]"
               />
             </figure>
           </div>
