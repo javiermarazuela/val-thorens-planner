@@ -54,7 +54,7 @@ export const mapSection = {
   hint: "Tap a pin for what it is, and a link straight to it in Google Maps.",
   openInMaps: "Open in Google Maps",
   approxNote:
-    "Pin positions are approximate until the committee confirms them. Each place’s name opens its real location in Google Maps.",
+    "Pins sit on the real venues, except the beginner carpets, which are approximate. Each place’s name opens its location in Google Maps.",
   officialMapLabel: "See the official resort map",
   officialMapUrl: "https://www.valthorens.com/en/decouvrir/plan-station/",
 };
@@ -108,13 +108,13 @@ export const resortFacts = [
 export const stay = {
   status: "partial" as GuideStatus,
   title: "Where we stay",
-  name: "Résidence L’Oxalys",
-  address: "Entrée station, 73440 Val Thorens, France",
+  name: "Résidence Village Montana",
+  address: "453 Rue du Soleil, 73440 Les Belleville, France",
   directionsLabel: "Open in Google Maps",
   intro:
-    "Self-catered apartments at the entrance to the resort, walking distance from the lifts, the bars and each other.",
+    "Self-catered apartments in the Plein Sud sector of Val Thorens, right by the slopes and a short walk from the lifts, the bars and each other.",
   imageAlt:
-    "Résidence L’Oxalys’ timber chalet buildings in Val Thorens, with a gondola passing overhead",
+    "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
   roomsNote: "You pick your roommates when you register on SkiSync.",
 };
 
@@ -431,11 +431,9 @@ export const contacts = {
   body: "Questions? Message the trip WhatsApp group.",
 };
 
-// Val Thorens sits at roughly 45.298N, 6.580E. Pin positions below are
-// APPROXIMATE placeholders carried over from the old schematic diagram —
-// they put each place in about the right part of the bowl, not on its real
-// doorstep. The committee should replace lat/lng with real values. Until
-// then the detail card's linked title is the authoritative locator: it
+// Val Thorens sits at roughly 45.298N, 6.580E. The stay, lift and venue pins
+// use real positions (OpenStreetMap, cross-checked on Google Maps); only the
+// beginner carpets are still approximate. The detail card's linked title
 // searches Google Maps by name, which resolves to the actual venue.
 //
 // The map stays inside `bounds`, the village and the slopes around the pins
@@ -453,12 +451,14 @@ export const mapArea = {
   fitMaxZoom: 15,
 };
 
-// One colour per kind. Drinks & bars is red (#b91c1c) rather than purple:
-// every purple tested collapses into the stay blue under red-green colour
-// blindness, while this red stays distinct from all three others and holds
-// white icons at 6.5:1 contrast.
-export type MapKind = "stay" | "lift" | "lunch" | "nightlife";
-export type MapIcon = "house" | "lift" | "fork" | "glass";
+// One colour per kind, picked to stay apart under red-green and blue-yellow
+// colour blindness (checked by simulation, closest pair >= 18 on the CIE Lab
+// distance) and to hold white icons at 4.5:1 or better, except the two light
+// kinds (lifts, restaurants), which were already pale. Après is dark teal
+// rather than pink, which merged with the lift green under deuteranopia, and
+// clubs are near-black slate.
+export type MapKind = "stay" | "lift" | "restaurant" | "apres" | "bar" | "club";
+export type MapIcon = "house" | "lift" | "fork" | "mug" | "glass" | "note";
 
 export const mapKinds: Array<{
   id: MapKind;
@@ -468,8 +468,10 @@ export const mapKinds: Array<{
 }> = [
   { id: "stay", label: "Where we stay", icon: "house", color: "#2563eb" },
   { id: "lift", label: "Lifts", icon: "lift", color: "#10b981" },
-  { id: "lunch", label: "Mountain lunch", icon: "fork", color: "#f59e0b" },
-  { id: "nightlife", label: "Drinks & bars", icon: "glass", color: "#b91c1c" },
+  { id: "restaurant", label: "Restaurants", icon: "fork", color: "#f59e0b" },
+  { id: "apres", label: "Après", icon: "mug", color: "#0f766e" },
+  { id: "bar", label: "Bars", icon: "glass", color: "#b91c1c" },
+  { id: "club", label: "Clubs", icon: "note", color: "#1f2937" },
 ];
 
 export const mapPoints: Array<{
@@ -481,13 +483,13 @@ export const mapPoints: Array<{
   status: GuideStatus;
 }> = [
   {
-    // Real position, from OpenStreetMap (Voie de la Boucle, at the entrance
-    // to the resort). The other pins are still approximate.
-    name: "Résidence L’Oxalys",
+    // Real position, from OpenStreetMap (Village Montana - Plein Sud, Rue du
+    // Soleil). The other pins are still approximate.
+    name: "Résidence Village Montana",
     kind: "stay",
-    lat: 45.29784,
-    lng: 6.57711,
-    note: "Where we stay: self-catered apartments at the entrance to the resort.",
+    lat: 45.29731,
+    lng: 6.57608,
+    note: "Where we stay: self-catered apartments in the Plein Sud sector, by the slopes.",
     status: "partial",
   },
   // Lift pins sit on each lift's village station, taken from OpenStreetMap's
@@ -527,52 +529,103 @@ export const mapPoints: Array<{
     note: "The main lift out of the village and the route to Les 3 Vallées.",
     status: "partial",
   },
+  // Venue pins below were checked against OpenStreetMap and Google Maps
+  // (September 2026); they agree to within about 50 m. Saloon and Igloo de
+  // Thorens are missing from OSM, so they use Google's position.
+  {
+    name: "La Chaumière",
+    kind: "restaurant",
+    lat: 45.29823,
+    lng: 6.58126,
+    note: "Restaurant on Rue de Caron, in the middle of the village.",
+    status: "soon",
+  },
+  {
+    name: "La Cabane",
+    kind: "restaurant",
+    lat: 45.30001,
+    lng: 6.57862,
+    note: "Dinner spot on Rue des Balcons, on the upper side of the village.",
+    status: "soon",
+  },
   {
     name: "Chalet de la Marine",
-    kind: "lunch",
-    lat: 45.302,
-    lng: 6.5909,
-    note: "Long lunch on the terrace, reachable on an easy blue.",
-    status: "soon",
-  },
-  {
-    name: "Chez Pépé Nicolas",
-    kind: "lunch",
-    lat: 45.2968,
-    lng: 6.5937,
-    note: "Old farm, big plates, slightly further out.",
-    status: "soon",
-  },
-  {
-    name: "La Folie Douce",
-    kind: "nightlife",
-    lat: 45.3,
-    lng: 6.586,
-    note: "Top of Plein Sud. Starts mid-afternoon, and you still have to ski down.",
+    kind: "restaurant",
+    lat: 45.2896,
+    lng: 6.58936,
+    note: "Long lunch on the terrace, right by the Cascades chairlift and the piste.",
     status: "soon",
   },
   {
     name: "360 Bar",
-    kind: "nightlife",
-    lat: 45.296,
-    lng: 6.5832,
-    note: "Bottom of the slope, first stop coming off the mountain.",
+    kind: "apres",
+    lat: 45.28651,
+    lng: 6.58397,
+    note: "Lively party venue on the mountain, with a giant knife and fork on the roof.",
     status: "soon",
   },
   {
-    name: "Le Malaysia",
-    kind: "nightlife",
-    lat: 45.2932,
-    lng: 6.5811,
-    note: "Underground, very large, very late.",
+    name: "La Folie Douce",
+    kind: "apres",
+    lat: 45.30489,
+    lng: 6.58811,
+    note: "On the Plein Sud piste. Starts mid-afternoon, and you still have to ski down.",
+    status: "soon",
+  },
+  {
+    name: "Igloo de Thorens",
+    kind: "apres",
+    lat: 45.29056,
+    lng: 6.58277,
+    note: "Village Igloo, a bar and restaurant built in snow below the village centre.",
+    status: "soon",
+  },
+  {
+    name: "Saloon",
+    kind: "bar",
+    lat: 45.29741,
+    lng: 6.58511,
+    note: "Live bands, cocktails and dancing on Rue de Gebroulaz.",
+    status: "soon",
+  },
+  {
+    name: "Le Monde",
+    kind: "bar",
+    lat: 45.29694,
+    lng: 6.58532,
+    note: "Après tavern with DJs and dancing, by Residence Les Glaciers.",
+    status: "soon",
+  },
+  {
+    name: "The Frog and Roastbeef",
+    kind: "bar",
+    lat: 45.29769,
+    lng: 6.58498,
+    note: "Pub on Rue de Gebroulaz, billed as the highest pub in Europe.",
+    status: "soon",
+  },
+  {
+    name: "Favela",
+    kind: "bar",
+    lat: 45.29727,
+    lng: 6.58488,
+    note: "Latin food and cocktails, open late on Rue de Gebroulaz.",
     status: "soon",
   },
   {
     name: "Klub Summit",
-    kind: "nightlife",
-    lat: 45.2928,
-    lng: 6.5839,
-    note: "In the middle of the village, a short walk from most doors.",
+    kind: "club",
+    lat: 45.29689,
+    lng: 6.58535,
+    note: "Karaoke at midnight, club from 1 am, in the centre of the village.",
+    status: "soon",
+  },
+  {
+    name: "Le Malaysia",
+    kind: "club",
+    lat: 45.29803,
+    lng: 6.58167,
+    note: "Underground, very large, very late. On Rue de Caron.",
     status: "soon",
   },
 ];
