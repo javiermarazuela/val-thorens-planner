@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { getSupabase } from "@/lib/supabase";
+import { site } from "@/lib/trip";
 
 export const Route = createFileRoute("/members")({
   // The session lives in the browser, so render on the client only. The data
@@ -122,7 +124,14 @@ function Members() {
 
 function Shell({ children }: { children: ReactNode }) {
   return (
-    <section className="mx-auto max-w-xl px-4 py-16 sm:px-6">
+    <section className="mx-auto max-w-xl px-4 py-10 sm:px-6 sm:py-16">
+      <a
+        href="/"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft aria-hidden="true" className="size-4" />
+        Back to {site.name}
+      </a>
       <h1 className="font-display text-3xl uppercase">Members</h1>
       <div className="mt-4">{children}</div>
     </section>

@@ -28,7 +28,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - Google Cloud project `euro-ski`: external, in production, basic scopes only (so the 100-user cap doesn't apply), with the Supabase callback as its redirect URI.
   - Vercel env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, with Config visibility because `VITE_` values are public.
   - `cbseuroski.com` verified in Google Search Console.
-- **Tested:** a Columbia account signs in and sees the members page. Not yet tested: a rejected personal Gmail, and an `allowed_emails` exception.
+- **Tested:** a Columbia account signs in and sees the members page. A personal Gmail is rejected (checked). Not yet tested: an `allowed_emails` exception.
 - **Gotchas:**
   - "Unable to exchange external code" on return means the Google client ID or secret in Supabase is wrong.
   - `redirect_uri_mismatch` means the Google client's redirect URI isn't exactly `https://lturqfowogbkedhldhop.supabase.co/auth/v1/callback`.
@@ -37,12 +37,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 
 ## Current state
 
-- **`main`:** PR #5 merged (`ca2afd2`). This is what's live.
-- **Branch `claude/mobile-polish`:** a phone-first cleanup after a read-through on Vercel.
-  - Shorter hero with the title on one line, and dates · 170+ of us in white under the tagline.
-  - A Gamma-style price block: the price alone, then Included / Not included with one line per item.
-  - One centred title per section, and badges only for "Coming soon".
-  - 179 became 170+ everywhere, and the flights box is one line.
+- **`main`:** everything through PR #12 is merged and live, including the phone-first cleanup (shorter hero, Gamma-style price block, 170+). The members page has a "Back to Euro Ski ’27" link.
 - **Where we stay: Résidence L’Oxalys** (Entrée station, 73440 Val Thorens), "for now" per the committee, so its status stays `partial`. The photo is a Val Thorens marketing image, cropped to keep its logos out of frame; swap it if the committee has one of its own.
 
 ## Open issues and unverified items
@@ -52,11 +47,8 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - The valthorens.com links all open the right English pages. `/en/map` turned out to redirect to the French resort map, so it now points at `/en/decouvrir/plan-station/`.
   - The map now runs on MapLibre with OpenFreeMap’s keyless Positron style (CARTO’s Positron needs a key since September 2026).
 
-- **SkiSync unknowns** (committee to confirm):
-  - Only **4-day** lift passes and rentals appeared in the screenshots. Shorter options would lower the "from $362 / $147 / $21" figures.
-  - SkiSync's transfer policy contains **unfilled template text** ("Between Month Day, Year and…"). Only the dates it does give are used.
-  - The terms mention a **"Social Only" ticket**, possibly how +1s join. It's left off the site.
-  - The sign-up URL includes the club's `cbssnowsports27` gmail as a referral code, visible to anyone who looks.
+- **SkiSync, resolved:** 4 days is the minimum for passes and rentals, so the "from" prices stand. There are no Social Only tickets. The unfilled "Month Day, Year" text in the transfer policy is leftover boilerplate and is ignored.
+- **Referral code:** the sign-up URL includes the club's `cbssnowsports27` gmail as a referral code, visible to anyone who looks.
 - **Airport:** Geneva (GVA) is still only "likely", and the shuttle is "coming soon" until SkiSync publishes times.
 - **Lint warnings:** six `react-refresh/only-export-components` warnings in shadcn `src/components/ui/*`. Harmless.
 - **Unused packages:** 46 shadcn `ui/` components and heavy libraries (`recharts`, `embla-carousel`, `react-day-picker`, …) are installed while the page uses only `button`. Worth trimming, but ask first (CLAUDE.md: ask before changing dependencies).
@@ -95,8 +87,6 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 
 ## Next steps
 
-1. **Phone-check and merge PR #5.**
-2. **Confirm the SkiSync unknowns with the committee:** shorter pass/rental options, the Social Only ticket, and the transfer-policy text. Then update `trip.ts`.
-3. **Real map coordinates** from the committee, into `mapPoints`.
-4. **Finish phase 2:** test a personal Gmail (should be rejected) and an `allowed_emails` exception. Add the WhatsApp link as a `member_links` row once someone who administers the group has it. Bring the games back behind login.
-5. **Later:** phase 3 is the flight details form; phase 4 is the PWA (its manifest name should read from `site.name`). Only when asked.
+1. **Real map coordinates** from the committee, into `mapPoints`.
+2. **Finish phase 2:** test an `allowed_emails` exception. Add the WhatsApp link as a `member_links` row once someone who administers the group has it. Bring the games back behind login.
+3. **Later:** phase 3 is the flight details form; phase 4 is the PWA (its manifest name should read from `site.name`). Only when asked.
