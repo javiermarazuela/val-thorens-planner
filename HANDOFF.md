@@ -51,7 +51,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 - **Referral code:** the sign-up URL includes the club's `cbssnowsports27` gmail as a referral code, visible to anyone who looks.
 - **Airport:** Geneva (GVA) is still only "likely", and the shuttle is "coming soon" until SkiSync publishes times.
 - **Lint warnings:** six `react-refresh/only-export-components` warnings in shadcn `src/components/ui/*`. Harmless.
-- **Unused packages:** 46 shadcn `ui/` components and heavy libraries (`recharts`, `embla-carousel`, `react-day-picker`, …) are installed while the page uses only `button`. Worth trimming, but ask first (CLAUDE.md: ask before changing dependencies).
+- **Trimmed:** the 45 unused shadcn components (only `src/components/ui/button.tsx` is left), `use-mobile`, and 36 unused packages (`recharts`, `embla-carousel`, `react-day-picker`, `react-hook-form`, `zod`, most `@radix-ui/*`, …). If you need a shadcn component later, add it back then (`components.json` is still set up).
 
 ## Key decisions and conventions
 
