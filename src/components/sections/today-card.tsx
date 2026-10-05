@@ -37,7 +37,7 @@ export function TodayCard() {
             {live.today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.day}{" "}
             {info.date}
           </p>
-          <h2 className="mt-1 text-2xl uppercase leading-tight sm:text-4xl">{info.title}</h2>
+          <h2 className="mt-1 text-xl uppercase leading-tight sm:text-2xl">{info.title}</h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
             {info.body}
           </p>
@@ -105,7 +105,7 @@ export function TodayCard() {
               href={snowReport.href}
               target="_blank"
               rel="noreferrer"
-              className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
+              className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
             >
               {snowReport.label}
               <ExternalLink className="size-3.5" aria-hidden="true" />

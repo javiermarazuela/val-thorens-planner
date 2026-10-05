@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 
 import type { Tone } from "@/components/guide-section";
+import { DailyPlan } from "@/components/sections/daily-plan";
 import { Faqs } from "@/components/sections/faqs";
 import { GettingAround } from "@/components/sections/getting-around";
 import { GettingHere } from "@/components/sections/getting-here";
@@ -20,6 +21,7 @@ export type SectionProps = { n: string; tone: Tone };
 // simply skipped, so a later phase only has to add its component.
 export const sectionComponents: Partial<Record<SectionId, ComponentType<SectionProps>>> = {
   welcome: Welcome,
+  "daily-plan": DailyPlan,
   "getting-here": GettingHere,
   around: GettingAround,
   stay: Stay,

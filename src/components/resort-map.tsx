@@ -156,11 +156,11 @@ export function ResortMap() {
   };
 
   const legend = (
-    <div className="mt-4 flex flex-wrap justify-center gap-2">
+    <div className="mt-3 flex flex-wrap justify-center gap-1.5">
       <button
         type="button"
         onClick={() => setActive("all")}
-        className={`flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
+        className={`flex min-h-8 items-center rounded-full border px-3 py-1 text-xs font-bold uppercase transition ${
           active === "all"
             ? "border-foreground bg-foreground text-background"
             : "border-border hover:border-foreground"
@@ -173,7 +173,7 @@ export function ResortMap() {
           key={kind.id}
           type="button"
           onClick={() => setActive(kind.id)}
-          className={`flex items-center gap-2 flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
+          className={`flex items-center gap-2 flex min-h-8 items-center rounded-full border px-3 py-1 text-xs font-bold uppercase transition ${
             active === kind.id
               ? "border-foreground bg-foreground text-background"
               : "border-border hover:border-foreground"
@@ -192,7 +192,7 @@ export function ResortMap() {
 
   return (
     <div>
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         <div>
           <div
             ref={containerRef}
@@ -226,7 +226,7 @@ export function ResortMap() {
                 href={googleMapsUrl(point.name)}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-1 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-primary"
+                className="mt-1 inline-flex min-h-8 items-center gap-2 text-sm font-bold text-primary"
               >
                 {mapSection.openInMaps}
                 <ExternalLink className="size-3.5" aria-hidden="true" />
@@ -236,7 +236,7 @@ export function ResortMap() {
             <p className="text-sm text-muted-foreground">{mapSection.hint}</p>
           )}
 
-          <ul className="mt-4 grid grid-cols-2 gap-1.5 sm:gap-2">
+          <ul className="mt-3 grid grid-cols-2 gap-1 sm:gap-1.5">
             {mapPoints
               .filter((p) => active === "all" || p.kind === active)
               .map((p) => (
@@ -244,7 +244,7 @@ export function ResortMap() {
                   <button
                     type="button"
                     onClick={() => choose(p.name)}
-                    className={`flex min-h-11 w-full items-center gap-2.5 rounded-md border px-2.5 py-2 text-left text-sm leading-snug transition sm:gap-3 sm:px-3 ${
+                    className={`flex min-h-9 w-full items-center gap-2.5 rounded-md border px-2.5 py-1 text-left text-sm leading-snug transition sm:gap-3 sm:px-3 ${
                       selected === p.name
                         ? "border-foreground"
                         : "border-transparent hover:border-border"

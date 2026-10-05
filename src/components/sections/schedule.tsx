@@ -11,31 +11,24 @@ export function Schedule({ n, tone }: SectionProps) {
   useEffect(() => setToday(tripDayIndex(new Date())), []);
 
   return (
-    <GuideSection
-      id="schedule"
-      n={n}
-      tone={tone}
-      title={weekSection.title}
-      intro={weekSection.intro}
-    >
-      <div className="mb-5 flex items-center gap-3 text-sm text-muted-foreground">
+    <GuideSection id="schedule" n={n} tone={tone} title={weekSection.title}>
+      <div className="mb-3">
         <StatusBadge status={dayDetailsStatus} />
-        <span>Event times are samples until the committee confirms them.</span>
       </div>
-      <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {week.map((day, i) => {
           const events = dayDetails[i]?.events ?? [];
           const isToday = today === i;
           return (
             <li
               key={day.date}
-              className={`flex flex-col rounded-2xl border-[1.5px] bg-card p-5 ${isToday ? "border-ink" : "border-border"}`}
+              className={`flex flex-col rounded-2xl border-[1.5px] bg-card p-4 ${isToday ? "border-ink" : "border-border"}`}
             >
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
                   {day.day} · Jan{isToday ? " · Today" : ""}
                 </span>
-                <span className="font-display text-5xl leading-[0.9]">
+                <span className="font-display text-3xl leading-[0.9]">
                   {day.date.split(" ")[0]}
                 </span>
               </div>
@@ -44,9 +37,9 @@ export function Schedule({ n, tone }: SectionProps) {
               </h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{day.body}</p>
               {events.length > 0 && (
-                <ul className="mt-4 border-t border-border pt-2">
+                <ul className="mt-3 border-t border-border pt-1">
                   {events.map((e) => (
-                    <li key={e.what} className="flex gap-3 py-1.5 text-sm">
+                    <li key={e.what} className="flex gap-3 py-1 text-sm">
                       <b className="w-14 shrink-0">{e.time}</b>
                       <span>{e.what}</span>
                     </li>

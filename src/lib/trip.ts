@@ -93,6 +93,7 @@ export const faqSection = {
 // only signal.
 export type SectionId =
   | "welcome"
+  | "daily-plan"
   | "getting-here"
   | "stay"
   | "schedule"
@@ -107,6 +108,7 @@ export type Grade = "green" | "blue" | "red" | "black";
 
 export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
   welcome: { label: "Welcome", grade: "green" },
+  "daily-plan": { label: "Daily plan", grade: "green" },
   "getting-here": { label: "Getting here & away", grade: "blue" },
   stay: { label: "Where we stay", grade: "green" },
   schedule: { label: "The week", grade: "green" },
@@ -121,6 +123,7 @@ export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
 // Before the trip: follow the journey. During it: what you need in resort first.
 export const journeyOrder: SectionId[] = [
   "welcome",
+  "daily-plan",
   "getting-here",
   "stay",
   "schedule",
@@ -134,6 +137,7 @@ export const journeyOrder: SectionId[] = [
 
 export const tripOrder: SectionId[] = [
   "welcome",
+  "daily-plan",
   "schedule",
   "maps",
   "around",
@@ -147,6 +151,9 @@ export const tripOrder: SectionId[] = [
 
 // Midnight at the start of Saturday 9 January 2027 in France (CET, UTC+1).
 export const tripStartsAt = "2027-01-08T23:00:00Z";
+
+// Set to true to keep the Daily plan out of the guide until the trip starts.
+export const hideDailyPlanUntilTrip = false;
 
 export const resortFacts = [
   {
@@ -182,10 +189,10 @@ export const stay = {
   imageAlt:
     "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
   roomsNote: "You pick your roommates when you register on SkiSync.",
-  mainTag: "Most of us",
   // A smaller group is staying at these two. Addresses are from each place's
   // own website; the map pins are at their OpenStreetMap positions.
   othersTitle: "Also staying",
+  othersQualifier: "(small groups)",
   others: [
     {
       name: "Résidence L’Oxalys",

@@ -10,7 +10,7 @@ const links = [...mountain.links, linksSection.officialSite];
 export function Links({ n, tone }: SectionProps) {
   return (
     <GuideSection id="links" n={n} tone={tone} title={linksSection.title}>
-      <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
         <div>
           <h3 className="text-sm font-bold uppercase tracking-[0.16em]">
             {linksSection.linksTitle}
@@ -22,7 +22,7 @@ export function Links({ n, tone }: SectionProps) {
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex min-h-14 items-center justify-between gap-3 text-lg font-bold"
+                  className="flex min-h-10 items-center justify-between gap-3 text-lg font-bold"
                 >
                   {link.label}
                   <ExternalLink className="size-4 text-primary" aria-hidden="true" />

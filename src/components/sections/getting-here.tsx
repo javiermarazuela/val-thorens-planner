@@ -43,7 +43,7 @@ function FlightList({
           return (
             <li
               key={`${f.number}-${f.dep}`}
-              className="flex items-center gap-3 border-b border-border py-3 last:border-b-0"
+              className="flex items-center gap-3 border-b border-border py-2 last:border-b-0"
             >
               <span className="w-[7.5rem] shrink-0 text-sm font-bold tabular-nums sm:text-base">
                 {f.dep} → {f.arr}
@@ -68,7 +68,7 @@ function FlightList({
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="flex min-h-11 items-center text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
+          className="flex min-h-8 items-center text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
         >
           {open ? gettingHere.showFewer : gettingHere.showMore(rest.length)}
         </button>
@@ -81,15 +81,9 @@ export function GettingHere({ n, tone }: SectionProps) {
   const [alts, setAlts] = useState(false);
 
   return (
-    <GuideSection
-      id="getting-here"
-      n={n}
-      tone={tone}
-      title={gettingHere.title}
-      intro={gettingHere.intro}
-    >
+    <GuideSection id="getting-here" n={n} tone={tone} title={gettingHere.title}>
       <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-        <h3 className="text-2xl uppercase">Flights</h3>
+        <h3 className="text-lg uppercase">Flights</h3>
         <p className="flex flex-wrap gap-x-6 gap-y-1 text-sm sm:text-base">
           {[gettingHere.airport, gettingHere.arrive, gettingHere.leave].map((x) => (
             <span key={x.label} className="whitespace-nowrap">
@@ -98,8 +92,7 @@ export function GettingHere({ n, tone }: SectionProps) {
           ))}
         </p>
       </div>
-      <p className={`mt-2 max-w-2xl text-sm sm:text-base ${muted}`}>{gettingHere.flightsNote}</p>
-      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+      <div className="mt-3 grid gap-3 lg:grid-cols-2">
         <FlightList
           title={gettingHere.out.title}
           date={gettingHere.out.date}
@@ -113,12 +106,12 @@ export function GettingHere({ n, tone }: SectionProps) {
         />
       </div>
 
-      <div className="mt-5 rounded-2xl bg-card px-4 py-1 sm:px-5">
+      <div className="mt-3 rounded-2xl bg-card px-4 py-0.5 sm:px-5">
         <button
           type="button"
           onClick={() => setAlts((v) => !v)}
           aria-expanded={alts}
-          className="flex min-h-14 w-full items-center justify-between gap-3 text-left"
+          className="flex min-h-10 w-full items-center justify-between gap-3 text-left"
         >
           <span>
             <b className="text-base">{otherRoutes.title}</b>
@@ -141,55 +134,52 @@ export function GettingHere({ n, tone }: SectionProps) {
         )}
       </div>
 
-      <div className="mt-12 flex flex-wrap items-center gap-3">
-        <h3 className="text-2xl uppercase">{airportCoaches.title}</h3>
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <h3 className="text-lg uppercase">{airportCoaches.title}</h3>
         <StatusBadge status={airportCoaches.status} />
       </div>
-      <p className={`mt-2 max-w-2xl text-sm sm:text-base ${muted}`}>{airportCoaches.intro}</p>
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border-[1.5px] border-border bg-card p-5">
+      <div className="mt-3 grid gap-3 md:grid-cols-2">
+        <div className="rounded-2xl border-[1.5px] border-border bg-card p-4">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {airportCoaches.out.title}
           </p>
           <p className="mt-3 flex flex-wrap gap-2">
             {airportCoaches.out.times.map((t) => (
-              <span
-                key={t}
-                className="rounded-lg bg-ink px-3.5 py-2 font-display text-xl text-paper"
-              >
+              <span key={t} className="rounded-lg bg-ink px-3 py-1 font-display text-lg text-paper">
                 {t}
               </span>
             ))}
           </p>
         </div>
-        <div className="rounded-2xl border-[1.5px] border-border bg-card p-5">
+        <div className="rounded-2xl border-[1.5px] border-border bg-card p-4">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {airportCoaches.home.title}
           </p>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
             {airportCoaches.home.coaches.map((c) => (
               <li key={c.time} className="flex items-center gap-2">
-                <span className="rounded-lg bg-ink px-3.5 py-2 font-display text-xl text-paper">
+                <span className="rounded-lg bg-ink px-3 py-1 font-display text-lg text-paper">
                   {c.time}
                 </span>
                 <span className={`text-xs ${muted}`}>for flights from {c.flightsFrom}</span>
               </li>
             ))}
           </ul>
-          <p className={`mt-3 text-sm ${muted}`}>{airportCoaches.returnNote}</p>
         </div>
       </div>
 
-      <div className="mt-12 flex flex-wrap items-center gap-3">
-        <h3 className="text-2xl uppercase">{checkSteps.title}</h3>
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <h3 className="text-lg uppercase">{checkSteps.title}</h3>
         <StatusBadge status={checkSteps.status} />
       </div>
-      <div className="mt-5 grid gap-6 md:grid-cols-2 md:gap-10">
+      <div className="mt-3 grid gap-4 md:grid-cols-2 md:gap-8">
         {checkSteps.items.map((s) => (
-          <div key={s.n} className="border-t-[1.5px] border-ink pt-4">
-            <p className="font-display text-4xl leading-none text-signal">{s.n}</p>
-            <h4 className="mt-2 text-xl font-bold">{s.h}</h4>
-            <p className={`mt-1.5 text-base leading-relaxed ${muted}`}>{s.p}</p>
+          <div key={s.n} className="border-t-[1.5px] border-ink pt-3">
+            <h4 className="flex items-baseline gap-2 text-base font-bold">
+              <span className="font-display text-sm text-signal">{s.n}</span>
+              {s.h}
+            </h4>
+            <p className={`mt-1 text-sm leading-relaxed ${muted}`}>{s.p}</p>
           </div>
         ))}
       </div>

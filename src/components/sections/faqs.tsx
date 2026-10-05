@@ -14,7 +14,7 @@ export function Faqs({ n, tone }: SectionProps) {
 
   return (
     <GuideSection id="faqs" n={n} tone={tone} title={faqSection.title}>
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
         <div className="border-t-[1.5px] border-ink">
           {shown.map((faq, i) => {
             const isOpen = open === i;
@@ -24,7 +24,7 @@ export function Faqs({ n, tone }: SectionProps) {
                   type="button"
                   aria-expanded={isOpen}
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex min-h-14 w-full items-center gap-3 py-3 text-left text-base font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-lg"
+                  className="flex min-h-10 w-full items-center gap-3 py-2 text-left text-base font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <span className="flex-1">{faq.q}</span>
                   <StatusBadge status={faq.status} />
@@ -36,14 +36,16 @@ export function Faqs({ n, tone }: SectionProps) {
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="pb-5 pr-12">
-                    <p className="text-base leading-relaxed text-muted-foreground">{faq.a}</p>
+                  <div className="pb-3 pr-12">
+                    <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                      {faq.a}
+                    </p>
                     {faq.link && (
                       <a
                         href={faq.link.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-bold text-primary"
+                        className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-bold text-primary"
                       >
                         {faq.link.label}
                         <ExternalLink className="size-3.5" aria-hidden="true" />

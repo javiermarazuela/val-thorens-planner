@@ -1,4 +1,11 @@
-import { journeyOrder, sectionMeta, tripOrder, tripStartsAt, type SectionId } from "@/lib/trip";
+import {
+  hideDailyPlanUntilTrip,
+  journeyOrder,
+  sectionMeta,
+  tripOrder,
+  tripStartsAt,
+  type SectionId,
+} from "@/lib/trip";
 
 export type GuideOrder = "journey" | "trip";
 
@@ -9,8 +16,15 @@ export function pickOrder(now: Date, override?: GuideOrder): GuideOrder {
 }
 
 // Sections in page order, skipping any that have no component yet.
-export function sectionsFor(order: GuideOrder, available: ReadonlySet<SectionId>): SectionId[] {
-  return (order === "trip" ? tripOrder : journeyOrder).filter((id) => available.has(id));
+export function sectionsFor(
+  order: GuideOrder,
+  available: ReadonlySet<SectionId>,
+  now: Date = new Date(),
+): SectionId[] {
+  const started = now.getTime() >= new Date(tripStartsAt).getTime();
+  return (order === "trip" ? tripOrder : journeyOrder).filter(
+    (id) => available.has(id) && !(id === "daily-plan" && hideDailyPlanUntilTrip && !started),
+  );
 }
 
 export type Stop = { id: SectionId; label: string; n: string };

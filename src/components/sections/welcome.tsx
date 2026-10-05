@@ -1,11 +1,10 @@
 import heroImage from "@/assets/val-thorens-trip.jpg";
-import { TodayCard } from "@/components/sections/today-card";
 import { hero, trip } from "@/lib/trip";
 
 export function Welcome() {
   return (
     <section id="welcome" className="scroll-mt-[var(--header-h)]">
-      <div className="relative min-h-[55svh] overflow-hidden bg-ink sm:min-h-[70svh]">
+      <div className="relative min-h-[32svh] overflow-hidden bg-ink sm:min-h-[38svh]">
         <img
           src={heroImage}
           alt={hero.imageAlt}
@@ -14,14 +13,14 @@ export function Welcome() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/20" />
-        <div className="relative mx-auto flex min-h-[55svh] max-w-6xl flex-col items-center justify-end px-5 pb-16 pt-12 text-center text-paper sm:min-h-[70svh] sm:pb-24">
-          <h1 className="whitespace-nowrap text-[clamp(2rem,10.8vw,3rem)] uppercase leading-none sm:text-7xl lg:text-8xl xl:text-9xl">
+        <div className="relative mx-auto flex min-h-[32svh] max-w-6xl flex-col items-center justify-end px-5 pb-8 pt-10 text-center text-paper sm:min-h-[38svh] sm:pb-10">
+          <h1 className="whitespace-nowrap text-[clamp(1.75rem,8vw,2.25rem)] uppercase leading-none sm:text-5xl lg:text-6xl">
             {hero.title}
           </h1>
-          <p className="mt-3 text-base leading-snug text-paper/90 sm:mt-5 sm:text-xl">
+          <p className="mt-2 text-sm leading-snug text-paper/90 sm:mt-3 sm:text-lg">
             {hero.tagline}
           </p>
-          <p className="mt-3 flex items-center gap-2 text-base font-bold sm:mt-4 sm:text-lg">
+          <p className="mt-2 flex items-center gap-2 text-sm font-bold sm:text-base">
             <span>{trip.datesMedium}</span>
             <span aria-hidden="true">·</span>
             <span>
@@ -29,9 +28,6 @@ export function Welcome() {
             </span>
           </p>
         </div>
-      </div>
-      <div className="relative z-10 mx-auto -mt-10 max-w-5xl px-4 pb-12 sm:-mt-14 sm:px-5 sm:pb-16 xl:max-w-6xl">
-        <TodayCard />
       </div>
     </section>
   );
