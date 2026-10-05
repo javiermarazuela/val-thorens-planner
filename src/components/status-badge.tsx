@@ -2,6 +2,12 @@ import type { GuideStatus } from "@/lib/trip";
 
 // Only pending content gets a badge. Confirmed and partly confirmed content
 // reads as plain content; its status still lives in trip.ts (rules 6 and 7).
+// "Preliminary" marks sample data the committee has not confirmed yet.
+const labels: Partial<Record<GuideStatus, string>> = {
+  soon: "Coming soon",
+  preliminary: "Preliminary",
+};
+
 export function StatusBadge({
   status,
   className = "",
@@ -9,13 +15,18 @@ export function StatusBadge({
   status: GuideStatus;
   className?: string;
 }) {
-  if (status !== "soon") return null;
+  const label = labels[status];
+  if (!label) return null;
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center rounded-full border border-primary/25 bg-secondary px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-secondary-foreground ${className}`}
+      className={`inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide ${
+        status === "preliminary"
+          ? "border-signal/40 bg-mustard/40 text-ink"
+          : "border-primary/25 bg-secondary text-secondary-foreground"
+      } ${className}`}
     >
-      Coming soon
+      {label}
     </span>
   );
 }

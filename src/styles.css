@@ -53,6 +53,17 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-paper: var(--paper);
+  --color-mint: var(--mint);
+  --color-teal: var(--teal);
+  --color-ink: var(--ink);
+  --color-mustard: var(--mustard);
+  --color-signal: var(--signal);
+  --color-alert: var(--alert);
+  --color-grade-green: var(--grade-green);
+  --color-grade-blue: var(--grade-blue);
+  --color-grade-red: var(--grade-red);
+  --color-grade-black: var(--grade-black);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -64,26 +75,39 @@
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.94 0.025 236);
-  --foreground: oklch(0.22 0.07 252);
-  --card: oklch(0.975 0.014 230);
-  --card-foreground: oklch(0.22 0.07 252);
-  --popover: oklch(0.975 0.014 230);
-  --popover-foreground: oklch(0.22 0.07 252);
-  --primary: oklch(0.45 0.16 253);
-  --primary-foreground: oklch(0.98 0.01 230);
-  --secondary: oklch(0.86 0.055 234);
-  --secondary-foreground: oklch(0.28 0.09 252);
-  --muted: oklch(0.89 0.025 235);
-  --muted-foreground: oklch(0.46 0.06 250);
-  --accent: oklch(0.72 0.09 72);
-  --accent-foreground: oklch(0.24 0.055 54);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.75 0.055 240);
-  --input: oklch(0.8 0.04 240);
-  --ring: oklch(0.45 0.16 253);
+  /* Retro ski-poster palette: cream paper, navy ink, red, mustard, teal. */
+  --paper: oklch(0.965 0.025 88);
+  --mint: oklch(0.93 0.035 168);
+  --teal: oklch(0.4 0.065 172);
+  --ink: oklch(0.27 0.06 258);
+  --mustard: oklch(0.84 0.13 85);
+  --signal: oklch(0.56 0.17 32);
+  --alert: oklch(0.48 0.16 32);
+  --grade-green: oklch(0.5 0.08 172);
+  --grade-blue: oklch(0.5 0.1 245);
+  --grade-red: oklch(0.56 0.17 32);
+  --grade-black: oklch(0.27 0.06 258);
+
+  --radius: 0.75rem;
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: oklch(0.99 0.008 90);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.99 0.008 90);
+  --popover-foreground: var(--ink);
+  --primary: oklch(0.5 0.1 245);
+  --primary-foreground: oklch(0.99 0.008 90);
+  --secondary: var(--mint);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.93 0.03 90);
+  --muted-foreground: oklch(0.45 0.035 230);
+  --accent: var(--mustard);
+  --accent-foreground: oklch(0.27 0.06 258);
+  --destructive: oklch(0.52 0.17 32);
+  --destructive-foreground: oklch(0.99 0.008 90);
+  --border: oklch(0.85 0.03 120);
+  --input: oklch(0.82 0.03 120);
+  --ring: oklch(0.5 0.1 245);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -97,6 +121,17 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  /* Height of the sticky header, so jumps and anchors land clear of it. */
+  --header-h: 7.25rem;
+  --rail-w: 0px;
+}
+
+@media (min-width: 1100px) {
+  :root {
+    --header-h: 3.75rem;
+    --rail-w: 13.5rem;
+  }
 }
 
 .dark {
@@ -134,6 +169,11 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+:root {
+  /* A faint paper grain, drawn once as an inline SVG so it costs no request. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .25 0 0 0 0 .15 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -145,6 +185,7 @@
 
   body {
     background-color: var(--color-background);
+    background-image: var(--grain);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     letter-spacing: 0;
