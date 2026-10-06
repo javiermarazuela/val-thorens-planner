@@ -32,10 +32,9 @@ export function Schedule({ n, tone }: SectionProps) {
                   {day.date.split(" ")[0]}
                 </span>
               </div>
-              <h3 className="mt-3 font-sans text-lg font-bold normal-case leading-snug">
+              <h3 className="mt-2 font-sans text-base font-bold normal-case leading-snug">
                 {day.title}
               </h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{day.body}</p>
               {events.length > 0 && (
                 <ul className="mt-3 border-t border-border pt-1">
                   {events.map((e) => (

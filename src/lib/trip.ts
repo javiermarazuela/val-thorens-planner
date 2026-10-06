@@ -1123,8 +1123,7 @@ export const gettingAround = {
     "Val Thorens is compact and mostly on foot. For the rest, a free shuttle loops the resort all day.",
   shuttle: {
     title: "Free resort shuttle",
-    seasonNote:
-      "Last winter’s timetable. The 2026–27 one is published closer to the season, and we will update this.",
+    seasonNote: "Last winter’s timetable. 2026–27 to follow.",
     hours: [
       { days: "Sunday to Friday", times: "08:00 – 20:00" },
       { days: "Saturday", times: "06:15 – 22:00" },

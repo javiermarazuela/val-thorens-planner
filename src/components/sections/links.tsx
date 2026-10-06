@@ -10,19 +10,19 @@ const links = [...mountain.links, linksSection.officialSite];
 export function Links({ n, tone }: SectionProps) {
   return (
     <GuideSection id="links" n={n} tone={tone} title={linksSection.title}>
-      <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+      <div className="grid gap-6">
         <div>
           <h3 className="text-sm font-bold uppercase tracking-[0.16em]">
             {linksSection.linksTitle}
           </h3>
-          <ul className="mt-3 border-t-[1.5px] border-ink">
+          <ul className="mt-2 grid gap-x-8 border-t-[1.5px] border-ink md:grid-cols-2">
             {links.map((link) => (
               <li key={link.href} className="border-b border-border">
                 <a
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex min-h-10 items-center justify-between gap-3 text-lg font-bold"
+                  className="flex min-h-9 items-center justify-between gap-3 text-base font-bold"
                 >
                   {link.label}
                   <ExternalLink className="size-4 text-primary" aria-hidden="true" />
