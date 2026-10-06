@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MountainSnow } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -9,10 +9,10 @@ import { sectionMeta, site, trip, type Grade } from "@/lib/trip";
 type StopState = "todo" | "current" | "done";
 
 const gradeVar: Record<Grade, string> = {
-  green: "var(--grade-green)",
-  blue: "var(--grade-blue)",
-  red: "var(--grade-red)",
-  black: "var(--grade-black)",
+  green: "var(--ink)",
+  blue: "var(--ink)",
+  red: "var(--ink)",
+  black: "var(--ink)",
 };
 
 // A numbered piste marker: circle for green, square for blue, diamond for
@@ -26,13 +26,13 @@ export function GradeMark({
   grade: Grade;
   n: string;
   state: StopState;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
 }) {
   const colour = gradeVar[grade];
   const filled = state !== "todo";
-  const box = size === "lg" ? "size-11 sm:size-14" : "size-8";
-  const diamond = grade === "red" || grade === "black";
-  const shape = grade === "green" ? "rounded-full" : "rounded-md";
+  const box = size === "lg" ? "size-11 sm:size-14" : size === "sm" ? "size-6" : "size-8";
+  const diamond = false;
+  const shape = "rounded-full";
   return (
     <span
       aria-hidden="true"
@@ -45,7 +45,7 @@ export function GradeMark({
       }}
     >
       <span
-        className={`font-display leading-none ${size === "lg" ? "text-base sm:text-xl" : "text-xs"} ${diamond ? "-rotate-45" : ""}`}
+        className={`font-display leading-none ${size === "lg" ? "text-base sm:text-xl" : size === "sm" ? "text-[0.65rem]" : "text-xs"} ${diamond ? "-rotate-45" : ""}`}
       >
         {n}
       </span>
@@ -58,11 +58,44 @@ function stateOf(i: number, current: number): StopState {
 }
 
 // Desktop: the trail down the left edge. The line turns navy as you pass each stop.
+// A little skier in a side view, leaning down the slope.
+function Skier() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="15.5" cy="4" r="1.8" fill="currentColor" stroke="none" />
+      <path d="M14 7.5 10.5 13l3.5 3.5M10.5 13 7 17M13.5 8.5l5 3M3 20l18-4" />
+    </svg>
+  );
+}
+
 export function GuideRail({ stops, current }: { stops: Stop[]; current: number }) {
+  const list = useRef<HTMLOListElement>(null);
+  const [skierY, setSkierY] = useState<number | null>(null);
+
+  // Park the skier beside the current stop; it glides there when the stop changes.
+  useLayoutEffect(() => {
+    const place = () => {
+      const li = list.current?.querySelectorAll<HTMLElement>(":scope > li")[current];
+      if (li) setSkierY(li.offsetTop + li.offsetHeight / 2);
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [current, stops.length]);
+
   return (
     <nav
       aria-label="Sections"
-      className="fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-w)] flex-col overflow-y-auto border-r border-border bg-paper py-7 pl-5 pr-3 min-[1100px]:flex"
+      className="fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-w)] flex-col overflow-y-auto border-r border-border bg-paper py-7 pl-3 pr-3 min-[1100px]:flex"
     >
       <a
         href="#top"
@@ -77,16 +110,30 @@ export function GuideRail({ stops, current }: { stops: Stop[]; current: number }
           {trip.datesShort}
         </span>
       </a>
-      <ol className="my-auto pt-6">
+      <ol ref={list} className="relative my-auto pl-7 pt-6">
+        {skierY !== null && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 top-0 text-signal transition-transform duration-500 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateY(${skierY - 12}px)` }}
+          >
+            <Skier />
+          </span>
+        )}
         {stops.map((s, i) => (
           <li key={s.id} className="relative">
             <button
               type="button"
               onClick={() => goToSection(s.id)}
               aria-current={i === current ? "step" : undefined}
-              className="flex min-h-11 w-full items-center gap-3 rounded-md py-1.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex min-h-9 w-full items-center gap-3 rounded-md py-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <GradeMark grade={sectionMeta[s.id].grade} n={s.n} state={stateOf(i, current)} />
+              <GradeMark
+                grade={sectionMeta[s.id].grade}
+                n={s.n}
+                state={stateOf(i, current)}
+                size="sm"
+              />
               <span
                 className={`text-sm leading-tight ${i === current ? "font-bold text-foreground" : "font-medium text-muted-foreground"}`}
               >
@@ -96,7 +143,7 @@ export function GuideRail({ stops, current }: { stops: Stop[]; current: number }
             {i < stops.length - 1 && (
               <span
                 aria-hidden="true"
-                className={`absolute left-[calc(1rem-1px)] top-[calc(100%-0.45rem)] h-[0.9rem] w-0.5 ${i < current ? "bg-ink" : "bg-border"}`}
+                className={`absolute left-[11px] top-[calc(100%-6px)] h-3 w-0.5 ${i < current ? "bg-ink" : "bg-border"}`}
               />
             )}
           </li>

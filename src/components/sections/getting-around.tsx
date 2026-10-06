@@ -5,15 +5,15 @@ import type { SectionProps } from "@/components/sections/registry";
 import { gettingAround, mountain } from "@/lib/trip";
 
 const muted = "text-muted-foreground";
-const smallTitle = "text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground";
+const smallTitle = "text-xs font-medium uppercase tracking-wider text-muted-foreground";
 
 type Circuit = (typeof gettingAround.shuttle.circuits)[number];
 
 // A stop-by-stop line, with the places we stay picked out.
 function CircuitLine({ circuit }: { circuit: Circuit }) {
   return (
-    <div className="border-t-[1.5px] border-ink pt-4">
-      <h4 className="text-lg font-bold">{circuit.name}</h4>
+    <div className="border-t border-border pt-4">
+      <h4 className="text-base font-semibold">{circuit.name}</h4>
       <ol className="mt-4">
         {circuit.stops.map((stop, i) => {
           const ours = circuit.highlight.includes(stop);
@@ -31,7 +31,7 @@ function CircuitLine({ circuit }: { circuit: Circuit }) {
               )}
               <span className={`text-sm sm:text-base ${ours ? "font-bold" : ""}`}>{stop}</span>
               {ours && (
-                <span className="rounded-full bg-mustard/50 px-2 py-0.5 text-[0.65rem] font-extrabold uppercase">
+                <span className="rounded-full bg-mustard/50 px-2 py-0.5 text-[0.65rem] font-semibold uppercase">
                   Where we stay
                 </span>
               )}
@@ -50,12 +50,12 @@ export function GettingAround({ n, tone }: SectionProps) {
     <GuideSection id="around" n={n} tone={tone} title={gettingAround.title}>
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div className="rounded-2xl bg-card p-4 sm:p-5">
-          <h3 className="text-lg uppercase">{shuttle.title}</h3>
+          <h3 className="text-base font-semibold">{shuttle.title}</h3>
           <dl className="mt-3 grid gap-2 sm:grid-cols-2">
             {shuttle.hours.map((h) => (
               <div key={h.days} className="rounded-xl bg-mint px-4 py-3">
                 <dt className={smallTitle}>{h.days}</dt>
-                <dd className="mt-1 font-display text-2xl">{h.times}</dd>
+                <dd className="mt-1 text-xl font-semibold">{h.times}</dd>
               </div>
             ))}
           </dl>
@@ -74,7 +74,7 @@ export function GettingAround({ n, tone }: SectionProps) {
             href={shuttle.link.href}
             target="_blank"
             rel="noreferrer"
-            className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
+            className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
           >
             {shuttle.link.label}
             <ExternalLink className="size-3.5" aria-hidden="true" />
@@ -82,15 +82,15 @@ export function GettingAround({ n, tone }: SectionProps) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="rounded-2xl border-[1.5px] border-border bg-card p-4">
+          <div className="border-t border-border pt-3">
             <p className={smallTitle}>{mountain.title}</p>
             <p className="mt-1 text-sm leading-relaxed sm:text-base">{mountain.intro}</p>
           </div>
-          <div className="rounded-2xl border-[1.5px] border-border bg-card p-4">
+          <div className="border-t border-border pt-3">
             <p className={smallTitle}>{gettingAround.home.title}</p>
             <p className="mt-1 text-sm leading-relaxed sm:text-base">{gettingAround.home.body}</p>
           </div>
-          <div className="rounded-2xl border-[1.5px] border-border bg-card p-4">
+          <div className="border-t border-border pt-3">
             <p className={smallTitle}>{gettingAround.valley.title}</p>
             <p className="mt-1 text-sm leading-relaxed sm:text-base">{gettingAround.valley.body}</p>
           </div>

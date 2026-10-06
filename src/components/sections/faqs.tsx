@@ -15,7 +15,7 @@ export function Faqs({ n, tone }: SectionProps) {
   return (
     <GuideSection id="faqs" n={n} tone={tone} title={faqSection.title}>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
-        <div className="border-t-[1.5px] border-ink">
+        <div className="border-t border-border">
           {shown.map((faq, i) => {
             const isOpen = open === i;
             return (
@@ -45,7 +45,7 @@ export function Faqs({ n, tone }: SectionProps) {
                         href={faq.link.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-bold text-primary"
+                        className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-medium text-primary"
                       >
                         {faq.link.label}
                         <ExternalLink className="size-3.5" aria-hidden="true" />

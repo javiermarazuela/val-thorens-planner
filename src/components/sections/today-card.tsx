@@ -3,26 +3,22 @@ import { ExternalLink } from "lucide-react";
 
 import { StatusBadge } from "@/components/status-badge";
 import { dayDetails, dayDetailsStatus, mountain, week } from "@/lib/trip";
-import { daysToGo, tripDayIndex } from "@/lib/trip-day";
+import { tripDayIndex } from "@/lib/trip-day";
 
 const snowReport = mountain.links.find((l) => l.label === "Snow report");
 
-const label = "text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground";
+const label = "text-xs font-medium uppercase tracking-wider text-muted-foreground";
 
 // A compact dashboard for one day of the trip, the same for everyone. It opens
 // on the real day during the trip and on day 1 before it; the buttons switch day.
 export function TodayCard() {
   const [day, setDay] = useState(0);
-  const [live, setLive] = useState<{ today: number | null; toGo: number | null }>({
-    today: null,
-    toGo: null,
-  });
+  const [today, setToday] = useState<number | null>(null);
 
   useEffect(() => {
-    const now = new Date();
-    const today = tripDayIndex(now);
-    setLive({ today, toGo: daysToGo(now) });
-    if (today !== null) setDay(today);
+    const index = tripDayIndex(new Date());
+    setToday(index);
+    if (index !== null) setDay(index);
   }, []);
 
   const info = week[day];
@@ -31,41 +27,31 @@ export function TodayCard() {
 
   return (
     <div className="rounded-3xl border-[1.5px] border-border bg-card p-5 shadow-[0_12px_40px_-20px_oklch(0.27_0.06_258/0.45)] sm:p-7">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
-            {live.today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.day}{" "}
-            {info.date}
-          </p>
-          <h2 className="mt-1 text-xl uppercase leading-tight sm:text-2xl">{info.title}</h2>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-            {info.body}
-          </p>
-          {live.toGo !== null && (
-            <p className="mt-2 text-sm font-bold">
-              {live.toGo === 1 ? "1 day to go." : `${live.toGo} days to go.`}
-            </p>
-          )}
-        </div>
-        <div
-          role="tablist"
-          aria-label="Pick a day"
-          className="flex max-w-full gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
-          {week.map((d, i) => (
-            <button
-              key={d.date}
-              type="button"
-              role="tab"
-              aria-selected={i === day}
-              onClick={() => setDay(i)}
-              className={`flex h-14 w-12 shrink-0 flex-col items-center justify-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${i === day ? "bg-ink text-paper" : "bg-mint text-ink"}`}
-            >
-              <span className="text-[0.7rem] font-semibold uppercase">{d.day}</span>
-              <span className="font-display text-lg leading-none">{d.date.split(" ")[0]}</span>
-            </button>
-          ))}
-        </div>
+      <div
+        role="tablist"
+        aria-label="Pick a day"
+        className="flex max-w-full gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {week.map((d, i) => (
+          <button
+            key={d.date}
+            type="button"
+            role="tab"
+            aria-selected={i === day}
+            onClick={() => setDay(i)}
+            className={`flex h-14 w-12 shrink-0 flex-col items-center justify-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${i === day ? "bg-ink text-paper" : "bg-mint text-ink"}`}
+          >
+            <span className="text-[0.7rem] font-semibold uppercase">{d.day}</span>
+            <span className="font-display text-lg leading-none">{d.date.split(" ")[0]}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-primary">
+          {today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.day} {info.date}
+        </p>
+        <h2 className="mt-1 text-lg font-semibold leading-tight sm:text-xl">{info.title}</h2>
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -105,7 +91,7 @@ export function TodayCard() {
               href={snowReport.href}
               target="_blank"
               rel="noreferrer"
-              className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-bold text-primary underline underline-offset-4 hover:no-underline"
+              className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
             >
               {snowReport.label}
               <ExternalLink className="size-3.5" aria-hidden="true" />
@@ -113,16 +99,12 @@ export function TodayCard() {
           )}
         </div>
 
-        <div className="rounded-2xl bg-mustard p-4 text-ink">
+        <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-bold uppercase tracking-[0.14em]">Challenge of the day</p>
+            <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
             <StatusBadge status={dayDetailsStatus} />
           </div>
           <p className="mt-2 text-base font-semibold leading-snug">{more.challenge}</p>
-        </div>
-
-        <div className="flex items-center rounded-2xl border-[1.5px] border-dashed border-border p-4 text-sm text-muted-foreground">
-          Your room, ski group and rental. With sign-in, later.
         </div>
       </div>
     </div>

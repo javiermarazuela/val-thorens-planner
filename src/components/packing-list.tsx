@@ -64,8 +64,8 @@ export function PackingList() {
 
       <div className="mt-3 grid gap-3 lg:grid-cols-3">
         {packing.map((group) => (
-          <div key={group.group} className="rounded-lg border border-border bg-background p-4">
-            <h3 className="text-base uppercase">{group.group}</h3>
+          <div key={group.group} className="border-t border-border pt-3">
+            <h3 className="text-base font-semibold">{group.group}</h3>
             <ul className="mt-2">
               {group.items.map((item) => {
                 const isChecked = hydrated && checked.includes(item);

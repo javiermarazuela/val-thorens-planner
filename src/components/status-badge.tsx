@@ -20,7 +20,7 @@ export function StatusBadge({
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide ${
+      className={`inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wide ${
         status === "preliminary"
           ? "border-signal/40 bg-mustard/40 text-ink"
           : "border-primary/25 bg-secondary text-secondary-foreground"

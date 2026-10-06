@@ -123,10 +123,10 @@ export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
 // Before the trip: follow the journey. During it: what you need in resort first.
 export const journeyOrder: SectionId[] = [
   "welcome",
-  "daily-plan",
   "getting-here",
   "stay",
   "schedule",
+  "daily-plan",
   "maps",
   "around",
   "todo",
@@ -137,8 +137,8 @@ export const journeyOrder: SectionId[] = [
 
 export const tripOrder: SectionId[] = [
   "welcome",
-  "daily-plan",
   "schedule",
+  "daily-plan",
   "maps",
   "around",
   "stay",

@@ -1,7 +1,13 @@
+import { useEffect, useState } from "react";
+
 import heroImage from "@/assets/val-thorens-trip.jpg";
 import { hero, trip } from "@/lib/trip";
+import { daysToGo } from "@/lib/trip-day";
 
 export function Welcome() {
+  const [toGo, setToGo] = useState<number | null>(null);
+  useEffect(() => setToGo(daysToGo(new Date())), []);
+
   return (
     <section id="welcome" className="scroll-mt-[var(--header-h)]">
       <div className="relative min-h-[32svh] overflow-hidden bg-ink sm:min-h-[38svh]">
@@ -27,6 +33,11 @@ export function Welcome() {
               {trip.people} {hero.peopleSuffix}
             </span>
           </p>
+          {toGo !== null && (
+            <p className="mt-1 text-sm text-paper/90">
+              {toGo === 1 ? "1 day to go" : `${toGo} days to go`}
+            </p>
+          )}
         </div>
       </div>
     </section>

@@ -6,7 +6,7 @@ import { sectionMeta, type SectionId } from "@/lib/trip";
 export type Tone = "paper" | "mint" | "alert";
 
 const tones: Record<Tone, string> = {
-  paper: "bg-transparent",
+  paper: "border-t border-border bg-transparent",
   mint: "border-y border-border bg-mint/80",
   alert: "bg-alert text-paper",
 };
@@ -34,7 +34,7 @@ export function GuideSection({
       <div className="mx-auto max-w-5xl px-5 xl:max-w-6xl">
         <div className="flex items-center gap-3">
           <GradeMark grade={sectionMeta[id].grade} n={n} state="current" size="md" />
-          <h2 className="text-xl uppercase leading-none sm:text-3xl">{title}</h2>
+          <h2 className="text-xl font-bold leading-none sm:text-2xl">{title}</h2>
         </div>
         <div className="mt-5 sm:mt-6">{children}</div>
       </div>

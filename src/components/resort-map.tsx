@@ -160,7 +160,7 @@ export function ResortMap() {
       <button
         type="button"
         onClick={() => setActive("all")}
-        className={`flex min-h-8 items-center rounded-full border px-3 py-1 text-xs font-bold uppercase transition ${
+        className={`flex min-h-8 items-center rounded-full border px-3 py-1 text-xs font-medium transition ${
           active === "all"
             ? "border-foreground bg-foreground text-background"
             : "border-border hover:border-foreground"
@@ -173,7 +173,7 @@ export function ResortMap() {
           key={kind.id}
           type="button"
           onClick={() => setActive(kind.id)}
-          className={`flex items-center gap-2 flex min-h-8 items-center rounded-full border px-3 py-1 text-xs font-bold uppercase transition ${
+          className={`flex items-center gap-2 flex min-h-8 items-center rounded-full border px-3 py-1 text-xs font-medium transition ${
             active === kind.id
               ? "border-foreground bg-foreground text-background"
               : "border-border hover:border-foreground"
@@ -226,7 +226,7 @@ export function ResortMap() {
                 href={googleMapsUrl(point.name)}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-1 inline-flex min-h-8 items-center gap-2 text-sm font-bold text-primary"
+                className="mt-1 inline-flex min-h-8 items-center gap-2 text-sm font-medium text-primary"
               >
                 {mapSection.openInMaps}
                 <ExternalLink className="size-3.5" aria-hidden="true" />

@@ -5,7 +5,7 @@ import type { SectionProps } from "@/components/sections/registry";
 import { contacts, trouble } from "@/lib/trip";
 
 const card = "flex flex-col rounded-2xl border-[1.5px] border-paper/55 p-4";
-const small = "text-xs font-bold uppercase tracking-[0.14em]";
+const small = "text-xs font-medium uppercase tracking-wider";
 
 export function Trouble({ n }: SectionProps) {
   const { emergency, doctor, pharmacy } = trouble;

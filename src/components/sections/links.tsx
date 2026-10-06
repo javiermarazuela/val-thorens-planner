@@ -12,17 +12,15 @@ export function Links({ n, tone }: SectionProps) {
     <GuideSection id="links" n={n} tone={tone} title={linksSection.title}>
       <div className="grid gap-6">
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-[0.16em]">
-            {linksSection.linksTitle}
-          </h3>
-          <ul className="mt-2 grid gap-x-8 border-t-[1.5px] border-ink md:grid-cols-2">
+          <h3 className="text-base font-semibold">{linksSection.linksTitle}</h3>
+          <ul className="mt-2 grid gap-x-8 border-t border-border md:grid-cols-2">
             {links.map((link) => (
               <li key={link.href} className="border-b border-border">
                 <a
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex min-h-9 items-center justify-between gap-3 text-base font-bold"
+                  className="flex min-h-9 items-center justify-between gap-3 text-base font-medium"
                 >
                   {link.label}
                   <ExternalLink className="size-4 text-primary" aria-hidden="true" />
@@ -32,9 +30,7 @@ export function Links({ n, tone }: SectionProps) {
           </ul>
         </div>
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-[0.16em]">
-            {linksSection.packingTitle}
-          </h3>
+          <h3 className="text-base font-semibold">{linksSection.packingTitle}</h3>
           <div className="mt-3">
             <PackingList />
           </div>

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { GuideHeader, GuideRail } from "@/components/guide-nav";
-import type { Tone } from "@/components/guide-section";
 import { sectionComponents } from "@/components/sections/registry";
 import { pickOrder, sectionsFor, stopsFor, type GuideOrder } from "@/lib/guide-order";
 import { site, trip, type SectionId } from "@/lib/trip";
@@ -39,12 +38,10 @@ function Home() {
       <GuideRail stops={stops} current={index} />
       <GuideHeader stops={stops} current={index} progress={progress} />
 
-      {stops.map((stop, i) => {
+      {stops.map((stop) => {
         const Section = sectionComponents[stop.id];
         if (!Section) return null;
-        // The welcome hero is not banded; the sections after it alternate.
-        const tone: Tone = i % 2 === 0 ? "mint" : "paper";
-        return <Section key={stop.id} n={stop.n} tone={tone} />;
+        return <Section key={stop.id} n={stop.n} tone="paper" />;
       })}
 
       <footer className="bg-ink text-paper">

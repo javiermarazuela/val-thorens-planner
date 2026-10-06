@@ -25,14 +25,14 @@ export function Schedule({ n, tone }: SectionProps) {
               className={`flex flex-col rounded-2xl border-[1.5px] bg-card p-4 ${isToday ? "border-ink" : "border-border"}`}
             >
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {day.day} · Jan{isToday ? " · Today" : ""}
                 </span>
-                <span className="font-display text-3xl leading-[0.9]">
+                <span className="text-2xl font-semibold leading-none">
                   {day.date.split(" ")[0]}
                 </span>
               </div>
-              <h3 className="mt-2 font-sans text-base font-bold normal-case leading-snug">
+              <h3 className="mt-2 font-sans text-base font-semibold normal-case leading-snug">
                 {day.title}
               </h3>
               {events.length > 0 && (

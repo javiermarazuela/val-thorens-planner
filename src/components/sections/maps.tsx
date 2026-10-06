@@ -5,7 +5,7 @@ import { ResortMap } from "@/components/resort-map";
 import type { SectionProps } from "@/components/sections/registry";
 import { mapSection } from "@/lib/trip";
 
-const smallTitle = "text-sm font-bold uppercase tracking-[0.16em]";
+const smallTitle = "text-base font-semibold";
 
 // Town map and ski map side by side on a wide screen, one above the other on a phone.
 export function Maps({ n, tone }: SectionProps) {
@@ -42,7 +42,7 @@ export function Maps({ n, tone }: SectionProps) {
                 key={m.file}
                 href={m.file}
                 download
-                className="inline-flex min-h-8 items-center font-bold text-primary underline underline-offset-4 hover:no-underline"
+                className="inline-flex min-h-8 items-center font-medium text-primary underline underline-offset-4 hover:no-underline"
               >
                 {m.label}
               </a>
@@ -51,7 +51,7 @@ export function Maps({ n, tone }: SectionProps) {
               href={mapSection.officialMapUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-8 items-center gap-1.5 font-bold text-primary underline underline-offset-4 hover:no-underline"
+              className="inline-flex min-h-8 items-center gap-1.5 font-medium text-primary underline underline-offset-4 hover:no-underline"
             >
               {mapSection.officialMapLabel}
               <ExternalLink className="size-3.5" aria-hidden="true" />
