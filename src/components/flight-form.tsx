@@ -188,6 +188,7 @@ export function FlightForm({
     setMessage(null);
     const { error } = await supabase.from("flights").upsert({
       user_id: session.user.id,
+      name: session.user.user_metadata?.["full_name"] ?? null,
       ...legToRow(arrival, "arr"),
       ...legToRow(departure, "dep"),
     });
