@@ -235,9 +235,9 @@ export const week: Array<{
   {
     day: "Mon",
     date: "11 Jan",
-    title: "Ski day + first après",
+    title: "Ski day + first après & theme night",
     status: "soon",
-    body: "A full day on the hill, then the first big après. The venue is still being locked in.",
+    body: "A full day on the hill, then the first big après and a theme night. The theme and the venue are still being decided, so hold off on the costume shopping.",
   },
   {
     day: "Tue",
@@ -256,9 +256,9 @@ export const week: Array<{
   {
     day: "Thu",
     date: "14 Jan",
-    title: "Ski day + second après",
+    title: "Ski day + second après & theme night",
     status: "soon",
-    body: "Another day on the hill and a second après, and the point in the week where the team games usually get decided.",
+    body: "Another day on the hill, a second après and the second theme night, and the point in the week where the team games usually get decided.",
   },
   {
     day: "Fri",
@@ -307,6 +307,7 @@ export const dayDetails: Array<{
     events: [
       { time: "09:00", what: "Ski day" },
       { time: "Afternoon", what: "Après 1 · venue TBA" },
+      { time: "Evening", what: "Theme night · theme TBA" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
@@ -335,6 +336,7 @@ export const dayDetails: Array<{
     events: [
       { time: "09:00", what: "Ski day" },
       { time: "Afternoon", what: "Après 2 · venue TBA" },
+      { time: "Evening", what: "Theme night · theme TBA" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
