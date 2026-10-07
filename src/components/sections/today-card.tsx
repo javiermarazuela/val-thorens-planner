@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 
+import { EventIcon } from "@/components/event-icon";
 import { StatusBadge } from "@/components/status-badge";
 import { dayDetails, dayDetailsStatus, mountain, week } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
@@ -61,12 +62,16 @@ export function TodayCard() {
             <StatusBadge status={dayDetailsStatus} />
           </div>
           <ul className="mt-2">
+            <li className="flex items-center gap-3 border-b border-border py-2.5 text-sm sm:text-base">
+              <EventIcon icon={info.daytime.icon} />
+              <span>{info.daytime.label}</span>
+            </li>
             {more.events.map((e) => (
               <li
                 key={e.what}
-                className="flex gap-3 border-b border-border py-2.5 text-sm last:border-b-0 sm:text-base"
+                className="flex items-center gap-3 border-b border-border py-2.5 text-sm last:border-b-0 sm:text-base"
               >
-                <b className="w-14 shrink-0">{e.time}</b>
+                <EventIcon icon={e.icon} />
                 <span>{e.what}</span>
               </li>
             ))}

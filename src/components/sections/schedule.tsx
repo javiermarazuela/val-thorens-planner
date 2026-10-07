@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { EventIcon } from "@/components/event-icon";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
@@ -22,29 +23,38 @@ export function Schedule({ n, tone }: SectionProps) {
           return (
             <li
               key={day.date}
-              className={`flex flex-col rounded-2xl border-[1.5px] bg-card p-4 ${isToday ? "border-ink" : "border-border"}`}
+              className={`flex flex-col overflow-hidden rounded-2xl border-[1.5px] bg-card ${isToday ? "border-ink" : "border-border"}`}
             >
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  {day.day} · Jan{isToday ? " · Today" : ""}
+              <div className="flex items-baseline justify-between gap-3 bg-primary/10 px-4 py-3">
+                <span className="text-xs font-medium uppercase tracking-wider text-primary">
+                  {day.day}
+                  {isToday ? " · Today" : ""}
                 </span>
-                <span className="text-2xl font-semibold leading-none">
-                  {day.date.split(" ")[0]}
+                <span className="flex items-baseline gap-1.5">
+                  <span className="text-xs font-medium uppercase tracking-wider text-primary">
+                    Jan
+                  </span>
+                  <span className="text-2xl font-semibold leading-none">
+                    {day.date.split(" ")[0]}
+                  </span>
                 </span>
               </div>
-              <h3 className="mt-2 font-sans text-base font-semibold normal-case leading-snug">
-                {day.title}
-              </h3>
-              {events.length > 0 && (
-                <ul className="mt-3 border-t border-border pt-1">
-                  {events.map((e) => (
-                    <li key={e.what} className="flex gap-3 py-1 text-sm">
-                      <b className="w-14 shrink-0">{e.time}</b>
-                      <span>{e.what}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div className="p-4 pt-3">
+                <p className="flex items-center gap-2.5 text-base font-semibold">
+                  <EventIcon icon={day.daytime.icon} />
+                  {day.daytime.label}
+                </p>
+                {events.length > 0 && (
+                  <ul className="mt-3 border-t border-border pt-1">
+                    {events.map((e) => (
+                      <li key={e.what} className="flex items-center gap-2.5 py-1.5 text-sm">
+                        <EventIcon icon={e.icon} />
+                        <span>{e.what}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </li>
           );
         })}
