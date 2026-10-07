@@ -153,7 +153,7 @@ export const tripOrder: SectionId[] = [
 export const tripStartsAt = "2027-01-08T23:00:00Z";
 
 // Set to true to keep the Daily plan out of the guide until the trip starts.
-export const hideDailyPlanUntilTrip = false;
+export const hideDailyPlanUntilTrip = true;
 
 export const resortFacts = [
   {
@@ -188,7 +188,7 @@ export const stay = {
     "Self-catered apartments in the Plein Sud sector of Val Thorens, right by the slopes and a short walk from the lifts, the bars and each other.",
   imageAlt:
     "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
-  roomsNote: "You pick your roommates when you register on SkiSync.",
+  roomsNote: "Housing signups to be released in due course.",
   // A smaller group is staying at these two. Addresses are from each place's
   // own website; the map pins are at their OpenStreetMap positions.
   othersTitle: "Also staying",
