@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
-import { MountainSnow } from "lucide-react";
 
+import sscLogo from "@/assets/ssc-logo.jpg";
 import { Button } from "@/components/ui/button";
 import { site, trip } from "@/lib/trip";
 
@@ -13,9 +13,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <a href="/" className="flex items-center gap-2.5" aria-label={site.backToTopLabel}>
-          <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground">
-            <MountainSnow aria-hidden="true" className="size-5" />
-          </span>
+          <img
+            src={sscLogo}
+            alt=""
+            width={36}
+            height={36}
+            className="size-9 shrink-0 rounded-md object-cover"
+          />
           <span>
             <span className="block font-display text-sm uppercase leading-none">{site.name}</span>
             <span className="mt-1 block text-[0.65rem] font-bold text-muted-foreground">

@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { MountainSnow, Plane } from "lucide-react";
+import { Plane } from "lucide-react";
 
+import sscLogo from "@/assets/ssc-logo.jpg";
 import { Button } from "@/components/ui/button";
 import { goToSection, scrollToTop } from "@/lib/use-scroll-spy";
 import type { Stop } from "@/lib/guide-order";
@@ -192,9 +193,13 @@ export function GuideHeader({
           className="flex min-h-11 items-center gap-2.5 min-[1100px]:hidden"
           aria-label={site.backToTopLabel}
         >
-          <span className="grid size-9 place-items-center rounded-md bg-ink text-paper">
-            <MountainSnow aria-hidden="true" className="size-5" />
-          </span>
+          <img
+            src={sscLogo}
+            alt=""
+            width={36}
+            height={36}
+            className="size-9 shrink-0 rounded-md object-cover"
+          />
           <span className="hidden font-display text-sm uppercase leading-none min-[440px]:inline">
             {site.name}
           </span>
