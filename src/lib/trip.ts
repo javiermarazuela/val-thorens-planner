@@ -828,7 +828,7 @@ export const privacy = {
     "The public page collects nothing. No accounts, no tracking, no ads.",
     "If you sign in with Google to reach the members area, we receive your name and email address from Google. That is all. We don't see your Google password or anything else in your account.",
     "We use your email only to check you're a Columbia student or an approved guest, and to show you the members area. We don't share it, sell it or use it for marketing.",
-    "If you fill in the flight details form, we store what you enter so the committee can organise transfers. To find your flight we send the flight number and date, nothing about you, to an airline data service.",
+    "If you fill in the flight details form, we store what you enter, along with your name, and the committee keeps it in a private spreadsheet so it can organise transfers. To find your flight we send the flight number and date, nothing about you, to an airline data service.",
     "Your checklist on the page is saved on your own device, not on our servers.",
     "Want your data removed? Ask in the trip WhatsApp group and the committee will delete it.",
   ],
