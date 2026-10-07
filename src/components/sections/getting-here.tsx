@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 import { FlightForm } from "@/components/flight-form";
+import { FlightsDialog } from "@/components/flights-dialog";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
@@ -75,7 +76,7 @@ function Leg({ title, date, children }: { title: string; date: string; children:
 
 // Opens in place. Only mounted once opened, so the session check (browser
 // only) never runs during server rendering.
-function FlightsPanel() {
+function FlightsPanel({ onClose }: { onClose: () => void }) {
   const { supabase, session, authError, signIn } = useSession();
 
   if (!supabase)
@@ -99,13 +100,13 @@ function FlightsPanel() {
       </div>
     );
   }
-  return <FlightForm supabase={supabase} session={session} showHeading={false} />;
+  return <FlightForm supabase={supabase} session={session} onClose={onClose} />;
 }
 
 function FlightsCard() {
   const [open, setOpen] = useState(false);
 
-  // "My flights" buttons elsewhere on the page open this card.
+  // "My flights" buttons elsewhere on the page open the pop-up.
   useEffect(() => {
     const openIfAsked = () => {
       if (window.location.hash === "#flights") setOpen(true);
@@ -123,27 +124,18 @@ function FlightsCard() {
   return (
     <div
       id="flights"
-      className="mt-6 scroll-mt-[calc(var(--header-h)+1rem)] rounded-2xl border border-border bg-secondary/40 p-4 sm:p-5"
+      className="mt-6 flex scroll-mt-[calc(var(--header-h)+1rem)] flex-col items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-5 text-center sm:flex-row sm:justify-between sm:text-left"
     >
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex min-h-11 w-full items-center justify-between gap-3 text-left"
-      >
-        <span>
-          <b className="block text-base font-semibold">Tell us how you're getting here</b>
-          <span className={`text-sm ${muted}`}>
-            Add your flights and say if you want a seat on the airport coach.
-          </span>
-        </span>
-        <span className="text-xl font-medium">{open ? "−" : "+"}</span>
-      </button>
-      {open && (
-        <div className="mt-4 border-t border-border pt-4">
-          <FlightsPanel />
-        </div>
-      )}
+      <p className={`text-sm ${muted}`}>
+        Tell us when you land and leave, and if you want a seat on the airport coach. You can change
+        it any time.
+      </p>
+      <Button className="shrink-0" onClick={() => setOpen(true)}>
+        Tell us how you're getting here
+      </Button>
+      <FlightsDialog open={open} onClose={() => setOpen(false)} title="How are you getting here?">
+        <FlightsPanel onClose={() => setOpen(false)} />
+      </FlightsDialog>
     </div>
   );
 }
