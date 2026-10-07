@@ -1,4 +1,5 @@
-export type GuideStatus = "confirmed" | "partial" | "soon";
+// "preliminary" is sample data the committee has not confirmed yet. It shows a badge.
+export type GuideStatus = "confirmed" | "partial" | "soon" | "preliminary";
 
 export const trip = {
   destination: "Val Thorens",
@@ -29,7 +30,7 @@ export const site = {
   homeOgTitle: `${siteName} — Ski Club Trip`,
   backToTopLabel: `${siteName}, back to top`,
   // Search results and link previews for the home page.
-  description: `${trip.people} of us in Val Thorens from ${trip.dates}. See the week, accommodation, price and essential trip guide.`,
+  description: `${trip.people} of us in Val Thorens from ${trip.dates}. See the week, where we stay and the essential trip guide.`,
   ogDescription: `One week, ${trip.people} people, and ${trip.linkedPiste} of linked piste.`,
 };
 
@@ -49,7 +50,8 @@ export const resortIntro = {
 };
 
 export const mapSection = {
-  title: "Map",
+  title: "Maps",
+  townMapTitle: "Town map",
   allLabel: "Everything",
   hint: "Tap a pin for what it is, and a link straight to it in Google Maps.",
   openInMaps: "Open in Google Maps",
@@ -57,6 +59,21 @@ export const mapSection = {
     "Pins sit on the real venues, except the beginner carpets, which are approximate. Each place’s name opens its location in Google Maps.",
   officialMapLabel: "See the official resort map",
   officialMapUrl: "https://www.valthorens.com/en/decouvrir/plan-station/",
+  pisteMapsTitle: "Ski map",
+  pisteMapImage: "/maps/val-thorens-piste-map.jpg",
+  pisteMapAlt: "Val Thorens and Orelle piste map, 2025–26",
+  pisteMapHint: "Tap the map to open it full size.",
+  pisteMapDownloads: [
+    {
+      label: "Download Val Thorens map",
+      file: "/maps/Plan-Val-Thorens-Orelle-25.26-BD.pdf",
+    },
+    {
+      label: "Download Les 3 Vallées full map",
+      file: "/maps/Plan-3-Vallees-25.26-BD.pdf",
+    },
+  ],
+  pisteMapsNote: "Official 2025–26 maps from Val Thorens. Saved here so they work without signal.",
 };
 
 export const weekSection = {
@@ -64,23 +81,79 @@ export const weekSection = {
   intro: "Two travel days, six full days in between. Theme details will appear as they are agreed.",
 };
 
-export const guide = {
-  summaryLabel: "See the guide",
-  packingLabel: "Open packing list",
-};
-
 export const faqSection = {
   title: "FAQs",
 };
 
-export const sections = [
-  { id: "stay", label: "Where we stay" },
-  { id: "week", label: "The week" },
-  { id: "map", label: "Map" },
-  { id: "guide", label: "Guide" },
-  { id: "price", label: "Price" },
-  { id: "contact", label: "Contact" },
-] as const;
+// The guide's sections. The page renders them in one of two orders (see
+// lib/guide-order.ts): journey order before the trip starts, trip order once
+// it has. A section with no component yet is skipped, so later phases only
+// have to register theirs. `grade` is the piste colour and shape of its stop
+// on the trail; every stop also carries its number, so colour is never the
+// only signal.
+export type SectionId =
+  | "welcome"
+  | "daily-plan"
+  | "getting-here"
+  | "stay"
+  | "schedule"
+  | "maps"
+  | "around"
+  | "todo"
+  | "faqs"
+  | "trouble"
+  | "links";
+
+export type Grade = "green" | "blue" | "red" | "black";
+
+export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
+  welcome: { label: "Welcome", grade: "green" },
+  "daily-plan": { label: "Daily plan", grade: "green" },
+  "getting-here": { label: "Getting here & away", grade: "blue" },
+  stay: { label: "Where we stay", grade: "green" },
+  schedule: { label: "The week", grade: "green" },
+  maps: { label: "Maps", grade: "blue" },
+  around: { label: "Getting around", grade: "blue" },
+  todo: { label: "Things to do", grade: "red" },
+  faqs: { label: "FAQs", grade: "black" },
+  trouble: { label: "In case of trouble", grade: "black" },
+  links: { label: "Links & packing", grade: "black" },
+};
+
+// Before the trip: follow the journey. During it: what you need in resort first.
+export const journeyOrder: SectionId[] = [
+  "welcome",
+  "getting-here",
+  "stay",
+  "schedule",
+  "daily-plan",
+  "maps",
+  "around",
+  "todo",
+  "faqs",
+  "trouble",
+  "links",
+];
+
+export const tripOrder: SectionId[] = [
+  "welcome",
+  "schedule",
+  "daily-plan",
+  "maps",
+  "around",
+  "stay",
+  "getting-here",
+  "todo",
+  "faqs",
+  "trouble",
+  "links",
+];
+
+// Midnight at the start of Saturday 9 January 2027 in France (CET, UTC+1).
+export const tripStartsAt = "2027-01-08T23:00:00Z";
+
+// Set to true to keep the Daily plan out of the guide until the trip starts.
+export const hideDailyPlanUntilTrip = false;
 
 export const resortFacts = [
   {
@@ -116,6 +189,26 @@ export const stay = {
   imageAlt:
     "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
   roomsNote: "You pick your roommates when you register on SkiSync.",
+  // A smaller group is staying at these two. Addresses are from each place's
+  // own website; the map pins are at their OpenStreetMap positions.
+  othersTitle: "Also staying",
+  othersQualifier: "(small groups)",
+  others: [
+    {
+      name: "Résidence L’Oxalys",
+      type: "4-star apartment residence",
+      address: "Resort entrance, 73440 Val Thorens",
+      note: "Premium apartments for 2 to 8 people. A smaller group of us is here.",
+      status: "partial" as GuideStatus,
+    },
+    {
+      name: "Hôtel Le Hameau du Kashmir",
+      type: "4-star hotel",
+      address: "Entrée station, Grande Rue, 73440 Val Thorens",
+      note: "Hotel at the foot of the slopes, by the resort entrance. A smaller group of us is here.",
+      status: "partial" as GuideStatus,
+    },
+  ],
 };
 
 export const week: Array<{
@@ -183,6 +276,89 @@ export const week: Array<{
   },
 ];
 
+// What happens each day, in the same order as `week`. Times and events are
+// preliminary samples until the committee confirms them; the coach times come
+// from the committee's flights sheet and are marked TBC there.
+export const dayDetailsStatus: GuideStatus = "preliminary";
+export const dayDetails: Array<{
+  events: Array<{ time: string; what: string }>;
+  bus: string;
+  // The coach times are preliminary; the resort shuttle hours come from the resort.
+  busStatus: GuideStatus;
+  challenge: string;
+}> = [
+  {
+    events: [
+      { time: "TBA", what: "Check-in · Résidence Village Montana" },
+      { time: "Evening", what: "Welcome night" },
+    ],
+    bus: "Airport coaches leave Geneva at 08:30, 10:30 and 14:15 (to be confirmed)",
+    busStatus: "preliminary",
+    challenge: "Learn five names before dinner.",
+  },
+  {
+    events: [
+      { time: "Morning", what: "Lift passes and rentals" },
+      { time: "16:30", what: "Après · venue TBA" },
+    ],
+    bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
+    busStatus: "partial",
+    challenge: "Ride every lift on the Péclet side.",
+  },
+  {
+    events: [
+      { time: "09:00", what: "Ski day" },
+      { time: "21:00", what: "Theme night" },
+    ],
+    bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
+    busStatus: "partial",
+    challenge: "Find the best vin chaud in town.",
+  },
+  {
+    events: [{ time: "09:00", what: "Ski day · further into Les 3 Vallées" }],
+    bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
+    busStatus: "partial",
+    challenge: "Photo with a ski instructor.",
+  },
+  {
+    events: [
+      { time: "09:00", what: "Big mountain day" },
+      { time: "All day", what: "Non-skier programme" },
+    ],
+    bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
+    busStatus: "partial",
+    challenge: "Ski one run in full theme costume.",
+  },
+  {
+    events: [
+      { time: "09:00", what: "Ski day" },
+      { time: "21:00", what: "Theme night" },
+    ],
+    bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
+    busStatus: "partial",
+    challenge: "Nominate the most improved beginner.",
+  },
+  {
+    events: [
+      { time: "09:00", what: "Last day on snow" },
+      { time: "16:30", what: "Closing après" },
+      { time: "Evening", what: "Final night" },
+    ],
+    bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
+    busStatus: "partial",
+    challenge: "Pack tonight, not at 4 a.m. (You won’t.)",
+  },
+  {
+    events: [
+      { time: "TBA", what: "Check-out" },
+      { time: "05:15", what: "First coach to Geneva (to be confirmed)" },
+    ],
+    bus: "Coaches to Geneva leave at 05:15, 07:30 and 09:30 (to be confirmed)",
+    busStatus: "preliminary",
+    challenge: "Sleep on the coach. Everyone else will.",
+  },
+];
+
 export const mountain = {
   status: "partial" as GuideStatus,
   title: "Mountain",
@@ -204,31 +380,6 @@ export const offSnow = {
     "Some people never planned to ski. Some twist a knee on Monday. Some simply need a day that starts after midday. There is a proper daytime programme for all three, running through the week — not a consolation prize.",
   title: "Not skiing",
   forthcomingNote: "Day-by-day activities and meeting points are coming soon.",
-};
-
-export const goingOut = {
-  status: "soon" as GuideStatus,
-  title: "Eating & going out",
-  // Shown in place of each group's body while this section is still "soon".
-  placeholder: "shortlist coming soon.",
-  groups: [
-    {
-      title: "Lunch on the hill",
-      body: "A shortlist of mountain restaurants worth the stop, including the ones you can reach without being a good skier.",
-    },
-    {
-      title: "Dinner",
-      body: `Where ${trip.people} people can actually eat, and where a group of six should go instead.`,
-    },
-    {
-      title: "Après",
-      body: "The meeting points at the bottom of the hill, and the ones that go on far longer than intended.",
-    },
-    {
-      title: "Late and home",
-      body: "The clubs, and the honest answer on getting home afterwards in a pedestrian resort.",
-    },
-  ],
 };
 
 export const teamGames = {
@@ -351,6 +502,8 @@ export const faqs: Array<{
   status: GuideStatus;
   // Shown on the page; the rest wait for the full guide.
   featured?: boolean;
+  // Sales-era answers (cancelling, transfers). Kept here, not shown on the guide.
+  archived?: boolean;
   link?: { label: string; href: string };
 }> = [
   {
@@ -358,6 +511,11 @@ export const faqs: Array<{
     a: "Your own — flights aren’t in the package. Aim to land on Saturday 9 January and fly home on Saturday 16 January; Geneva (GVA) is the likely airport.",
     status: "partial",
     featured: true,
+  },
+  {
+    q: "I didn’t pre-book rental. Where do I go?",
+    a: "Recommended rental shops near Village Montana are coming soon. Pre-booking is cheaper and faster than queueing on the Sunday morning, so if you can still book, do.",
+    status: "soon",
   },
   {
     q: "What time is the last lift?",
@@ -398,6 +556,7 @@ export const faqs: Array<{
   },
   {
     q: "Can I cancel?",
+    archived: true,
     a: "Lodging, the social package and the deposit are non-refundable, and every cancellation carries a €75 fee. Lift passes and rentals are refundable (minus the 4% card fee) until 10 December; after that, nothing comes back.",
     status: "confirmed",
     featured: true,
@@ -408,6 +567,7 @@ export const faqs: Array<{
   },
   {
     q: "Can I transfer my place?",
+    archived: true,
     a: "Yes, to someone who isn’t already booked, through SkiSync. It costs €75, rising to €225 on 20 December, and transfers close on 26 December. The new person may not get the same lodging rate.",
     status: "confirmed",
     featured: true,
@@ -490,6 +650,24 @@ export const mapPoints: Array<{
     lat: 45.29731,
     lng: 6.57608,
     note: "Where we stay: self-catered apartments in the Plein Sud sector, by the slopes.",
+    status: "partial",
+  },
+  {
+    // OpenStreetMap position ("L'Oxalys", Voie de la Boucle).
+    name: "Résidence L’Oxalys",
+    kind: "stay",
+    lat: 45.29784,
+    lng: 6.57711,
+    note: "Where a smaller group of us is staying: 4-star apartments, a short walk from Village Montana.",
+    status: "partial",
+  },
+  {
+    // OpenStreetMap position ("Hameau du Kashmir Resort", Rue du Soleil).
+    name: "Hôtel Le Hameau du Kashmir",
+    kind: "stay",
+    lat: 45.29864,
+    lng: 6.57612,
+    note: "Where a smaller group of us is staying: a 4-star hotel by the resort entrance.",
     status: "partial",
   },
   // Lift pins sit on each lift's village station, taken from OpenStreetMap's
@@ -650,4 +828,408 @@ export const privacy = {
     "Your checklist on the page is saved on your own device, not on our servers.",
     "Want your data removed? Ask in the trip WhatsApp group and the committee will delete it.",
   ],
+};
+
+// Getting here & away. Flights are from the committee's flights sheet. Coach
+// times are marked TBC there, so they stay preliminary; the sheet notes the
+// coach ride is about 3.5 hours.
+export type Flight = {
+  airline: string;
+  number: string;
+  route: string;
+  dep: string;
+  arr: string;
+  nonstop: boolean;
+  // Lands the morning after leaving (overnight flights to Geneva).
+  nextDay?: boolean;
+};
+
+export const gettingHere = {
+  title: "Getting here & away",
+  intro: "Read this before you fly, and again on the last morning.",
+  airport: { label: "Airport", value: "Geneva (GVA)" },
+  arrive: { label: "Arrive", value: "Sat 9 Jan" },
+  leave: { label: "Leave", value: "Sat 16 Jan" },
+  flightsNote:
+    "Flights are not in the package, so book your own. These are the options we are suggesting.",
+  nonstopLabel: "Non-stop",
+  oneStopLabel: "1 stop",
+  showMore: (n: number) => `Show ${n} more`,
+  showFewer: "Show fewer",
+  noCoach: "No group coach",
+  out: {
+    title: "To Geneva",
+    date: "Fri 8 – Sat 9 Jan",
+    flights: [
+      {
+        airline: "United",
+        number: "UA956",
+        route: "EWR → GVA",
+        dep: "17:35",
+        arr: "07:25",
+        nonstop: true,
+        nextDay: true,
+      },
+      {
+        airline: "United / Swiss",
+        number: "LX23 / UA9719",
+        route: "JFK → GVA",
+        dep: "19:35",
+        arr: "09:20",
+        nonstop: true,
+        nextDay: true,
+      },
+      {
+        airline: "Swiss",
+        number: "LX17 + LX2802",
+        route: "JFK → ZRH → GVA",
+        dep: "16:25",
+        arr: "08:24",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "Delta",
+        number: "DL9357 / KL642 + DL9618 / KL1929",
+        route: "JFK → AMS → GVA",
+        dep: "17:00",
+        arr: "08:20",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "United",
+        number: "UA8187 / AC8641 + UA8390 / AC802",
+        route: "LGA → YUL → GVA",
+        dep: "17:35",
+        arr: "10:00",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "Air Canada",
+        number: "AC8641 + AC802",
+        route: "LGA → YUL → GVA",
+        dep: "17:35",
+        arr: "10:00",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "British Airways",
+        number: "BA116 + BA730",
+        route: "JFK → LHR → GVA",
+        dep: "20:05",
+        arr: "12:40",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "Swiss",
+        number: "LX15 + LX2824",
+        route: "JFK → ZRH → GVA",
+        dep: "21:00",
+        arr: "12:55",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "Swiss",
+        number: "LX19 + LX2806",
+        route: "EWR → ZRH → GVA",
+        dep: "22:00",
+        arr: "13:45",
+        nonstop: false,
+        nextDay: true,
+      },
+      {
+        airline: "British Airways",
+        number: "BA114 + BA732",
+        route: "JFK → LHR → GVA",
+        dep: "21:40",
+        arr: "13:50",
+        nonstop: false,
+        nextDay: true,
+      },
+    ] as Flight[],
+  },
+  home: {
+    title: "Back to New York",
+    date: "Sat 16 Jan",
+    flights: [
+      {
+        airline: "United",
+        number: "UA957",
+        route: "GVA → EWR",
+        dep: "09:15",
+        arr: "12:30",
+        nonstop: true,
+      },
+      {
+        airline: "Swiss / United",
+        number: "LX22 / UA9720",
+        route: "GVA → JFK",
+        dep: "11:35",
+        arr: "14:35",
+        nonstop: true,
+      },
+      {
+        airline: "United",
+        number: "LH1213 / UA961",
+        route: "GVA → FRA → EWR",
+        dep: "08:45",
+        arr: "13:55",
+        nonstop: false,
+      },
+      {
+        airline: "American",
+        number: "BA725 / BA189",
+        route: "GVA → LHR → EWR",
+        dep: "08:55",
+        arr: "15:35",
+        nonstop: false,
+      },
+      {
+        airline: "Aer Lingus",
+        number: "EI681 / EI101",
+        route: "GVA → DUB → EWR",
+        dep: "10:30",
+        arr: "16:15",
+        nonstop: false,
+      },
+      {
+        airline: "Delta",
+        number: "KL1932 + KL641",
+        route: "GVA → AMS → JFK",
+        dep: "12:05",
+        arr: "17:22",
+        nonstop: false,
+      },
+      {
+        airline: "British Airways / American",
+        number: "BA731 / BA179",
+        route: "GVA → LHR → JFK",
+        dep: "13:35",
+        arr: "19:50",
+        nonstop: false,
+      },
+      {
+        airline: "British Airways",
+        number: "BA731 / BA179",
+        route: "GVA → LHR → JFK",
+        dep: "14:05",
+        arr: "19:50",
+        nonstop: false,
+      },
+      {
+        airline: "Delta",
+        number: "AF1443 + AF008",
+        route: "GVA → CDG → JFK",
+        dep: "14:35",
+        arr: "19:20",
+        nonstop: false,
+      },
+      {
+        airline: "British Airways",
+        number: "BA733 / BA179",
+        route: "GVA → LHR → JFK",
+        dep: "14:40",
+        arr: "19:50",
+        nonstop: false,
+      },
+      {
+        airline: "British Airways / American",
+        number: "BA737 / BA183",
+        route: "GVA → LHR → JFK",
+        dep: "16:20",
+        arr: "22:25",
+        nonstop: false,
+      },
+      {
+        airline: "British Airways / American",
+        number: "BA739 / BA183",
+        route: "GVA → LHR → JFK",
+        dep: "17:15",
+        arr: "22:25",
+        nonstop: false,
+      },
+    ] as Flight[],
+  },
+};
+
+export const airportCoaches = {
+  status: "preliminary" as GuideStatus,
+  title: "Airport coaches",
+  intro:
+    "Times are still to be confirmed. The ride is about 3.5 hours, and the meeting point will go here once it is set.",
+  out: { title: "Geneva to Val Thorens", times: ["08:30", "10:30", "14:15"] },
+  home: {
+    title: "Val Thorens to Geneva",
+    // `flightsFrom` is the earliest flight each coach suits, so you reach the
+    // airport in time: allow at least 5 hours before departure, 6 is better.
+    coaches: [
+      { time: "05:15", flightsFrom: "10:00" },
+      { time: "07:30", flightsFrom: "12:00" },
+      { time: "09:30", flightsFrom: "14:00" },
+    ],
+  },
+  returnNote: "Allow at least 5 hours between leaving the resort and your flight. 6 is better.",
+};
+
+export const checkSteps = {
+  title: "Check-in and check-out",
+  status: "soon" as GuideStatus,
+  items: [
+    {
+      n: "01",
+      h: "Check-in",
+      p: "Saturday 9 January at Résidence Village Montana. Times and key pick-up are still to be confirmed.",
+    },
+    {
+      n: "02",
+      h: "Check-out",
+      p: "Saturday 16 January. Times, and how to hand back the keys, are still to be confirmed.",
+    },
+  ],
+};
+
+export const otherRoutes = {
+  status: "preliminary" as GuideStatus,
+  title: "Other ways to get there",
+  summary: "Lyon, Paris by train, or Geneva on your own",
+  items: [
+    {
+      title: "Fly to Lyon, then bus",
+      body: "Lyon (LYS) is another option, then a bus or shuttle up the valley.",
+    },
+    {
+      title: "Train from Paris",
+      body: "Fly to Paris, take the TGV to Moûtiers (the station at the foot of the valley), then a bus or taxi up.",
+    },
+    {
+      title: "Geneva on your own time",
+      body: "For flights that miss the coaches. A shared transfer or taxi works, and sharing is cheaper.",
+    },
+  ],
+};
+
+// Getting around. Hours, frequency and circuits are the resort's free shuttle
+// timetable for winter 2025–26; the 2026–27 one is not out yet, so the page
+// says so. Home-from-the-clubs advice follows from those hours.
+export const gettingAround = {
+  status: "partial" as GuideStatus,
+  title: "Getting around",
+  intro:
+    "Val Thorens is compact and mostly on foot. For the rest, a free shuttle loops the resort all day.",
+  shuttle: {
+    title: "Free resort shuttle",
+    seasonNote: "Last winter’s timetable. 2026–27 to follow.",
+    hours: [
+      { days: "Sunday to Friday", times: "08:00 – 20:00" },
+      { days: "Saturday", times: "06:15 – 22:00" },
+    ],
+    frequency: "Every 20 minutes, and every 10 minutes Sunday to Friday in peak season.",
+    start: "Buses start from the bus station at place des Arolles.",
+    circuits: [
+      {
+        name: "Circuit du Soleil",
+        note: "Our side of town. It passes Village Montana and the Hameau du Kashmir.",
+        stops: [
+          "Bus station",
+          "Rue du Soleil",
+          "Montagnettes du Soleil",
+          "Village Montana",
+          "Temples du Soleil",
+          "Parking P2 and Altapura",
+          "Hameau du Kashmir",
+        ],
+        highlight: ["Village Montana", "Hameau du Kashmir"],
+      },
+      {
+        name: "Circuit de la Boucle",
+        note: "Up through the centre of the resort.",
+        stops: [
+          "Bus station",
+          "Tourist office",
+          "Church",
+          "Place Péclet",
+          "Rue de Gébroulaz",
+          "Parking P0",
+          "Les Balcons",
+        ],
+        highlight: [] as string[],
+      },
+    ],
+    link: {
+      label: "Official shuttle page",
+      href: "https://www.valthorens.com/en/sejour/infos-pratiques/navettes-gratuites/",
+    },
+  },
+  valley: {
+    title: "Belleville valley shuttle",
+    body: "Free to Les Menuires and Saint-Martin-de-Belleville, Sunday to Friday. It does not run on Saturdays.",
+  },
+  home: {
+    title: "Home from après and the clubs",
+    body: "The shuttle stops at 20:00 Sunday to Friday and 22:00 on Saturday, so later than that you walk home or take a taxi. Book a taxi in advance if you plan to stay out.",
+  },
+};
+
+// Things to do. The venue cards come from `mapPoints`, so the map and this list
+// never disagree; the committee's own picks will be added as they are made.
+export const thingsToDo = {
+  title: "Things to do",
+  intro:
+    "Where to eat on the mountain and in town, where to go after, and what to do when your legs say no.",
+  note: "A starting list. The committee’s own picks will be added.",
+  filters: [
+    { id: "all", label: "Everything" },
+    { id: "eat", label: "Eat", kinds: ["restaurant"] },
+    { id: "apres", label: "Après & bars", kinds: ["apres", "bar"] },
+    { id: "late", label: "Clubs", kinds: ["club"] },
+    { id: "snow", label: "Off the skis" },
+  ] as Array<{ id: string; label: string; kinds?: MapKind[] }>,
+  offSkis: {
+    name: "Not skiing",
+    body: offSnow.intro,
+    note: offSnow.forthcomingNote,
+  },
+};
+
+// In case of trouble. 112 is the EU emergency number. The medical centre and
+// pharmacy are from the resort's own listings; hours can change in season, so
+// the resort page is linked.
+export const trouble = {
+  title: "In case of trouble",
+  emergency: {
+    label: "Emergency · tap to call",
+    number: "112",
+    href: "tel:112",
+    note: "Works from any phone in Europe.",
+  },
+  doctor: {
+    label: "Medical centre",
+    name: "Centre Médical de Val Thorens",
+    address: "Rue du Slalom, Quartier Slalom",
+    body: "General medicine and sports injuries, with x-ray. Usually open Monday to Friday 10:00–12:30 and 15:00–19:00, Saturday 10:00–12:30. Hours can change, so check the resort page.",
+    href: "https://www.valthorens.com/en/commerce-service/centre-medical-de-val-thorens/",
+    linkLabel: "Resort page",
+  },
+  pharmacy: {
+    label: "Pharmacy",
+    name: "Pharmacie Les 3 Vallées",
+    address: "Galerie Péclet, Quartier Grande Rue",
+    body: "In the Péclet shopping centre at the top of the resort.",
+    href: "https://www.valthorens.com/en/commerce-service/pharmacie-les-3-vallees/",
+    linkLabel: "Resort page",
+  },
+  insurance:
+    "Insurance covering winter sports and mountain rescue is mandatory, so keep your policy details on your phone.",
+};
+
+export const linksSection = {
+  title: "Links & packing",
+  linksTitle: "Useful links",
+  officialSite: { label: "Val Thorens official site", href: "https://www.valthorens.com/en/" },
+  packingTitle: "Packing list",
 };

@@ -37,13 +37,10 @@ export function PackingList() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border bg-card p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
         <div>
-          <p className="font-display text-2xl">
+          <p className="font-display text-xl">
             {done} / {total} packed
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Your ticks stay on this device, so you can come back to it.
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -65,16 +62,16 @@ export function PackingList() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+      <div className="mt-3 grid gap-3 lg:grid-cols-3">
         {packing.map((group) => (
-          <div key={group.group} className="rounded-lg border border-border bg-background p-5">
-            <h3 className="text-lg uppercase">{group.group}</h3>
-            <ul className="mt-4 space-y-1">
+          <div key={group.group} className="border-t border-border pt-3">
+            <h3 className="text-base font-semibold">{group.group}</h3>
+            <ul className="mt-2">
               {group.items.map((item) => {
                 const isChecked = hydrated && checked.includes(item);
                 return (
                   <li key={item}>
-                    <label className="flex cursor-pointer items-start gap-3 rounded-md px-2 py-2 text-sm leading-relaxed hover:bg-secondary/50">
+                    <label className="flex cursor-pointer items-start gap-3 rounded-md px-2 py-1 text-sm leading-snug hover:bg-secondary/50">
                       <input
                         type="checkbox"
                         checked={isChecked}
