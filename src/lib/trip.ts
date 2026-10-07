@@ -1121,20 +1121,26 @@ export const checkSteps = {
   ],
 };
 
+export type OtherRouteIcon = "bus" | "train" | "calendar";
+
 export const otherRoutes = {
-  status: "preliminary" as GuideStatus,
+  // Partly confirmed, so it shows without a badge.
+  status: "partial" as GuideStatus,
   title: "Other ways to get there",
   summary: "Lyon, Paris by train, or Geneva on your own",
   items: [
     {
+      icon: "bus" as OtherRouteIcon,
       title: "Fly to Lyon or Chambéry, then bus",
       body: "Chambéry (CMF) is the closest airport, about 90 minutes away, with fewer flights. Lyon (LYS) is another option. Either way, it is a bus or shuttle up the valley.",
     },
     {
+      icon: "train" as OtherRouteIcon,
       title: "Train from Paris",
       body: "Fly to Paris, take the TGV to Moûtiers (the station at the foot of the valley, about 45 minutes away), then a bus or taxi up.",
     },
     {
+      icon: "calendar" as OtherRouteIcon,
       title: "Geneva on your own time",
       body: "For flights that miss the coaches. A shared transfer or taxi works, and sharing is cheaper.",
     },
