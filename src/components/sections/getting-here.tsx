@@ -103,10 +103,11 @@ function FlightsPanel({ onClose }: { onClose: () => void }) {
   return <FlightForm supabase={supabase} session={session} onClose={onClose} />;
 }
 
-function FlightsCard() {
+function FlightsButton() {
   const [open, setOpen] = useState(false);
 
-  // "My flights" buttons elsewhere on the page open the pop-up.
+  // The "My flights" button in the header and the banner on the welcome photo
+  // open the pop-up from elsewhere on the page.
   useEffect(() => {
     const openIfAsked = () => {
       if (window.location.hash === "#flights") setOpen(true);
@@ -122,17 +123,8 @@ function FlightsCard() {
   }, []);
 
   return (
-    <div
-      id="flights"
-      className="mt-6 flex scroll-mt-[calc(var(--header-h)+1rem)] flex-col items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-5 text-center sm:flex-row sm:justify-between sm:text-left"
-    >
-      <p className={`text-sm ${muted}`}>
-        Tell us when you land and leave, and if you want a seat on the airport coach. You can change
-        it any time.
-      </p>
-      <Button className="shrink-0" onClick={() => setOpen(true)}>
-        Tell us how you're getting here
-      </Button>
+    <div id="flights" className="mt-8 flex scroll-mt-[calc(var(--header-h)+1rem)] justify-center">
+      <Button onClick={() => setOpen(true)}>Tell us how you're getting here</Button>
       <FlightsDialog open={open} onClose={() => setOpen(false)} title="How are you getting here?">
         <FlightsPanel onClose={() => setOpen(false)} />
       </FlightsDialog>
@@ -140,41 +132,63 @@ function FlightsCard() {
   );
 }
 
-export function GettingHere({ n, tone }: SectionProps) {
-  const [alts, setAlts] = useState(false);
+// A closed-by-default row: title and a one-line summary, a + to open it.
+function Expander({
+  title,
+  summary,
+  badge,
+  children,
+}: {
+  title: string;
+  summary: string;
+  badge?: ReactNode;
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-t border-border first:border-t-0">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-10 w-full items-center justify-between gap-3 py-1 text-left"
+      >
+        <span>
+          <b className="text-base font-semibold">{title}</b>
+          <span className={`ml-3 text-sm ${muted}`}>{summary}</span>
+        </span>
+        <span className="flex shrink-0 items-center gap-3">
+          {badge}
+          <span className="text-xl font-medium">{open ? "−" : "+"}</span>
+        </span>
+      </button>
+      {open && <div className="pb-3">{children}</div>}
+    </div>
+  );
+}
 
+export function GettingHere({ n, tone }: SectionProps) {
   return (
     <GuideSection id="getting-here" n={n} tone={tone} title={gettingHere.title}>
-      <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2">
-        <Leg title="Arriving" date={gettingHere.out.date}>
-          <FlightList flights={gettingHere.out.flights} />
-        </Leg>
+      <div className="border-y border-border py-0.5">
+        <Expander title={gettingHere.recommended.title} summary={gettingHere.recommended.summary}>
+          <div className="grid gap-x-10 gap-y-8 pt-2 lg:grid-cols-2">
+            <Leg title="Arriving" date={gettingHere.out.date}>
+              <FlightList flights={gettingHere.out.flights} />
+            </Leg>
 
-        <Leg title="Leaving" date={gettingHere.home.date}>
-          <FlightList flights={gettingHere.home.flights} />
-        </Leg>
-      </div>
+            <Leg title="Leaving" date={gettingHere.home.date}>
+              <FlightList flights={gettingHere.home.flights} />
+            </Leg>
+          </div>
+        </Expander>
 
-      <FlightsCard />
-
-      <div className="mt-6 border-y border-border py-0.5">
-        <button
-          type="button"
-          onClick={() => setAlts((v) => !v)}
-          aria-expanded={alts}
-          className="flex min-h-10 w-full items-center justify-between gap-3 text-left"
+        <Expander
+          title={otherRoutes.title}
+          summary={otherRoutes.summary}
+          badge={<StatusBadge status={otherRoutes.status} />}
         >
-          <span>
-            <b className="text-base font-semibold">{otherRoutes.title}</b>
-            <span className={`ml-3 text-sm ${muted}`}>{otherRoutes.summary}</span>
-          </span>
-          <span className="flex items-center gap-3">
-            <StatusBadge status={otherRoutes.status} />
-            <span className="text-xl font-medium">{alts ? "−" : "+"}</span>
-          </span>
-        </button>
-        {alts && (
-          <ul className="pb-3">
+          <ul>
             {otherRoutes.items.map((r) => (
               <li key={r.title} className="border-t border-border py-3">
                 <b className="font-semibold">{r.title}</b>
@@ -182,8 +196,10 @@ export function GettingHere({ n, tone }: SectionProps) {
               </li>
             ))}
           </ul>
-        )}
+        </Expander>
       </div>
+
+      <FlightsButton />
     </GuideSection>
   );
 }

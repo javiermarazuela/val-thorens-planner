@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
 import heroImage from "@/assets/val-thorens-trip.jpg";
-import { Button } from "@/components/ui/button";
+import { FlightsBanner } from "@/components/flights-banner";
 import { hero, trip } from "@/lib/trip";
 import { daysToGo } from "@/lib/trip-day";
 
 export function Welcome() {
   const [toGo, setToGo] = useState<number | null>(null);
+  const [banner, setBanner] = useState(false); // the "tell us how" strip is showing
   useEffect(() => setToGo(daysToGo(new Date())), []);
 
   return (
@@ -20,7 +21,9 @@ export function Welcome() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/20" />
-        <div className="relative mx-auto flex min-h-[32svh] max-w-6xl flex-col items-center justify-end px-5 pb-8 pt-10 text-center text-paper sm:min-h-[38svh] sm:pb-10">
+        <div
+          className={`relative mx-auto flex min-h-[32svh] max-w-6xl flex-col items-center justify-end px-5 pt-10 text-center text-paper sm:min-h-[38svh] ${banner ? "pb-16" : "pb-8 sm:pb-10"}`}
+        >
           <h1 className="whitespace-nowrap text-[clamp(1.75rem,8vw,2.25rem)] uppercase leading-none sm:text-5xl lg:text-6xl">
             {hero.title}
           </h1>
@@ -39,12 +42,8 @@ export function Welcome() {
               {toGo === 1 ? "1 day to go" : `${toGo} days to go`}
             </p>
           )}
-          <Button asChild size="sm" className="mt-4">
-            <a href="#flights" onClick={() => window.dispatchEvent(new Event("open-flights"))}>
-              Add your flights
-            </a>
-          </Button>
         </div>
+        <FlightsBanner onVisible={setBanner} />
       </div>
     </section>
   );
