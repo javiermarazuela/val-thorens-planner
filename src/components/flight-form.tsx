@@ -2,6 +2,7 @@ import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import { Plane } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { AirlineLogo } from "@/components/airline-logo";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -146,25 +147,38 @@ function legToRow(leg: LegState, p: "arr" | "dep") {
   };
 }
 
+type Step = "arrival" | "departure" | "review";
+const stepOrder: { id: Step; label: string }[] = [
+  { id: "arrival", label: "Arriving" },
+  { id: "departure", label: "Leaving" },
+  { id: "review", label: "Check" },
+];
+
+// A leg is finished once a flight is confirmed, or they chose "another way".
+const legDone = (leg: LegState) => leg.mode === "other" || !!leg.confirmed;
+
+// A short wizard: how you get to Val Thorens, how you leave, then a check
+// screen where either can be edited before confirming.
 export function FlightForm({
   supabase,
   session,
-  showHeading = true,
+  onClose,
 }: {
   supabase: SupabaseClient;
   session: Session;
-  showHeading?: boolean;
+  onClose?: () => void;
 }) {
   const [arrival, setArrival] = useState<LegState>(emptyLeg("arrival"));
   const [departure, setDeparture] = useState<LegState>(emptyLeg("departure"));
   const [loaded, setLoaded] = useState(false);
-  const [saved, setSaved] = useState(false); // a row exists for this person
-  const [editing, setEditing] = useState(true);
+  const [step, setStep] = useState<Step>("arrival");
+  const [returning, setReturning] = useState(false); // editing from the check screen
+  const [submitted, setSubmitted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
 
-  // Loads this person's row. Used on first open and when they cancel an edit.
-  function load() {
+  // Someone who has already submitted lands on the check screen.
+  useEffect(() => {
     supabase
       .from("flights")
       .select("*")
@@ -174,14 +188,11 @@ export function FlightForm({
         else if (data) {
           setArrival(legFromRow(data as Row, "arrival"));
           setDeparture(legFromRow(data as Row, "departure"));
-          setSaved(true);
-          setEditing(false);
+          setStep("review");
         }
         setLoaded(true);
       });
-  }
-
-  useEffect(load, [supabase]);
+  }, [supabase]);
 
   async function save() {
     setSaving(true);
@@ -197,80 +208,140 @@ export function FlightForm({
       setMessage({ kind: "error", text: "Couldn't submit. Try again in a moment." });
       return;
     }
-    setSaved(true);
-    setEditing(false);
-    setMessage({ kind: "ok", text: "Submitted. The committee can see your flights." });
+    setSubmitted(true);
+    setMessage({ kind: "ok", text: "Done. The committee can see your flights." });
   }
 
-  function cancelEdit() {
+  function edit(which: Direction) {
+    setSubmitted(false);
     setMessage(null);
-    load();
+    setReturning(true);
+    setStep(which);
   }
 
-  if (!loaded) return <p className="mt-6 text-muted-foreground">Loading your flights…</p>;
+  if (!loaded) return <p className="text-muted-foreground">Loading your flights…</p>;
 
-  const wrap = showHeading ? "mt-8 border-t border-border pt-8" : undefined;
-  const heading = showHeading && <h2 className="font-display text-2xl uppercase">Your flights</h2>;
-  const status = message && (
-    <p
-      role={message.kind === "error" ? "alert" : "status"}
-      className={cn(
-        "mt-4 text-sm font-semibold",
-        message.kind === "error" ? "text-destructive" : "text-foreground",
-      )}
-    >
-      {message.text}
-    </p>
-  );
-
-  if (saved && !editing) {
-    return (
-      <div className={wrap}>
-        {heading}
-        <p className={cn("text-sm text-muted-foreground", showHeading && "mt-2")}>
-          These are saved to your profile ({session.user.email}). You can change them any time.
-        </p>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <Summary direction="arrival" leg={arrival} />
-          <Summary direction="departure" leg={departure} />
-        </div>
-        {status}
-        <Button className="mt-5" variant="outline" onClick={() => setEditing(true)}>
-          Edit my flights
-        </Button>
-      </div>
-    );
-  }
+  const index = stepOrder.findIndex((x) => x.id === step);
+  const next = (to: Step) => setStep(returning ? "review" : to);
+  const nextLabel = returning ? "Back to check" : step === "departure" ? "Check" : "Next";
 
   return (
-    <div className={wrap}>
-      {heading}
-      <p className={cn("text-sm text-muted-foreground", showHeading && "mt-2")}>
-        Tell us when you land and when you leave, and whether you want a seat on the airport coach.
-        The committee uses this to plan the transfers. Signed in as {session.user.email}.
-      </p>
+    <div>
+      <ol className="mb-5 flex items-center gap-2 text-xs font-semibold" aria-label="Steps">
+        {stepOrder.map((x, i) => (
+          <li
+            key={x.id}
+            aria-current={x.id === step ? "step" : undefined}
+            className={cn(
+              "rounded-full border px-3 py-1",
+              x.id === step
+                ? "border-ink bg-ink text-paper"
+                : i < index
+                  ? "border-border bg-secondary"
+                  : "border-border text-muted-foreground",
+            )}
+          >
+            {i + 1}. {x.label}
+          </li>
+        ))}
+      </ol>
 
-      <div className="mt-6 grid gap-8">
-        <LegEditor direction="arrival" leg={arrival} onChange={setArrival} session={session} />
-        <LegEditor
-          direction="departure"
-          leg={departure}
-          onChange={setDeparture}
-          session={session}
-        />
-      </div>
+      {step === "arrival" && (
+        <>
+          <LegEditor direction="arrival" leg={arrival} onChange={setArrival} session={session} />
+          <StepNav
+            nextLabel={nextLabel}
+            nextDisabled={!legDone(arrival)}
+            onNext={() => next("departure")}
+            onSkip={() => next("departure")}
+          />
+        </>
+      )}
 
-      {status}
-      <div className="mt-5 flex flex-wrap gap-2">
-        <Button onClick={save} disabled={saving}>
-          {saving ? "Submitting…" : saved ? "Save changes" : "Submit my flights"}
+      {step === "departure" && (
+        <>
+          <LegEditor
+            direction="departure"
+            leg={departure}
+            onChange={setDeparture}
+            session={session}
+          />
+          <StepNav
+            nextLabel={nextLabel}
+            nextDisabled={!legDone(departure)}
+            onNext={() => next("review")}
+            onSkip={() => next("review")}
+            onBack={returning ? undefined : () => setStep("arrival")}
+          />
+        </>
+      )}
+
+      {step === "review" && (
+        <>
+          <p className="text-sm text-muted-foreground">
+            Check your flights. You can change either one, then confirm. Signed in as{" "}
+            {session.user.email}.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <Summary direction="arrival" leg={arrival} onEdit={() => edit("arrival")} />
+            <Summary direction="departure" leg={departure} onEdit={() => edit("departure")} />
+          </div>
+          {message && (
+            <p
+              role={message.kind === "error" ? "alert" : "status"}
+              className={cn(
+                "mt-4 text-sm font-semibold",
+                message.kind === "error" ? "text-destructive" : "text-foreground",
+              )}
+            >
+              {message.text}
+            </p>
+          )}
+          <div className="mt-5 flex flex-wrap gap-2">
+            {submitted ? (
+              onClose && <Button onClick={onClose}>Close</Button>
+            ) : (
+              <Button onClick={save} disabled={saving}>
+                {saving ? "Submitting…" : "Confirm my flights"}
+              </Button>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function StepNav({
+  nextLabel,
+  nextDisabled,
+  onNext,
+  onSkip,
+  onBack,
+}: {
+  nextLabel: string;
+  nextDisabled: boolean;
+  onNext: () => void;
+  onSkip: () => void;
+  onBack?: (() => void) | undefined;
+}) {
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-3">
+      {onBack && (
+        <Button variant="outline" onClick={onBack}>
+          Back
         </Button>
-        {saved && (
-          <Button variant="outline" onClick={cancelEdit} disabled={saving}>
-            Cancel
-          </Button>
-        )}
-      </div>
+      )}
+      <Button onClick={onNext} disabled={nextDisabled}>
+        {nextLabel}
+      </Button>
+      <button
+        type="button"
+        onClick={onSkip}
+        className="min-h-11 text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground"
+      >
+        I'll add this later
+      </button>
     </div>
   );
 }
@@ -281,7 +352,15 @@ const shuttleText: Record<Shuttle, string> = {
   unsure: "Coach: not sure yet",
 };
 
-function Summary({ direction, leg }: { direction: Direction; leg: LegState }) {
+function Summary({
+  direction,
+  leg,
+  onEdit,
+}: {
+  direction: Direction;
+  leg: LegState;
+  onEdit: () => void;
+}) {
   const t = copy[direction];
   let body: string;
   if (leg.mode === "other") body = leg.note ? `Another way: ${leg.note}` : "Another way";
@@ -298,10 +377,18 @@ function Summary({ direction, leg }: { direction: Direction; leg: LegState }) {
         />
         {t.title}
       </p>
-      <p className="mt-2 text-sm font-semibold">{body}</p>
+      <div className="mt-2 flex items-center gap-3">
+        {leg.mode !== "other" && leg.confirmed && (
+          <AirlineLogo number={leg.number} direction={direction} />
+        )}
+        <p className="text-sm font-semibold">{body}</p>
+      </div>
       {leg.mode !== "other" && leg.shuttle && (
         <p className="mt-1 text-sm text-muted-foreground">{shuttleText[leg.shuttle]}</p>
       )}
+      <Button className="mt-3" size="sm" variant="outline" onClick={onEdit}>
+        Edit
+      </Button>
     </div>
   );
 }
@@ -320,7 +407,7 @@ function LegEditor({
   const t = copy[direction];
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [status, setStatus] = useState<"idle" | "searching" | "missing">("idle");
-  const [custom, setCustom] = useState(false); // "my flight isn't listed"
+  const [showList, setShowList] = useState(false); // suggested flights, closed until asked for
   const request = useRef(0);
 
   const number = leg.number.toUpperCase().replace(/\s+/g, "");
@@ -338,7 +425,7 @@ function LegEditor({
   );
   const suggestions = leg.mode === "geneva" ? suggestionsFor(direction, leg.date) : [];
   const flying = leg.mode !== "other";
-  const typing = leg.mode === "other_flight" || (leg.mode === "geneva" && custom);
+  const typing = leg.mode !== "other";
 
   // A flight on the committee's list is matched on the spot: no API call.
   // Anything else waits for the "Look up" button, so half-typed numbers
@@ -366,7 +453,7 @@ function LegEditor({
     request.current++;
     setProposal(null);
     setStatus("idle");
-    setCustom(false);
+    setShowList(false);
     onChange({ ...emptyLeg(direction, mode), shuttle: leg.shuttle });
   }
 
@@ -420,6 +507,7 @@ function LegEditor({
   function pick(s: FlightSuggestion) {
     request.current++;
     setStatus("idle");
+    setShowList(false);
     setProposal(fromSuggestion(s, direction));
     onChange({ ...leg, number: s.number, confirmed: null });
   }
@@ -498,55 +586,6 @@ function LegEditor({
         </label>
       )}
 
-      {leg.mode === "geneva" && suggestions.length > 0 && !leg.confirmed && (
-        <div>
-          <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-semibold">
-            Pick your flight <StatusBadge status="preliminary" />
-          </p>
-          <ul className="grid gap-2 sm:grid-cols-2">
-            {suggestions.map((s) => (
-              <li key={s.display + s.time}>
-                <button
-                  type="button"
-                  onClick={() => pick(s)}
-                  className={cn(
-                    "w-full rounded-2xl border border-border bg-background px-4 py-2 text-left transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    number === s.number && "border-primary bg-secondary",
-                  )}
-                >
-                  <span className="block text-sm">
-                    <span className="font-extrabold tabular-nums">{s.time}</span>
-                    <span className="text-muted-foreground"> · {s.route}</span>
-                  </span>
-                  <span className="block text-xs text-muted-foreground">
-                    {s.airline} · <span className="font-bold text-foreground">{s.display}</span>
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-          {!custom && (
-            <button
-              type="button"
-              onClick={() => setCustom(true)}
-              className="mt-3 min-h-8 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
-            >
-              My flight isn't listed
-            </button>
-          )}
-        </div>
-      )}
-
-      {leg.mode === "geneva" && suggestions.length === 0 && !custom && !leg.confirmed && (
-        <button
-          type="button"
-          onClick={() => setCustom(true)}
-          className="min-h-8 justify-self-start text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
-        >
-          Enter my flight
-        </button>
-      )}
-
       {typing && !leg.confirmed && (
         <div className="grid gap-4 sm:grid-cols-2">
           {leg.mode === "other_flight" && (
@@ -588,6 +627,54 @@ function LegEditor({
             </Button>
           </div>
         )}
+
+      {leg.mode === "geneva" && suggestions.length > 0 && !leg.confirmed && (
+        <div>
+          <button
+            type="button"
+            aria-expanded={showList}
+            onClick={() => setShowList((v) => !v)}
+            className="min-h-8 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
+          >
+            {showList ? "Hide suggested flights" : "Show suggested flights"}
+          </button>
+          {showList && (
+            <div className="mt-3">
+              <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-semibold">
+                From the committee's list <StatusBadge status="preliminary" />
+              </p>
+              <ul className="grid gap-2 sm:grid-cols-2">
+                {suggestions.map((s) => (
+                  <li key={s.display + s.time}>
+                    <button
+                      type="button"
+                      onClick={() => pick(s)}
+                      className={cn(
+                        "w-full rounded-2xl border border-border bg-background px-4 py-2 text-left transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                        number === s.number && "border-primary bg-secondary",
+                      )}
+                    >
+                      <span className="flex items-center gap-3">
+                        <AirlineLogo number={s.display} direction={direction} airline={s.airline} />
+                        <span className="min-w-0">
+                          <span className="block text-sm">
+                            <span className="font-extrabold tabular-nums">{s.time}</span>
+                            <span className="text-muted-foreground"> · {s.route}</span>
+                          </span>
+                          <span className="block text-xs text-muted-foreground">
+                            {s.airline} ·{" "}
+                            <span className="font-bold text-foreground">{s.display}</span>
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
       {partial && (
         <div
@@ -652,9 +739,16 @@ function LegEditor({
           className="rounded-xl border border-primary/40 bg-secondary p-4"
         >
           <p className="text-sm font-semibold">{proposal.note ?? "Is this your flight?"}</p>
-          <p className="mt-1 font-display text-xl uppercase">
-            {proposal.number}
-            {proposal.airline && <span className="text-base"> · {proposal.airline}</span>}
+          <p className="mt-1 flex items-center gap-3 font-display text-xl uppercase">
+            <AirlineLogo
+              number={proposal.number}
+              direction={direction}
+              airline={proposal.source === "suggested" ? proposal.airline : undefined}
+            />
+            <span>
+              {proposal.number}
+              {proposal.airline && <span className="text-base"> · {proposal.airline}</span>}
+            </span>
           </p>
           <p className="mt-1 text-sm">
             {proposal.route && `${proposal.route} · `}
@@ -689,7 +783,8 @@ function LegEditor({
 
       {flying && leg.confirmed && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-background p-4">
-          <p className="text-sm">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            <AirlineLogo number={leg.number} direction={direction} />
             <span className="font-extrabold">{leg.number}</span>
             {" · "}
             {leg.confirmed.airport && `${leg.confirmed.airport} · `}
@@ -700,7 +795,7 @@ function LegEditor({
             size="sm"
             variant="outline"
             onClick={() => {
-              setCustom(false);
+              setShowList(false);
               onChange({ ...leg, number: "", confirmed: null });
             }}
           >

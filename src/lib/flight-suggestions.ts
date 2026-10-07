@@ -65,7 +65,7 @@ function build(flights: Flight[], direction: FlightSuggestion["direction"]): Fli
       direction,
       date: arriving ? tripDates.arrival : tripDates.departure,
       time,
-      airline: f.airline.split("/")[0]!.trim(),
+      airline: f.airline,
       number,
       display: itinerary(f.number),
       codes: allCodes(f.number),
@@ -146,4 +146,12 @@ export function coachBeforeTakeoff(
 function toMinutes(hhmm: string): number {
   const [h, m] = hhmm.split(":").map(Number);
   return (h ?? 0) * 60 + (m ?? 0);
+}
+
+/** The airline the list gives for a flight, found from its number. */
+export function airlineForNumber(
+  number: string,
+  direction: FlightSuggestion["direction"],
+): string | undefined {
+  return flightSuggestions.find((s) => s.direction === direction && s.display === number)?.airline;
 }

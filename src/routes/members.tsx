@@ -89,7 +89,10 @@ function Members() {
         ))}
         {links.length === 0 && !error && <li className="text-muted-foreground">Coming soon.</li>}
       </ul>
-      <FlightForm supabase={supabase} session={session} />
+      <div className="mt-8 border-t border-border pt-8">
+        <h2 className="mb-4 font-display text-2xl uppercase">Your flights</h2>
+        <FlightForm supabase={supabase} session={session} />
+      </div>
       <Button variant="outline" className="mt-8" onClick={() => supabase.auth.signOut()}>
         Sign out
       </Button>
