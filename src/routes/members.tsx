@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import type { Session } from "@supabase/supabase-js";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+import { FlightForm } from "@/components/flight-form";
 import { Button } from "@/components/ui/button";
-import { getSupabase } from "@/lib/supabase";
+import { useSession } from "@/lib/use-session";
 import { site } from "@/lib/trip";
 
 export const Route = createFileRoute("/members")({
@@ -18,25 +18,10 @@ export const Route = createFileRoute("/members")({
 type MemberLink = { id: number; label: string; url: string };
 
 function Members() {
-  const supabase = getSupabase();
-  const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const { supabase, session, authError, signIn } = useSession();
   const [links, setLinks] = useState<MemberLink[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!supabase) return;
-    // A rejected sign-up comes back on the URL as error_description.
-    const params = new URLSearchParams(
-      window.location.search + "&" + window.location.hash.replace("#", ""),
-    );
-    if (params.get("error_description")) {
-      setError("That account isn't on the list. Use your Columbia Google account.");
-    }
-
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
-    return () => data.subscription.unsubscribe();
-  }, [supabase]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const error = loadError ?? authError;
 
   useEffect(() => {
     if (!supabase || !session) return;
@@ -45,7 +30,7 @@ function Members() {
       .select("id,label,url")
       .order("sort")
       .then(({ data, error: err }) => {
-        if (err) setError("Couldn't load the members area.");
+        if (err) setLoadError("Couldn't load the members area.");
         else setLinks((data as MemberLink[] | null) ?? []);
       });
   }, [supabase, session]);
@@ -74,18 +59,7 @@ function Members() {
             {error}
           </p>
         )}
-        <Button
-          className="mt-5"
-          onClick={() =>
-            supabase.auth.signInWithOAuth({
-              provider: "google",
-              options: {
-                redirectTo: `${window.location.origin}/members`,
-                queryParams: { prompt: "select_account" },
-              },
-            })
-          }
-        >
+        <Button className="mt-5" onClick={signIn}>
           Sign in with Google
         </Button>
       </Shell>
@@ -115,7 +89,8 @@ function Members() {
         ))}
         {links.length === 0 && !error && <li className="text-muted-foreground">Coming soon.</li>}
       </ul>
-      <Button variant="outline" className="mt-6" onClick={() => supabase.auth.signOut()}>
+      <FlightForm supabase={supabase} session={session} />
+      <Button variant="outline" className="mt-8" onClick={() => supabase.auth.signOut()}>
         Sign out
       </Button>
     </Shell>

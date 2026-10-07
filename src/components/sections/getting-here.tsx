@@ -1,9 +1,12 @@
 import { useState, type ReactNode } from "react";
 
+import { FlightForm } from "@/components/flight-form";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
+import { Button } from "@/components/ui/button";
 import { gettingHere, otherRoutes, type Flight } from "@/lib/trip";
+import { useSession } from "@/lib/use-session";
 
 const muted = "text-muted-foreground";
 
@@ -70,6 +73,62 @@ function Leg({ title, date, children }: { title: string; date: string; children:
   );
 }
 
+// Opens in place. Only mounted once opened, so the session check (browser
+// only) never runs during server rendering.
+function FlightsPanel() {
+  const { supabase, session, authError, signIn } = useSession();
+
+  if (!supabase)
+    return <p className={`text-sm ${muted}`}>Flight details aren't switched on yet.</p>;
+  if (session === undefined) return <p className={`text-sm ${muted}`}>Loading…</p>;
+  if (!session) {
+    return (
+      <div>
+        <p className="text-sm">
+          Sign in with your Columbia Google account to add your flights. We only use it to know who
+          is who.
+        </p>
+        {authError && (
+          <p role="alert" className="mt-2 text-sm font-semibold text-destructive">
+            {authError}
+          </p>
+        )}
+        <Button className="mt-4" onClick={signIn}>
+          Sign in with Google
+        </Button>
+      </div>
+    );
+  }
+  return <FlightForm supabase={supabase} session={session} showHeading={false} />;
+}
+
+function FlightsCard() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-6 rounded-2xl border border-border bg-secondary/40 p-4 sm:p-5">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-11 w-full items-center justify-between gap-3 text-left"
+      >
+        <span>
+          <b className="block text-base font-semibold">Tell us how you're getting here</b>
+          <span className={`text-sm ${muted}`}>
+            Add your flights and say if you want a seat on the airport coach.
+          </span>
+        </span>
+        <span className="text-xl font-medium">{open ? "−" : "+"}</span>
+      </button>
+      {open && (
+        <div className="mt-4 border-t border-border pt-4">
+          <FlightsPanel />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function GettingHere({ n, tone }: SectionProps) {
   const [alts, setAlts] = useState(false);
 
@@ -84,6 +143,8 @@ export function GettingHere({ n, tone }: SectionProps) {
           <FlightList flights={gettingHere.home.flights} />
         </Leg>
       </div>
+
+      <FlightsCard />
 
       <div className="mt-6 border-y border-border py-0.5">
         <button
