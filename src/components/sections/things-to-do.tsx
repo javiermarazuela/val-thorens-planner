@@ -27,6 +27,7 @@ const KIND_STYLE: Record<MapKind, { label: string; Icon: LucideIcon }> = {
   apres: { label: "Après", Icon: Beer },
   bar: { label: "Bar", Icon: Beer },
   club: { label: "Club", Icon: Music },
+  indoors: { label: "Indoors", Icon: MapPin },
 };
 
 const venueKinds: MapKind[] = ["restaurant", "apres", "bar", "club"];
