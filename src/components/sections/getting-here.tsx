@@ -1,3 +1,4 @@
+import { Bus, CalendarDays, Plane, TrainFront } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { FlightForm } from "@/components/flight-form";
@@ -6,7 +7,7 @@ import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
-import { gettingHere, otherRoutes, type Flight } from "@/lib/trip";
+import { gettingHere, otherRoutes, type Flight, type OtherRouteIcon } from "@/lib/trip";
 import { useSession } from "@/lib/use-session";
 
 const muted = "text-muted-foreground";
@@ -133,45 +134,75 @@ function FlightsButton() {
 }
 
 // A closed-by-default row: title and a one-line summary, a + to open it.
+// `featured` is the bigger version with an icon, for the row that matters most.
 function Expander({
   title,
   summary,
   badge,
+  icon,
+  featured = false,
   children,
 }: {
   title: string;
   summary: string;
   badge?: ReactNode;
+  icon?: ReactNode;
+  featured?: boolean;
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-t border-border first:border-t-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex min-h-10 w-full items-center justify-between gap-3 py-1 text-left"
+        className={`flex w-full items-center justify-between gap-3 text-left ${featured ? "min-h-16 px-4 py-3" : "min-h-10 py-1"}`}
       >
-        <span>
-          <b className="text-base font-semibold">{title}</b>
-          <span className={`ml-3 text-sm ${muted}`}>{summary}</span>
+        <span className="flex min-w-0 items-center gap-3">
+          {icon && (
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink text-paper">
+              {icon}
+            </span>
+          )}
+          {featured ? (
+            <span className="min-w-0">
+              <b className="block text-lg font-semibold leading-tight">{title}</b>
+              <span className={`mt-0.5 block text-sm ${muted}`}>{summary}</span>
+            </span>
+          ) : (
+            <span>
+              <b className="text-base font-semibold">{title}</b>
+              <span className={`ml-3 text-sm ${muted}`}>{summary}</span>
+            </span>
+          )}
         </span>
         <span className="flex shrink-0 items-center gap-3">
           {badge}
           <span className="text-xl font-medium">{open ? "−" : "+"}</span>
         </span>
       </button>
-      {open && <div className="pb-3">{children}</div>}
+      {open && <div className={featured ? "px-4 pb-4" : "pb-3"}>{children}</div>}
     </div>
   );
 }
 
+const routeIcons: Record<OtherRouteIcon, ReactNode> = {
+  bus: <Bus className="size-5" aria-hidden="true" />,
+  train: <TrainFront className="size-5" aria-hidden="true" />,
+  calendar: <CalendarDays className="size-5" aria-hidden="true" />,
+};
+
 export function GettingHere({ n, tone }: SectionProps) {
   return (
     <GuideSection id="getting-here" n={n} tone={tone} title={gettingHere.title}>
-      <div className="border-y border-border py-0.5">
-        <Expander title={gettingHere.recommended.title} summary={gettingHere.recommended.summary}>
+      <div className="rounded-2xl border border-border bg-secondary/60">
+        <Expander
+          featured
+          icon={<Plane className="size-5" aria-hidden="true" />}
+          title={gettingHere.recommended.title}
+          summary={gettingHere.recommended.summary}
+        >
           <div className="grid gap-x-10 gap-y-8 pt-2 lg:grid-cols-2">
             <Leg title="Arriving" date={gettingHere.out.date}>
               <FlightList flights={gettingHere.out.flights} />
@@ -182,7 +213,9 @@ export function GettingHere({ n, tone }: SectionProps) {
             </Leg>
           </div>
         </Expander>
+      </div>
 
+      <div className="mt-4 border-y border-border py-0.5">
         <Expander
           title={otherRoutes.title}
           summary={otherRoutes.summary}
@@ -190,9 +223,14 @@ export function GettingHere({ n, tone }: SectionProps) {
         >
           <ul>
             {otherRoutes.items.map((r) => (
-              <li key={r.title} className="border-t border-border py-3">
-                <b className="font-semibold">{r.title}</b>
-                <p className={`mt-1 text-sm ${muted}`}>{r.body}</p>
+              <li key={r.title} className="flex gap-3 border-t border-border py-3">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-secondary text-ink">
+                  {routeIcons[r.icon]}
+                </span>
+                <div className="min-w-0">
+                  <b className="font-semibold">{r.title}</b>
+                  <p className={`mt-1 text-sm ${muted}`}>{r.body}</p>
+                </div>
               </li>
             ))}
           </ul>
