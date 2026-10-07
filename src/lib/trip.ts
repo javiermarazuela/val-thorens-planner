@@ -221,9 +221,9 @@ export const week: Array<{
   {
     day: "Sat",
     date: "9 Jan",
-    title: "Travel day & check-in",
+    title: "Travel day, check-in & welcome drinks",
     status: "partial",
-    body: "Land, transfer up the mountain, find your building, check in, then a first, gentle night out. Gentle is a word we use loosely.",
+    body: "Land, transfer up the mountain, find your building, check in, then welcome drinks. Gentle is a word we use loosely.",
   },
   {
     day: "Sun",
@@ -235,37 +235,37 @@ export const week: Array<{
   {
     day: "Mon",
     date: "11 Jan",
-    title: "Ski day + theme night",
+    title: "Ski day + first après",
     status: "soon",
-    body: "A full day on the hill. The evening is a theme night — the theme is still being decided, so hold off on the costume shopping.",
+    body: "A full day on the hill, then the first big après. The venue is still being locked in.",
   },
   {
     day: "Tue",
     date: "12 Jan",
-    title: "Ski day",
+    title: "Ski day + club night",
     status: "soon",
-    body: "The day we push further into Les 3 Vallées for anyone who wants distance rather than laps.",
+    body: "The day we push further into Les 3 Vallées for anyone who wants distance rather than laps. The first club night follows.",
   },
   {
     day: "Wed",
     date: "13 Jan",
-    title: "Big mountain day",
+    title: "Big mountain day + bar crawl",
     status: "soon",
-    body: "The long one, weather permitting. Non-skiers get their own full programme on the same day.",
+    body: "The long one, weather permitting, then the bar crawl. Non-skiers get their own full programme on the same day.",
   },
   {
     day: "Thu",
     date: "14 Jan",
-    title: "Ski day + theme night",
+    title: "Ski day + second après",
     status: "soon",
-    body: "Second theme night, and the point in the week where the team games usually get decided.",
+    body: "Another day on the hill and a second après, and the point in the week where the team games usually get decided.",
   },
   {
     day: "Fri",
     date: "15 Jan",
     title: "Last day & final night",
     status: "soon",
-    body: "Last laps, closing après, and the night nobody sensibly plans around an early transfer.",
+    body: "Last laps, a final après, then the second club night: the night nobody sensibly plans around an early transfer.",
   },
   {
     day: "Sat",
@@ -276,8 +276,9 @@ export const week: Array<{
   },
 ];
 
-// What happens each day, in the same order as `week`. Times and events are
-// preliminary samples until the committee confirms them; the coach times come
+// What happens each day, in the same order as `week`. The events follow the
+// committee's tracker (calendar, 30 Sep 2026) but venues and times are not
+// settled, so they stay preliminary until the committee confirms them; the coach times come
 // from the committee's flights sheet and are marked TBC there.
 export const dayDetailsStatus: GuideStatus = "preliminary";
 export const dayDetails: Array<{
@@ -290,17 +291,14 @@ export const dayDetails: Array<{
   {
     events: [
       { time: "TBA", what: "Check-in · Résidence Village Montana" },
-      { time: "Evening", what: "Welcome night" },
+      { time: "Evening", what: "Welcome drinks" },
     ],
     bus: "Airport coaches leave Geneva at 08:30, 10:30 and 14:15 (to be confirmed)",
     busStatus: "preliminary",
     challenge: "Learn five names before dinner.",
   },
   {
-    events: [
-      { time: "Morning", what: "Lift passes and rentals" },
-      { time: "16:30", what: "Après · venue TBA" },
-    ],
+    events: [{ time: "Morning", what: "Lift passes and rentals" }],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Ride every lift on the Péclet side.",
@@ -308,14 +306,17 @@ export const dayDetails: Array<{
   {
     events: [
       { time: "09:00", what: "Ski day" },
-      { time: "21:00", what: "Theme night" },
+      { time: "Afternoon", what: "Après 1 · venue TBA" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Find the best vin chaud in town.",
   },
   {
-    events: [{ time: "09:00", what: "Ski day · further into Les 3 Vallées" }],
+    events: [
+      { time: "09:00", what: "Ski day · further into Les 3 Vallées" },
+      { time: "Late", what: "Club night 1 · venue TBA" },
+    ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Photo with a ski instructor.",
@@ -324,6 +325,7 @@ export const dayDetails: Array<{
     events: [
       { time: "09:00", what: "Big mountain day" },
       { time: "All day", what: "Non-skier programme" },
+      { time: "Evening", what: "Bar crawl" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
@@ -332,7 +334,7 @@ export const dayDetails: Array<{
   {
     events: [
       { time: "09:00", what: "Ski day" },
-      { time: "21:00", what: "Theme night" },
+      { time: "Afternoon", what: "Après 2 · venue TBA" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
@@ -341,8 +343,8 @@ export const dayDetails: Array<{
   {
     events: [
       { time: "09:00", what: "Last day on snow" },
-      { time: "16:30", what: "Closing après" },
-      { time: "Evening", what: "Final night" },
+      { time: "Afternoon", what: "Après 3 · venue TBA" },
+      { time: "Late", what: "Club night 2 · venue TBA" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
@@ -1099,12 +1101,12 @@ export const otherRoutes = {
   summary: "Lyon, Paris by train, or Geneva on your own",
   items: [
     {
-      title: "Fly to Lyon, then bus",
-      body: "Lyon (LYS) is another option, then a bus or shuttle up the valley.",
+      title: "Fly to Lyon or Chambéry, then bus",
+      body: "Chambéry (CMF) is the closest airport, about 90 minutes away, with fewer flights. Lyon (LYS) is another option. Either way, it is a bus or shuttle up the valley.",
     },
     {
       title: "Train from Paris",
-      body: "Fly to Paris, take the TGV to Moûtiers (the station at the foot of the valley), then a bus or taxi up.",
+      body: "Fly to Paris, take the TGV to Moûtiers (the station at the foot of the valley, about 45 minutes away), then a bus or taxi up.",
     },
     {
       title: "Geneva on your own time",

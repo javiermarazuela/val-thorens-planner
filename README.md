@@ -1,10 +1,10 @@
 # Euro Ski ’27
 
 Website and guide for the CBS Snow Sports trip to Val Thorens,
-9–16 January 2027. It's a single page, built mostly for phones. Bookings
+9–16 January 2027. It's a scroll-through guide on one page, built mostly for phones. Bookings
 run through SkiSync.
 
-Live at https://val-thorens-planner.vercel.app.
+Live at https://cbseuroski.com.
 
 [CLAUDE.md](./CLAUDE.md) is the source of truth for the stack, structure,
 content rules and roadmap. [HANDOFF.md](./HANDOFF.md) covers history,

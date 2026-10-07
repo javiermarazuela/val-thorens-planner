@@ -4,7 +4,7 @@ Snapshot for picking this project up in a new session. **CLAUDE.md is the source
 
 ## What this is
 
-Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thorens, 9–16 January 2027, 170+ people. It's a single page, and most visitors are on a phone. Bookings run through SkiSync (trip 752).
+Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thorens, 9–16 January 2027, 170+ people. The trip has sold out, so it is now a scroll-through guide, and most visitors are on a phone. Bookings run through SkiSync (trip 752). The original sign-up and price page is kept at `/archive`.
 
 - Live: https://cbseuroski.com (`www` redirects to it). The old https://val-thorens-planner.vercel.app still works.
 - Repo: `javiermarazuela/val-thorens-planner`. Vercel builds a preview for every PR.
@@ -18,6 +18,15 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 | [#3](https://github.com/javiermarazuela/val-thorens-planner/pull/3) | **Renamed the site "Euro Ski ’27"** everywhere: tab titles, link previews and the header wordmark. The name is one `siteName` constant, and the apostrophe is U+2019. **Rewrote CLAUDE.md rule 9**: phone and desktop are both first-class. Deleted a dead component.                                                                                                                                                                                                                                                                                                                                           |
 | [#4](https://github.com/javiermarazuela/val-thorens-planner/pull/4) | **Separate phone and desktop layouts.** The phone page is 15% shorter, with tighter padding and two-column grids; desktop gets wider containers and a three-column guide. **Real interactive map:** Leaflet on OpenStreetMap tiles, replacing a decorative SVG. It has icon pins (house, gondola, fork, glass) in four colours, and tapping a pin or name opens a card with a linked title and "Open in Google Maps". Adds the only new dependency, `leaflet`.                                                                                                                                                  |
 | [#5](https://github.com/javiermarazuela/val-thorens-planner/pull/5) | **Official SkiSync information.** The price section shows "From $2,083 per person" (club member package), the non-member price, _Included_ / _Not included_ columns with add-on "from" prices, a **Sign up on SkiSync** button, and a **Key dates** strip (10, 20 and 26 Dec). It corrects copy SkiSync contradicts: you book your own flights, the club doesn't run the coaches, roommates are chosen at registration rather than drawn on arrival, and the passport rule is now in. It adds four confirmed FAQs, and updates CLAUDE.md rules 1 and 7 plus a context line. This HANDOFF.md is also on this PR. |
+
+## Guide redesign (branch `guide-redesign`, PR #19, not merged)
+
+- The trip sold out, so the site became a trip guide: one scrolling page of numbered sections (Welcome, Getting here & away, Where we stay, The week, Daily plan, Maps, Getting around, Things to do, FAQs, In case of trouble, Links & packing). Order is journey order until 9 Jan 2027, trip order after (`?order=trip|journey` forces one). Spec: `redesign-spec.md`; structure notes: CLAUDE.md.
+- Phases 1-4 built (fce938b), TanStack Start bumped to 1.168.60 to clear a Vercel XSS block (809d8f1), then two density passes after the user called the first preview too packed (c0f00fa, efad841), then a calmer palette, simpler Getting here, stay photos and a skier on the desktop trail (a622554).
+- **Not merged.** `main` and cbseuroski.com are still the older single page. Next: user checks the Vercel preview on a phone and desktop, asks for more trimming if needed, then merges.
+- New content in `trip.ts` since this file's last update: `gettingHere` (flights from the committee's flights sheet), `airportCoaches`, `checkSteps`, `otherRoutes`, `gettingAround` (resort shuttle on the 2025-26 timetable until 2026-27 is published), `dayDetails` (preliminary), `thingsToDo`, `trouble`, `linksSection`, and the two smaller stays (L'Oxalys, Le Hameau du Kashmir) with photos in `src/assets/`.
+- Still sample (`preliminary`): day events and times, challenges, weather, shuttle times, airport coach times. Replace as the committee confirms.
+- Read on 7 Oct from the parent folder's `Info/`: the Master Tracker's calendar now drives the evening events in `week` and `dayDetails` (welcome drinks Sat; après Mon, Thu, Fri; club nights Tue and Fri; bar crawl Wed; still preliminary, no venues or times). Its venue list already matches `mapPoints`. The rest of the tracker (budget, payments, prior-year Tignes venues, committee comments on venues) is internal and deliberately kept out of the site. The Telegraph guide added only the Chambéry and Moûtiers travel facts in `otherRoutes`.
 
 ## Phase 2: Google login (done, PR #13)
 
@@ -37,7 +46,7 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 
 ## Current state
 
-- **`main`:** everything through PR #12 is merged and live, including the phone-first cleanup (shorter hero, Gamma-style price block, 170+). The members page has a "Back to Euro Ski ’27" link.
+- **`main`:** the older single-page site; everything through PR #12 plus the later Supabase and hotel changes is merged and live, including the phone-first cleanup (shorter hero, Gamma-style price block, 170+). The members page has a "Back to Euro Ski ’27" link.
 - **Where we stay: Résidence Village Montana** (453 Rue du Soleil, 73440 Les Belleville), "for now" per the committee, so its status stays `partial`. The photo is the residence's own marketing image.
 
 - **Map venues:** categories are Après, Bars, Clubs and Restaurants (colours in `mapKinds`, `trip.ts`). Venue pins were checked against OpenStreetMap and Google Maps on 30 Sep 2026. Saloon and Igloo de Thorens are not in OSM, so they use Google's position. Left off the map: Clos Bernard (the only Google match is in Méribel, about 7 km north) and Chez Pépé Nicolas (on the D117 road, just outside `mapArea`).
