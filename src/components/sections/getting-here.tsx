@@ -1,4 +1,4 @@
-import { Bus, CalendarDays, Plane, TrainFront } from "lucide-react";
+import { Bus, CalendarDays, ChevronDown, Plane, TrainFront } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { FlightForm } from "@/components/flight-form";
@@ -152,12 +152,12 @@ function Expander({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div>
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className={`flex w-full items-center justify-between gap-3 text-left ${featured ? "min-h-16 px-4 py-3" : "min-h-10 py-1"}`}
+        className={`flex w-full items-center justify-between gap-3 bg-secondary px-4 text-left transition hover:bg-secondary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${featured ? "min-h-16 py-3" : "min-h-14 py-2"}`}
       >
         <span className="flex min-w-0 items-center gap-3">
           {icon && (
@@ -179,10 +179,13 @@ function Expander({
         </span>
         <span className="flex shrink-0 items-center gap-3">
           {badge}
-          <span className="text-xl font-medium">{open ? "−" : "+"}</span>
+          <ChevronDown
+            className={`size-5 transition-transform ${open ? "rotate-180" : ""}`}
+            aria-hidden="true"
+          />
         </span>
       </button>
-      {open && <div className={featured ? "px-4 pb-4" : "pb-3"}>{children}</div>}
+      {open && <div className="border-t border-border px-4 pb-4 pt-3">{children}</div>}
     </div>
   );
 }
@@ -196,7 +199,7 @@ const routeIcons: Record<OtherRouteIcon, ReactNode> = {
 export function GettingHere({ n, tone }: SectionProps) {
   return (
     <GuideSection id="getting-here" n={n} tone={tone} title={gettingHere.title}>
-      <div className="rounded-2xl border border-border bg-secondary/60">
+      <div>
         <Expander
           featured
           icon={<Plane className="size-5" aria-hidden="true" />}
@@ -215,13 +218,13 @@ export function GettingHere({ n, tone }: SectionProps) {
         </Expander>
       </div>
 
-      <div className="mt-4 border-y border-border py-0.5">
+      <div className="mt-4">
         <Expander
           title={otherRoutes.title}
           summary={otherRoutes.summary}
           badge={<StatusBadge status={otherRoutes.status} />}
         >
-          <ul>
+          <ul className="-mt-3">
             {otherRoutes.items.map((r) => (
               <li key={r.title} className="flex gap-3 border-t border-border py-3">
                 <span className="grid size-9 shrink-0 place-items-center rounded-full bg-secondary text-ink">

@@ -1,10 +1,24 @@
 import { useState } from "react";
-import { Beer, MapPin, Music, Snowflake, Utensils, type LucideIcon } from "lucide-react";
+import {
+  Beer,
+  ExternalLink,
+  MapPin,
+  Music,
+  Sparkles,
+  Utensils,
+  type LucideIcon,
+} from "lucide-react";
 
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
-import { StatusBadge } from "@/components/status-badge";
-import { googleMapsUrl, mapPoints, thingsToDo, type MapKind } from "@/lib/trip";
+import {
+  activities,
+  activityGroups,
+  googleMapsUrl,
+  mapPoints,
+  thingsToDo,
+  type MapKind,
+} from "@/lib/trip";
 
 const KIND_STYLE: Record<MapKind, { label: string; Icon: LucideIcon }> = {
   stay: { label: "Stay", Icon: MapPin },
@@ -24,7 +38,7 @@ export function ThingsToDo({ n, tone }: SectionProps) {
     (p) =>
       venueKinds.includes(p.kind) && (filter === "all" || (active?.kinds ?? []).includes(p.kind)),
   );
-  const showOffSkis = filter === "all" || filter === "snow";
+  const shownActivities = activities.filter((a) => filter === "all" || filter === a.group);
 
   return (
     <GuideSection id="todo" n={n} tone={tone} title={thingsToDo.title}>
@@ -68,23 +82,38 @@ export function ThingsToDo({ n, tone }: SectionProps) {
             </li>
           );
         })}
-        {showOffSkis && (
-          <li className="flex flex-col rounded-xl border border-border bg-card">
-            <div className="px-4 py-3">
+        {shownActivities.map((a) => (
+          <li key={a.name} className="flex flex-col rounded-xl border border-border bg-card">
+            <div className="flex flex-1 flex-col px-4 py-3">
               <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                <Snowflake className="size-3.5" aria-hidden="true" />
-                Off the skis
+                <Sparkles className="size-3.5" aria-hidden="true" />
+                {activityGroups.find((g) => g.id === a.group)?.label}
               </span>
               <h3 className="mt-1 font-sans text-base font-semibold normal-case leading-snug">
-                {thingsToDo.offSkis.name}
+                {a.name}
               </h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                {thingsToDo.offSkis.body}
-              </p>
+              <a
+                href={a.url}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-1 inline-flex min-h-8 items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
+              >
+                <ExternalLink className="size-4" aria-hidden="true" />
+                Open website
+              </a>
             </div>
           </li>
-        )}
+        ))}
       </ul>
+      <a
+        href={thingsToDo.moreUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-4 inline-flex min-h-8 items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
+      >
+        {thingsToDo.moreLabel}
+        <ExternalLink className="size-3.5" aria-hidden="true" />
+      </a>
     </GuideSection>
   );
 }
