@@ -4,7 +4,7 @@
 
 The trip is sold out, so the site is now a guide used in resort, mostly on phones. Claude Design's v2 (`Euro Ski 27 Claude design directions/Euro Ski 27 Guide v2.dc.html`) has a good structure and new content (flights, Today card, shuttle blocks) but a generic look, fake map pins and invented times. The current site (`val-thorens-planner/`) has the real map, real content rules and photos but an older single-page layout. This spec merges them: v2's structure and new content, the current site's real map and data discipline, and the retro-poster look from the user's reference images (`uploads/pasted-*.png`: vintage Fischer badge, red/mustard/navy/teal palette, "Spend the day skiing" poster).
 
-No code has been changed. This is the plan for implementation, in `val-thorens-planner/`.
+> **Status (6 Oct 2026):** built on branch `guide-redesign` (PR #19), not merged, then trimmed for density after the user found it too packed. This spec is the original plan; where it differs (a separate Daily plan section for the Today card, calmer snow-white palette, simpler Getting here, no `guide-rail.tsx`/`section-chips.tsx`/`section-order.ts` files), the code and CLAUDE.md win.
 
 ## Decisions already made with the user
 
