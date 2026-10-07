@@ -78,7 +78,7 @@ export const mapSection = {
 
 export const weekSection = {
   title: "The week",
-  intro: "Two travel days, six full days in between. Theme details will appear as they are agreed.",
+  intro: "Two travel days, six snow days in between, and something most evenings.",
 };
 
 export const faqSection = {
@@ -211,152 +211,136 @@ export const stay = {
   ],
 };
 
+export type EventIcon =
+  "arrivals" | "departures" | "snow" | "welcome" | "apres" | "bar" | "club" | "lastnight";
+
 export const week: Array<{
   day: string;
   date: string;
   title: string;
   status: GuideStatus;
-  body: string;
+  daytime: { icon: EventIcon; label: string };
 }> = [
   {
     day: "Sat",
     date: "9 Jan",
-    title: "Travel day, check-in & welcome drinks",
+    title: "Arrivals",
     status: "partial",
-    body: "Land, transfer up the mountain, find your building, check in, then welcome drinks. Gentle is a word we use loosely.",
+    daytime: { icon: "arrivals", label: "Arrivals" },
   },
   {
     day: "Sun",
     date: "10 Jan",
-    title: "First day on snow",
+    title: "Slope day",
     status: "partial",
-    body: "Lift passes and rentals sorted in the morning, then an easy afternoon finding your legs and your group.",
+    daytime: { icon: "snow", label: "Slope day" },
   },
   {
     day: "Mon",
     date: "11 Jan",
-    title: "Ski day + first après & theme night",
+    title: "Slope day",
     status: "soon",
-    body: "A full day on the hill, then the first big après and a theme night. The theme and the venue are still being decided, so hold off on the costume shopping.",
+    daytime: { icon: "snow", label: "Slope day" },
   },
   {
     day: "Tue",
     date: "12 Jan",
-    title: "Ski day + club night",
+    title: "Slope day",
     status: "soon",
-    body: "The day we push further into Les 3 Vallées for anyone who wants distance rather than laps. The first club night follows.",
+    daytime: { icon: "snow", label: "Slope day" },
   },
   {
     day: "Wed",
     date: "13 Jan",
-    title: "Big mountain day + bar crawl",
+    title: "Slope day",
     status: "soon",
-    body: "The long one, weather permitting, then the bar crawl. Non-skiers get their own full programme on the same day.",
+    daytime: { icon: "snow", label: "Slope day" },
   },
   {
     day: "Thu",
     date: "14 Jan",
-    title: "Ski day + second après & theme night",
+    title: "Slope day",
     status: "soon",
-    body: "Another day on the hill, a second après and the second theme night, and the point in the week where the team games usually get decided.",
+    daytime: { icon: "snow", label: "Slope day" },
   },
   {
     day: "Fri",
     date: "15 Jan",
-    title: "Last day & final night",
+    title: "Slope day",
     status: "soon",
-    body: "Last laps, a final après, then the second club night: the night nobody sensibly plans around an early transfer.",
+    daytime: { icon: "snow", label: "Slope day" },
   },
   {
     day: "Sat",
     date: "16 Jan",
-    title: "Home",
+    title: "Departures",
     status: "partial",
-    body: "Pack, clean the apartment, transfer back down to the airport. Times will be published well in advance.",
+    daytime: { icon: "departures", label: "Departures" },
   },
 ];
 
-// What happens each day, in the same order as `week`. The events follow the
-// committee's tracker (calendar, 30 Sep 2026) but venues and times are not
-// settled, so they stay preliminary until the committee confirms them; the coach times come
-// from the committee's flights sheet and are marked TBC there.
+// What happens each day, in the same order as `week`. The evening events follow
+// the committee's tracker (calendar, 7 Oct 2026). Venues, times and who each
+// event is for are deliberately not shown; the coach times come from the
+// committee's flights sheet and are marked TBC there.
 export const dayDetailsStatus: GuideStatus = "preliminary";
 export const dayDetails: Array<{
-  events: Array<{ time: string; what: string }>;
+  events: Array<{ icon: EventIcon; what: string }>;
   bus: string;
   // The coach times are preliminary; the resort shuttle hours come from the resort.
   busStatus: GuideStatus;
   challenge: string;
 }> = [
   {
-    events: [
-      { time: "TBA", what: "Check-in · Résidence Village Montana" },
-      { time: "Evening", what: "Welcome drinks" },
-    ],
+    events: [{ icon: "welcome", what: "Welcome Drinks" }],
     bus: "Airport coaches leave Geneva at 08:30, 10:30 and 14:15 (to be confirmed)",
     busStatus: "preliminary",
     challenge: "Learn five names before dinner.",
   },
   {
-    events: [{ time: "Morning", what: "Lift passes and rentals" }],
+    events: [{ icon: "apres", what: "Après" }],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Ride every lift on the Péclet side.",
   },
   {
     events: [
-      { time: "09:00", what: "Ski day" },
-      { time: "Afternoon", what: "Après 1 · venue TBA" },
-      { time: "Evening", what: "Theme night · theme TBA" },
+      { icon: "bar", what: "Bar Crawl" },
+      { icon: "club", what: "Club Night" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Find the best vin chaud in town.",
   },
   {
-    events: [
-      { time: "09:00", what: "Ski day · further into Les 3 Vallées" },
-      { time: "Late", what: "Club night 1 · venue TBA" },
-    ],
+    events: [{ icon: "bar", what: "Bar Night" }],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Photo with a ski instructor.",
   },
   {
     events: [
-      { time: "09:00", what: "Big mountain day" },
-      { time: "All day", what: "Non-skier programme" },
-      { time: "Evening", what: "Bar crawl" },
+      { icon: "apres", what: "Après" },
+      { icon: "club", what: "Club Night" },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
-    challenge: "Ski one run in full theme costume.",
+    challenge: "Ski one run in full costume.",
   },
   {
-    events: [
-      { time: "09:00", what: "Ski day" },
-      { time: "Afternoon", what: "Après 2 · venue TBA" },
-      { time: "Evening", what: "Theme night · theme TBA" },
-    ],
+    events: [{ icon: "apres", what: "Après" }],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Nominate the most improved beginner.",
   },
   {
-    events: [
-      { time: "09:00", what: "Last day on snow" },
-      { time: "Afternoon", what: "Après 3 · venue TBA" },
-      { time: "Late", what: "Club night 2 · venue TBA" },
-    ],
+    events: [{ icon: "lastnight", what: "Last Night Drinks" }],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Pack tonight, not at 4 a.m. (You won’t.)",
   },
   {
-    events: [
-      { time: "TBA", what: "Check-out" },
-      { time: "05:15", what: "First coach to Geneva (to be confirmed)" },
-    ],
+    events: [],
     bus: "Coaches to Geneva leave at 05:15, 07:30 and 09:30 (to be confirmed)",
     busStatus: "preliminary",
     challenge: "Sleep on the coach. Everyone else will.",
