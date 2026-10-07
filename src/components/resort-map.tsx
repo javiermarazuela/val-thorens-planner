@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap, Marker } from "maplibre-gl";
-import { ExternalLink } from "lucide-react";
 
 import { loadStyle } from "@/components/map-style";
-import { StatusBadge } from "@/components/status-badge";
 import {
   googleMapsUrl,
   mapArea,
@@ -25,10 +23,9 @@ const GLYPH: Record<MapIcon, string> = {
   note: '<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
 };
 
-function markerHtml(color: string, icon: MapIcon, selected: boolean): string {
-  const size = selected ? 38 : 30;
-  const ring = selected ? "box-shadow:0 0 0 4px rgba(15,23,42,0.35);" : "";
-  return `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:2.5px solid #fff;display:grid;place-items:center;box-sizing:border-box;${ring}"><svg viewBox="0 0 24 24" width="${Math.round(size * 0.55)}" height="${Math.round(size * 0.55)}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[icon]}</svg></div>`;
+function markerHtml(color: string, icon: MapIcon): string {
+  const size = 30;
+  return `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:2.5px solid #fff;display:grid;place-items:center;box-sizing:border-box;"><svg viewBox="0 0 24 24" width="${Math.round(size * 0.55)}" height="${Math.round(size * 0.55)}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[icon]}</svg></div>`;
 }
 
 function kindOf(id: MapKind) {
@@ -37,14 +34,11 @@ function kindOf(id: MapKind) {
 
 export function ResortMap() {
   const [active, setActive] = useState<MapKind | "all">("all");
-  const [selected, setSelected] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Record<string, Marker>>({});
-
-  const point = mapPoints.find((p) => p.name === selected) ?? null;
 
   // MapLibre needs `window` and WebGL, so it is imported only in the browser.
   // The container renders on the server as an empty box and fills in once it
@@ -103,10 +97,23 @@ export function ResortMap() {
         pin.title = p.name;
         pin.setAttribute("aria-label", p.name);
         pin.style.cssText = "background:none;border:0;padding:0;cursor:pointer;";
-        pin.innerHTML = markerHtml(kind.color, kind.icon, false);
-        pin.addEventListener("click", () => setSelected(p.name));
+        pin.innerHTML = markerHtml(kind.color, kind.icon);
+        // Clicking a pin opens a small popup with the place's name, which links
+        // to it in Google Maps. MapLibre toggles it on the marker click itself.
+        const link = document.createElement("a");
+        link.href = googleMapsUrl(p.name);
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = p.name;
+        link.style.cssText = "font-weight:600;color:#1d4ed8;text-decoration:underline;";
+        const popup = new ml.Popup({
+          offset: 20,
+          closeButton: false,
+          maxWidth: "220px",
+        }).setDOMContent(link);
         markersRef.current[p.name] = new ml.Marker({ element: pin })
           .setLngLat([p.lng, p.lat])
+          .setPopup(popup)
           .addTo(map);
       }
 
@@ -135,25 +142,17 @@ export function ResortMap() {
     };
   }, []);
 
-  // Keep pins in step with the filter and the selection.
+  // Keep pins in step with the filter.
   useEffect(() => {
     if (!ready) return;
     for (const p of mapPoints) {
-      const pin = markersRef.current[p.name]?.getElement();
-      if (!pin) continue;
-      const kind = kindOf(p.kind);
-      const isSel = selected === p.name;
-      pin.style.display = active === "all" || p.kind === active ? "" : "none";
-      pin.style.zIndex = isSel ? "1" : "";
-      pin.innerHTML = markerHtml(kind.color, kind.icon, isSel);
+      const marker = markersRef.current[p.name];
+      if (!marker) continue;
+      const hidden = active !== "all" && p.kind !== active;
+      marker.getElement().style.display = hidden ? "none" : "";
+      if (hidden && marker.getPopup()?.isOpen()) marker.togglePopup();
     }
-  }, [active, selected, ready]);
-
-  const choose = (name: string) => {
-    setSelected(name);
-    const p = mapPoints.find((x) => x.name === name);
-    if (p) mapRef.current?.panTo([p.lng, p.lat]);
-  };
+  }, [active, ready]);
 
   const legend = (
     <div className="mt-3 flex flex-wrap justify-center gap-1.5">
@@ -200,70 +199,6 @@ export function ResortMap() {
             className="relative z-0 h-[340px] w-full overflow-hidden rounded-lg border border-border bg-secondary sm:h-[420px]"
           />
           {legend}
-        </div>
-
-        <div>
-          {point ? (
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <span
-                  className="size-3 rounded-full"
-                  style={{ background: kindOf(point.kind).color }}
-                  aria-hidden="true"
-                />
-                <a
-                  href={googleMapsUrl(point.name)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-semibold text-primary underline underline-offset-4 hover:no-underline"
-                >
-                  {point.name}
-                </a>
-                <StatusBadge status={point.status} />
-              </div>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{point.note}</p>
-              <a
-                href={googleMapsUrl(point.name)}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-1 inline-flex min-h-8 items-center gap-2 text-sm font-medium text-primary"
-              >
-                {mapSection.openInMaps}
-                <ExternalLink className="size-3.5" aria-hidden="true" />
-              </a>
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">{mapSection.hint}</p>
-          )}
-
-          <ul className="mt-3 grid grid-cols-2 gap-1 sm:gap-1.5">
-            {mapPoints
-              .filter((p) => active === "all" || p.kind === active)
-              .map((p) => (
-                <li key={p.name}>
-                  <button
-                    type="button"
-                    onClick={() => choose(p.name)}
-                    className={`flex min-h-9 w-full items-center gap-2.5 rounded-md border px-2.5 py-1 text-left text-sm leading-snug transition sm:gap-3 sm:px-3 ${
-                      selected === p.name
-                        ? "border-foreground"
-                        : "border-transparent hover:border-border"
-                    }`}
-                  >
-                    <span
-                      className="size-2.5 shrink-0 rounded-full"
-                      style={{ background: kindOf(p.kind).color }}
-                      aria-hidden="true"
-                    />
-                    {p.name}
-                  </button>
-                </li>
-              ))}
-          </ul>
-
-          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-            {mapSection.approxNote}
-          </p>
         </div>
       </div>
     </div>

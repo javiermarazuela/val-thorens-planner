@@ -53,16 +53,11 @@ export const mapSection = {
   title: "Maps",
   townMapTitle: "Town map",
   allLabel: "Everything",
-  hint: "Tap a pin for what it is, and a link straight to it in Google Maps.",
-  openInMaps: "Open in Google Maps",
-  approxNote:
-    "Pins sit on the real venues, except the beginner carpets, which are approximate. Each place’s name opens its location in Google Maps.",
   officialMapLabel: "See the official resort map",
   officialMapUrl: "https://www.valthorens.com/en/decouvrir/plan-station/",
   pisteMapsTitle: "Ski map",
   pisteMapImage: "/maps/val-thorens-piste-map.jpg",
   pisteMapAlt: "Val Thorens and Orelle piste map, 2025–26",
-  pisteMapHint: "Tap the map to open it full size.",
   pisteMapDownloads: [
     {
       label: "Download Val Thorens map",
@@ -198,14 +193,12 @@ export const stay = {
       name: "Résidence L’Oxalys",
       type: "4-star apartment residence",
       address: "Resort entrance, 73440 Val Thorens",
-      note: "Premium apartments for 2 to 8 people. A smaller group of us is here.",
       status: "partial" as GuideStatus,
     },
     {
       name: "Hôtel Le Hameau du Kashmir",
       type: "4-star hotel",
       address: "Entrée station, Grande Rue, 73440 Val Thorens",
-      note: "Hotel at the foot of the slopes, by the resort entrance. A smaller group of us is here.",
       status: "partial" as GuideStatus,
     },
   ],
@@ -360,14 +353,6 @@ export const mountain = {
     { label: "Webcams", href: "https://www.valthorens.com/en/webcams/" },
     { label: "Weather", href: "https://www.valthorens.com/en/meteo/" },
   ],
-};
-
-export const offSnow = {
-  status: "soon" as GuideStatus,
-  intro:
-    "Some people never planned to ski. Some twist a knee on Monday. Some simply need a day that starts after midday. There is a proper daytime programme for all three, running through the week — not a consolation prize.",
-  title: "Not skiing",
-  forthcomingNote: "Day-by-day activities and meeting points are coming soon.",
 };
 
 export const teamGames = {
@@ -627,7 +612,6 @@ export const mapPoints: Array<{
   kind: MapKind;
   lat: number;
   lng: number;
-  note: string;
   status: GuideStatus;
 }> = [
   {
@@ -637,7 +621,6 @@ export const mapPoints: Array<{
     kind: "stay",
     lat: 45.29731,
     lng: 6.57608,
-    note: "Where we stay: self-catered apartments in the Plein Sud sector, by the slopes.",
     status: "partial",
   },
   {
@@ -646,7 +629,6 @@ export const mapPoints: Array<{
     kind: "stay",
     lat: 45.29784,
     lng: 6.57711,
-    note: "Where a smaller group of us is staying: 4-star apartments, a short walk from Village Montana.",
     status: "partial",
   },
   {
@@ -655,7 +637,6 @@ export const mapPoints: Array<{
     kind: "stay",
     lat: 45.29864,
     lng: 6.57612,
-    note: "Where a smaller group of us is staying: a 4-star hotel by the resort entrance.",
     status: "partial",
   },
   // Lift pins sit on each lift's village station, taken from OpenStreetMap's
@@ -666,7 +647,6 @@ export const mapPoints: Array<{
     kind: "lift",
     lat: 45.29547,
     lng: 6.57589,
-    note: "Fast way up the east side of the bowl and into the glacier runs.",
     status: "partial",
   },
   {
@@ -676,7 +656,6 @@ export const mapPoints: Array<{
     kind: "lift",
     lat: 45.29428,
     lng: 6.56455,
-    note: "Up to the Cime Caron cable car: 3,200m and the big view. Queue early on a clear day.",
     status: "partial",
   },
   {
@@ -684,7 +663,6 @@ export const mapPoints: Array<{
     kind: "lift",
     lat: 45.294,
     lng: 6.5804,
-    note: "Gentle slopes at the edge of the village — day one starts here.",
     status: "partial",
   },
   {
@@ -692,7 +670,6 @@ export const mapPoints: Array<{
     kind: "lift",
     lat: 45.29519,
     lng: 6.57198,
-    note: "The main lift out of the village and the route to Les 3 Vallées.",
     status: "partial",
   },
   // Venue pins below were checked against OpenStreetMap and Google Maps
@@ -703,7 +680,6 @@ export const mapPoints: Array<{
     kind: "restaurant",
     lat: 45.29823,
     lng: 6.58126,
-    note: "Restaurant on Rue de Caron, in the middle of the village.",
     status: "soon",
   },
   {
@@ -711,7 +687,6 @@ export const mapPoints: Array<{
     kind: "restaurant",
     lat: 45.30001,
     lng: 6.57862,
-    note: "Dinner spot on Rue des Balcons, on the upper side of the village.",
     status: "soon",
   },
   {
@@ -719,7 +694,6 @@ export const mapPoints: Array<{
     kind: "restaurant",
     lat: 45.2896,
     lng: 6.58936,
-    note: "Long lunch on the terrace, right by the Cascades chairlift and the piste.",
     status: "soon",
   },
   {
@@ -727,7 +701,6 @@ export const mapPoints: Array<{
     kind: "apres",
     lat: 45.28651,
     lng: 6.58397,
-    note: "Lively party venue on the mountain, with a giant knife and fork on the roof.",
     status: "soon",
   },
   {
@@ -735,7 +708,6 @@ export const mapPoints: Array<{
     kind: "apres",
     lat: 45.30489,
     lng: 6.58811,
-    note: "On the Plein Sud piste. Starts mid-afternoon, and you still have to ski down.",
     status: "soon",
   },
   {
@@ -743,7 +715,6 @@ export const mapPoints: Array<{
     kind: "apres",
     lat: 45.29056,
     lng: 6.58277,
-    note: "Village Igloo, a bar and restaurant built in snow below the village centre.",
     status: "soon",
   },
   {
@@ -751,7 +722,6 @@ export const mapPoints: Array<{
     kind: "bar",
     lat: 45.29741,
     lng: 6.58511,
-    note: "Live bands, cocktails and dancing on Rue de Gebroulaz.",
     status: "soon",
   },
   {
@@ -759,7 +729,6 @@ export const mapPoints: Array<{
     kind: "bar",
     lat: 45.29694,
     lng: 6.58532,
-    note: "Après tavern with DJs and dancing, by Residence Les Glaciers.",
     status: "soon",
   },
   {
@@ -767,7 +736,6 @@ export const mapPoints: Array<{
     kind: "bar",
     lat: 45.29769,
     lng: 6.58498,
-    note: "Pub on Rue de Gebroulaz, billed as the highest pub in Europe.",
     status: "soon",
   },
   {
@@ -775,7 +743,6 @@ export const mapPoints: Array<{
     kind: "bar",
     lat: 45.29727,
     lng: 6.58488,
-    note: "Latin food and cocktails, open late on Rue de Gebroulaz.",
     status: "soon",
   },
   {
@@ -783,7 +750,6 @@ export const mapPoints: Array<{
     kind: "club",
     lat: 45.29689,
     lng: 6.58535,
-    note: "Karaoke at midnight, club from 1 am, in the centre of the village.",
     status: "soon",
   },
   {
@@ -791,7 +757,6 @@ export const mapPoints: Array<{
     kind: "club",
     lat: 45.29803,
     lng: 6.58167,
-    note: "Underground, very large, very late. On Rue de Caron.",
     status: "soon",
   },
 ];
@@ -1195,23 +1160,109 @@ export const gettingAround = {
 
 // Things to do. The venue cards come from `mapPoints`, so the map and this list
 // never disagree; the committee's own picks will be added as they are made.
+export type ActivityGroup = "thrills" | "views" | "indoors";
+
+export const activityGroups: Array<{ id: ActivityGroup; label: string }> = [
+  { id: "thrills", label: "Thrills" },
+  { id: "views", label: "Top views" },
+  { id: "indoors", label: "Indoors" },
+];
+
+// Things to do that are not a venue on the map. Each one links to the resort's
+// own page (or its booking page).
+export const activities: Array<{ name: string; group: ActivityGroup; url: string }> = [
+  {
+    name: "Cosmojet toboggan run",
+    group: "thrills",
+    url: "https://www.valthorens.com/en/activites/luge-cosmojet/",
+  },
+  {
+    name: "Snowmobiling",
+    group: "thrills",
+    url: "https://www.valthorens.com/en/activites/motoneige/",
+  },
+  {
+    name: "Ice karting",
+    group: "thrills",
+    url: "https://booking.valthorens.com/karting-on-ice-20-minutes-1.html",
+  },
+  {
+    name: "Mountain Kart Xperience",
+    group: "thrills",
+    url: "https://www.valthorens.com/en/mountain-kart-xperience/",
+  },
+  {
+    name: "Snowtubing (Moon Xperience)",
+    group: "thrills",
+    url: "https://www.valthorens.com/en/activites/snowtubing-moon-xperience/",
+  },
+  {
+    name: "Electric fat biking",
+    group: "thrills",
+    url: "https://booking.valthorens.com/electric-fat-bike-evening-ride.html",
+  },
+  {
+    name: "Helicopter discovery flight",
+    group: "views",
+    url: "https://booking.valthorens.com/amontblanchelicoptere-amontblanchelicobapteme/helicopter-discovery-flight-10-min.html",
+  },
+  {
+    name: "Paramotor / Snow Trike flight",
+    group: "views",
+    url: "https://www.valthorens.com/en/activites/paramoteur-snow-trike/",
+  },
+  {
+    name: "Snow groomer ride + Savoyard aperitif",
+    group: "views",
+    url: "https://www.valthorens.com/en/?p=455",
+  },
+  {
+    name: "Dog sledding",
+    group: "views",
+    url: "https://www.valthorens.com/en/activites/chiens-traineaux/",
+  },
+  {
+    name: "Snowshoeing",
+    group: "views",
+    url: "https://www.valthorens.com/en/activites/raquettes/",
+  },
+  {
+    name: "Pedestrian lift pass",
+    group: "views",
+    url: "https://www.valthorens.com/en/activites/sentiers-pietons/forfait-pieton/",
+  },
+  {
+    name: "Bowling La Bicicleta",
+    group: "indoors",
+    url: "https://www.valthorens.com/en/equipement/bowling-de-val-thorens-la-bicicleta/",
+  },
+  {
+    name: "Le Board sports centre (pools, sauna)",
+    group: "indoors",
+    url: "https://www.valthorens.com/en/equipement/centre-sportif-le-board/",
+  },
+  {
+    name: "Spa (Le Spa du Val Thorens)",
+    group: "indoors",
+    url: "https://www.valthorens.com/en/equipement/le-spa-du-val-thorens/",
+  },
+];
+
+// Things to do. The venue cards come from `mapPoints`, so the map and this list
+// never disagree; the activity cards come from `activities`.
 export const thingsToDo = {
   title: "Things to do",
   intro:
     "Where to eat on the mountain and in town, where to go after, and what to do when your legs say no.",
-  note: "A starting list. The committee’s own picks will be added.",
   filters: [
     { id: "all", label: "Everything" },
     { id: "eat", label: "Eat", kinds: ["restaurant"] },
     { id: "apres", label: "Après & bars", kinds: ["apres", "bar"] },
     { id: "late", label: "Clubs", kinds: ["club"] },
-    { id: "snow", label: "Off the skis" },
+    ...activityGroups.map((g) => ({ id: g.id, label: g.label })),
   ] as Array<{ id: string; label: string; kinds?: MapKind[] }>,
-  offSkis: {
-    name: "Not skiing",
-    body: offSnow.intro,
-    note: offSnow.forthcomingNote,
-  },
+  moreLabel: "More things to do on the resort site",
+  moreUrl: "https://www.valthorens.com/en/que-faire-a-val-thorens-quand-on-ne-skie-pas/",
 };
 
 // In case of trouble. 112 is the EU emergency number. The medical centre and
