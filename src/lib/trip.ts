@@ -1184,7 +1184,7 @@ export const activities: Array<{ name: string; group: ActivityGroup; url: string
   {
     name: "Ice karting",
     group: "thrills",
-    url: "https://booking.valthorens.com/karting-on-ice-20-minutes-1.html",
+    url: "https://www.valthorens.com/en/?p=443",
   },
   {
     name: "Mountain Kart Xperience",
@@ -1199,12 +1199,12 @@ export const activities: Array<{ name: string; group: ActivityGroup; url: string
   {
     name: "Electric fat biking",
     group: "thrills",
-    url: "https://booking.valthorens.com/electric-fat-bike-evening-ride.html",
+    url: "https://booking.valthorens.com/aesf-afatbikenocturne/electric-fat-bike-evening-ride.html",
   },
   {
     name: "Helicopter discovery flight",
     group: "views",
-    url: "https://booking.valthorens.com/amontblanchelicoptere-amontblanchelicobapteme/helicopter-discovery-flight-10-min.html",
+    url: "https://www.valthorens.com/en/activites/helicoptere/",
   },
   {
     name: "Paramotor / Snow Trike flight",
