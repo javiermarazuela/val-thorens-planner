@@ -590,8 +590,8 @@ export const mapArea = {
 // kinds (lifts, restaurants), which were already pale. Après is dark teal
 // rather than pink, which merged with the lift green under deuteranopia, and
 // clubs are near-black slate.
-export type MapKind = "stay" | "lift" | "restaurant" | "apres" | "bar" | "club";
-export type MapIcon = "house" | "lift" | "fork" | "mug" | "glass" | "note";
+export type MapKind = "stay" | "lift" | "restaurant" | "apres" | "bar" | "club" | "indoors";
+export type MapIcon = "house" | "lift" | "fork" | "mug" | "glass" | "note" | "wave";
 
 export const mapKinds: Array<{
   id: MapKind;
@@ -605,6 +605,7 @@ export const mapKinds: Array<{
   { id: "apres", label: "Après", icon: "mug", color: "#0f766e" },
   { id: "bar", label: "Bars", icon: "glass", color: "#b91c1c" },
   { id: "club", label: "Clubs", icon: "note", color: "#1f2937" },
+  { id: "indoors", label: "Indoors", icon: "wave", color: "#7c3aed" },
 ];
 
 export const mapPoints: Array<{
@@ -758,6 +759,30 @@ export const mapPoints: Array<{
     lat: 45.29803,
     lng: 6.58167,
     status: "soon",
+  },
+  // Indoor places from the Things to do list. Positions are from
+  // OpenStreetMap: Le Board (building), the bowling alley, and Hôtel Le Val
+  // Thorens, which houses the spa.
+  {
+    name: "Bowling La Bicicleta",
+    kind: "indoors",
+    lat: 45.2985513,
+    lng: 6.5815524,
+    status: "partial",
+  },
+  {
+    name: "Le Board sports centre (pools, sauna)",
+    kind: "indoors",
+    lat: 45.2976193,
+    lng: 6.5808714,
+    status: "partial",
+  },
+  {
+    name: "Spa (Le Spa du Val Thorens)",
+    kind: "indoors",
+    lat: 45.2976927,
+    lng: 6.5830715,
+    status: "partial",
   },
 ];
 
