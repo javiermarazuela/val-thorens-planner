@@ -158,10 +158,13 @@ export function FlightForm({
   const [arrival, setArrival] = useState<LegState>(emptyLeg("arrival"));
   const [departure, setDeparture] = useState<LegState>(emptyLeg("departure"));
   const [loaded, setLoaded] = useState(false);
+  const [saved, setSaved] = useState(false); // a row exists for this person
+  const [editing, setEditing] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
 
-  useEffect(() => {
+  // Loads this person's row. Used on first open and when they cancel an edit.
+  function load() {
     supabase
       .from("flights")
       .select("*")
@@ -171,10 +174,14 @@ export function FlightForm({
         else if (data) {
           setArrival(legFromRow(data as Row, "arrival"));
           setDeparture(legFromRow(data as Row, "departure"));
+          setSaved(true);
+          setEditing(false);
         }
         setLoaded(true);
       });
-  }, [supabase]);
+  }
+
+  useEffect(load, [supabase]);
 
   async function save() {
     setSaving(true);
@@ -185,18 +192,58 @@ export function FlightForm({
       ...legToRow(departure, "dep"),
     });
     setSaving(false);
-    setMessage(
-      error
-        ? { kind: "error", text: "Couldn't save. Try again in a moment." }
-        : { kind: "ok", text: "Saved. You can come back and change this any time." },
-    );
+    if (error) {
+      setMessage({ kind: "error", text: "Couldn't submit. Try again in a moment." });
+      return;
+    }
+    setSaved(true);
+    setEditing(false);
+    setMessage({ kind: "ok", text: "Submitted. The committee can see your flights." });
+  }
+
+  function cancelEdit() {
+    setMessage(null);
+    load();
   }
 
   if (!loaded) return <p className="mt-6 text-muted-foreground">Loading your flights…</p>;
 
+  const wrap = showHeading ? "mt-8 border-t border-border pt-8" : undefined;
+  const heading = showHeading && <h2 className="font-display text-2xl uppercase">Your flights</h2>;
+  const status = message && (
+    <p
+      role={message.kind === "error" ? "alert" : "status"}
+      className={cn(
+        "mt-4 text-sm font-semibold",
+        message.kind === "error" ? "text-destructive" : "text-foreground",
+      )}
+    >
+      {message.text}
+    </p>
+  );
+
+  if (saved && !editing) {
+    return (
+      <div className={wrap}>
+        {heading}
+        <p className={cn("text-sm text-muted-foreground", showHeading && "mt-2")}>
+          These are saved to your profile ({session.user.email}). You can change them any time.
+        </p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <Summary direction="arrival" leg={arrival} />
+          <Summary direction="departure" leg={departure} />
+        </div>
+        {status}
+        <Button className="mt-5" variant="outline" onClick={() => setEditing(true)}>
+          Edit my flights
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className={showHeading ? "mt-8 border-t border-border pt-8" : undefined}>
-      {showHeading && <h2 className="font-display text-2xl uppercase">Your flights</h2>}
+    <div className={wrap}>
+      {heading}
       <p className={cn("text-sm text-muted-foreground", showHeading && "mt-2")}>
         Tell us when you land and when you leave, and whether you want a seat on the airport coach.
         The committee uses this to plan the transfers. Signed in as {session.user.email}.
@@ -212,20 +259,48 @@ export function FlightForm({
         />
       </div>
 
-      {message && (
-        <p
-          role={message.kind === "error" ? "alert" : "status"}
-          className={cn(
-            "mt-5 text-sm font-semibold",
-            message.kind === "error" ? "text-destructive" : "text-foreground",
-          )}
-        >
-          {message.text}
-        </p>
+      {status}
+      <div className="mt-5 flex flex-wrap gap-2">
+        <Button onClick={save} disabled={saving}>
+          {saving ? "Submitting…" : saved ? "Save changes" : "Submit my flights"}
+        </Button>
+        {saved && (
+          <Button variant="outline" onClick={cancelEdit} disabled={saving}>
+            Cancel
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const shuttleText: Record<Shuttle, string> = {
+  yes: "Wants the airport coach",
+  no: "Making their own way",
+  unsure: "Coach: not sure yet",
+};
+
+function Summary({ direction, leg }: { direction: Direction; leg: LegState }) {
+  const t = copy[direction];
+  let body: string;
+  if (leg.mode === "other") body = leg.note ? `Another way: ${leg.note}` : "Another way";
+  else if (leg.confirmed)
+    body = `${leg.number} · ${leg.confirmed.airport ? `${leg.confirmed.airport} · ` : ""}${t.verb} ${leg.confirmed.time}`;
+  else body = "No flight added yet";
+
+  return (
+    <div className="rounded-xl border border-border bg-background p-4">
+      <p className="flex items-center gap-2 font-display text-sm uppercase">
+        <Plane
+          aria-hidden="true"
+          className={cn("size-4", direction === "departure" && "rotate-45")}
+        />
+        {t.title}
+      </p>
+      <p className="mt-2 text-sm font-semibold">{body}</p>
+      {leg.mode !== "other" && leg.shuttle && (
+        <p className="mt-1 text-sm text-muted-foreground">{shuttleText[leg.shuttle]}</p>
       )}
-      <Button className="mt-5" onClick={save} disabled={saving}>
-        {saving ? "Saving…" : "Save my flights"}
-      </Button>
     </div>
   );
 }

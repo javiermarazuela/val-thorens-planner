@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import heroImage from "@/assets/val-thorens-trip.jpg";
+import { Button } from "@/components/ui/button";
 import { hero, trip } from "@/lib/trip";
 import { daysToGo } from "@/lib/trip-day";
 
@@ -38,6 +39,11 @@ export function Welcome() {
               {toGo === 1 ? "1 day to go" : `${toGo} days to go`}
             </p>
           )}
+          <Button asChild size="sm" className="mt-4">
+            <a href="#flights" onClick={() => window.dispatchEvent(new Event("open-flights"))}>
+              Add your flights
+            </a>
+          </Button>
         </div>
       </div>
     </section>

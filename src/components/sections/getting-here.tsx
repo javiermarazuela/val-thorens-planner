@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { FlightForm } from "@/components/flight-form";
 import { GuideSection } from "@/components/guide-section";
@@ -104,8 +104,27 @@ function FlightsPanel() {
 
 function FlightsCard() {
   const [open, setOpen] = useState(false);
+
+  // "My flights" buttons elsewhere on the page open this card.
+  useEffect(() => {
+    const openIfAsked = () => {
+      if (window.location.hash === "#flights") setOpen(true);
+    };
+    const openNow = () => setOpen(true);
+    openIfAsked();
+    window.addEventListener("hashchange", openIfAsked);
+    window.addEventListener("open-flights", openNow);
+    return () => {
+      window.removeEventListener("hashchange", openIfAsked);
+      window.removeEventListener("open-flights", openNow);
+    };
+  }, []);
+
   return (
-    <div className="mt-6 rounded-2xl border border-border bg-secondary/40 p-4 sm:p-5">
+    <div
+      id="flights"
+      className="mt-6 scroll-mt-[calc(var(--header-h)+1rem)] rounded-2xl border border-border bg-secondary/40 p-4 sm:p-5"
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
