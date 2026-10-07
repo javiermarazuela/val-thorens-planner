@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { MountainSnow } from "lucide-react";
+import { MountainSnow, Plane } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { goToSection, scrollToTop } from "@/lib/use-scroll-spy";
@@ -153,6 +153,10 @@ export function GuideRail({ stops, current }: { stops: Stop[]; current: number }
   );
 }
 
+// Tells the flights card (in Getting here & away) to open, even when the hash is
+// already #flights and so will not change.
+const openFlights = () => window.dispatchEvent(new Event("open-flights"));
+
 // Sticky top bar. Phone: wordmark, Members button and a scrolling chip bar.
 // Desktop: the current section's name (the rail does the navigating).
 export function GuideHeader({
@@ -191,7 +195,9 @@ export function GuideHeader({
           <span className="grid size-9 place-items-center rounded-md bg-ink text-paper">
             <MountainSnow aria-hidden="true" className="size-5" />
           </span>
-          <span className="font-display text-sm uppercase leading-none">{site.name}</span>
+          <span className="hidden font-display text-sm uppercase leading-none min-[440px]:inline">
+            {site.name}
+          </span>
         </a>
         <p className="hidden text-sm font-bold min-[1100px]:block" aria-live="polite">
           {now && (
@@ -201,9 +207,17 @@ export function GuideHeader({
             </>
           )}
         </p>
-        <Button asChild variant="outline" size="sm" className="rounded-md">
-          <a href="/members">Members</a>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button asChild size="sm" className="rounded-md">
+            <a href="#flights" onClick={openFlights}>
+              <Plane aria-hidden="true" className="size-4" />
+              My flights
+            </a>
+          </Button>
+          <Button asChild variant="outline" size="sm" className="rounded-md">
+            <a href="/members">Members</a>
+          </Button>
+        </div>
       </div>
       <div
         ref={chips}

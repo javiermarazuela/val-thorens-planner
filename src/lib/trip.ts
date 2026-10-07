@@ -828,7 +828,7 @@ export const privacy = {
     "The public page collects nothing. No accounts, no tracking, no ads.",
     "If you sign in with Google to reach the members area, we receive your name and email address from Google. That is all. We don't see your Google password or anything else in your account.",
     "We use your email only to check you're a Columbia student or an approved guest, and to show you the members area. We don't share it, sell it or use it for marketing.",
-    "Later, if you fill in the flight details form, we store what you enter so the committee can organise transfers.",
+    "If you fill in the flight details form, we store what you enter so the committee can organise transfers. To find your flight we send the flight number and date, nothing about you, to an airline data service.",
     "Your checklist on the page is saved on your own device, not on our servers.",
     "Want your data removed? Ask in the trip WhatsApp group and the committee will delete it.",
   ],
@@ -1060,6 +1060,26 @@ export const gettingHere = {
     ] as Flight[],
   },
 };
+
+// Flights the committee has typed in by hand for the members' flight form.
+// They show as chips and are matched on the spot, so they never cost an API
+// call. Add one per flight, for example:
+//   { direction: "arrival", date: "2027-01-09", number: "LX2802", airline: "Swiss",
+//     from: "ZRH", to: "GVA", time: "08:24" }
+// `date` is the day the flight lands (arrival) or leaves (departure); `time` is
+// the local time at the airport you land at or leave from. Preliminary until
+// the committee confirms them.
+export type KnownFlight = {
+  direction: "arrival" | "departure";
+  date: string;
+  number: string;
+  airline: string;
+  from: string;
+  to: string;
+  time: string;
+};
+
+export const knownFlights: KnownFlight[] = [];
 
 export const airportCoaches = {
   status: "preliminary" as GuideStatus,
