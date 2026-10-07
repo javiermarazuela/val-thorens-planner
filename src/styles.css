@@ -59,6 +59,7 @@
   --color-ink: var(--ink);
   --color-mustard: var(--mustard);
   --color-signal: var(--signal);
+  --color-flame: var(--flame);
   --color-alert: var(--alert);
   --color-grade-green: var(--grade-green);
   --color-grade-blue: var(--grade-blue);
@@ -82,6 +83,7 @@
   --ink: oklch(0.27 0.06 258);
   --mustard: oklch(0.84 0.13 85);
   --signal: oklch(0.56 0.17 32);
+  --flame: oklch(0.74 0.17 58); /* orange, for the "tell us how you're getting there" strip */
   --alert: oklch(0.48 0.16 32);
   --grade-green: oklch(0.5 0.08 172);
   --grade-blue: oklch(0.5 0.1 245);

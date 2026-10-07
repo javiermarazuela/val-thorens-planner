@@ -861,6 +861,10 @@ export const gettingHere = {
   showMore: (n: number) => `Show ${n} more`,
   showFewer: "Show fewer",
   noCoach: "No group coach",
+  recommended: {
+    title: "Recommended flights",
+    summary: "Arrive in Geneva on Sat 9 Jan morning, leave on Sat 16 Jan morning",
+  },
   out: {
     title: "To Geneva",
     date: "Fri 8 – Sat 9 Jan",

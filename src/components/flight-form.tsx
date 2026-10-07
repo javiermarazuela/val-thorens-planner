@@ -209,6 +209,8 @@ export function FlightForm({
       return;
     }
     setSubmitted(true);
+    // Tells the banner on the welcome photo to check again.
+    window.dispatchEvent(new Event("flights-saved"));
     setMessage({ kind: "ok", text: "Done. The committee can see your flights." });
   }
 
@@ -407,7 +409,7 @@ function LegEditor({
   const t = copy[direction];
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [status, setStatus] = useState<"idle" | "searching" | "missing">("idle");
-  const [showList, setShowList] = useState(false); // suggested flights, closed until asked for
+  const [custom, setCustom] = useState(false); // "my flight isn't listed"
   const request = useRef(0);
 
   const number = leg.number.toUpperCase().replace(/\s+/g, "");
@@ -425,7 +427,8 @@ function LegEditor({
   );
   const suggestions = leg.mode === "geneva" ? suggestionsFor(direction, leg.date) : [];
   const flying = leg.mode !== "other";
-  const typing = leg.mode !== "other";
+  const typing =
+    leg.mode === "other_flight" || (leg.mode === "geneva" && (custom || suggestions.length === 0));
 
   // A flight on the committee's list is matched on the spot: no API call.
   // Anything else waits for the "Look up" button, so half-typed numbers
@@ -453,7 +456,7 @@ function LegEditor({
     request.current++;
     setProposal(null);
     setStatus("idle");
-    setShowList(false);
+    setCustom(false);
     onChange({ ...emptyLeg(direction, mode), shuttle: leg.shuttle });
   }
 
@@ -507,7 +510,7 @@ function LegEditor({
   function pick(s: FlightSuggestion) {
     request.current++;
     setStatus("idle");
-    setShowList(false);
+    setCustom(false);
     setProposal(fromSuggestion(s, direction));
     onChange({ ...leg, number: s.number, confirmed: null });
   }
@@ -586,6 +589,50 @@ function LegEditor({
         </label>
       )}
 
+      {leg.mode === "geneva" && suggestions.length > 0 && !leg.confirmed && (
+        <div>
+          <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-semibold">
+            Pick your flight <StatusBadge status="preliminary" />
+          </p>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {suggestions.map((s) => (
+              <li key={s.display + s.time}>
+                <button
+                  type="button"
+                  onClick={() => pick(s)}
+                  className={cn(
+                    "w-full rounded-2xl border border-border bg-background px-4 py-2 text-left transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    number === s.number && "border-primary bg-secondary",
+                  )}
+                >
+                  <span className="flex items-center gap-3">
+                    <AirlineLogo number={s.display} direction={direction} airline={s.airline} />
+                    <span className="min-w-0">
+                      <span className="block text-sm">
+                        <span className="font-extrabold tabular-nums">{s.time}</span>
+                        <span className="text-muted-foreground"> · {s.route}</span>
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {s.airline} · <span className="font-bold text-foreground">{s.display}</span>
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          {!custom && (
+            <button
+              type="button"
+              onClick={() => setCustom(true)}
+              className="mt-3 min-h-8 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
+            >
+              My flight isn't listed
+            </button>
+          )}
+        </div>
+      )}
+
       {typing && !leg.confirmed && (
         <div className="grid gap-4 sm:grid-cols-2">
           {leg.mode === "other_flight" && (
@@ -627,54 +674,6 @@ function LegEditor({
             </Button>
           </div>
         )}
-
-      {leg.mode === "geneva" && suggestions.length > 0 && !leg.confirmed && (
-        <div>
-          <button
-            type="button"
-            aria-expanded={showList}
-            onClick={() => setShowList((v) => !v)}
-            className="min-h-8 text-sm font-medium text-primary underline underline-offset-4 hover:no-underline"
-          >
-            {showList ? "Hide suggested flights" : "Show suggested flights"}
-          </button>
-          {showList && (
-            <div className="mt-3">
-              <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-semibold">
-                From the committee's list <StatusBadge status="preliminary" />
-              </p>
-              <ul className="grid gap-2 sm:grid-cols-2">
-                {suggestions.map((s) => (
-                  <li key={s.display + s.time}>
-                    <button
-                      type="button"
-                      onClick={() => pick(s)}
-                      className={cn(
-                        "w-full rounded-2xl border border-border bg-background px-4 py-2 text-left transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                        number === s.number && "border-primary bg-secondary",
-                      )}
-                    >
-                      <span className="flex items-center gap-3">
-                        <AirlineLogo number={s.display} direction={direction} airline={s.airline} />
-                        <span className="min-w-0">
-                          <span className="block text-sm">
-                            <span className="font-extrabold tabular-nums">{s.time}</span>
-                            <span className="text-muted-foreground"> · {s.route}</span>
-                          </span>
-                          <span className="block text-xs text-muted-foreground">
-                            {s.airline} ·{" "}
-                            <span className="font-bold text-foreground">{s.display}</span>
-                          </span>
-                        </span>
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
 
       {partial && (
         <div
@@ -795,7 +794,7 @@ function LegEditor({
             size="sm"
             variant="outline"
             onClick={() => {
-              setShowList(false);
+              setCustom(false);
               onChange({ ...leg, number: "", confirmed: null });
             }}
           >
