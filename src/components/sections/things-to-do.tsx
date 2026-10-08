@@ -2,10 +2,14 @@ import { useState } from "react";
 import {
   Beer,
   ExternalLink,
+  LayoutGrid,
+  Mountain,
   MapPin,
   Music,
   Sparkles,
   Utensils,
+  Waves,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -30,34 +34,68 @@ const KIND_STYLE: Record<MapKind, { label: string; Icon: LucideIcon }> = {
   indoors: { label: "Indoors", Icon: MapPin },
 };
 
+// One coloured tile per area; the filter ids come from `thingsToDo.filters`.
+const AREA_STYLE: Record<string, { Icon: LucideIcon; tile: string }> = {
+  all: { Icon: LayoutGrid, tile: "bg-[#1F3A47] text-white" },
+  eat: { Icon: Utensils, tile: "bg-[#FFD166] text-[#14232B]" },
+  apres: { Icon: Beer, tile: "bg-[#FFB45E] text-[#14232B]" },
+  late: { Icon: Music, tile: "bg-[#8A4A66] text-white" },
+  thrills: { Icon: Zap, tile: "bg-[#FF8E80] text-[#14232B]" },
+  views: { Icon: Mountain, tile: "bg-[#2A66CC] text-white" },
+  indoors: { Icon: Waves, tile: "bg-[#1F7A70] text-white" },
+};
+
 const venueKinds: MapKind[] = ["restaurant", "apres", "bar", "club"];
 
 export function ThingsToDo({ n, tone }: SectionProps) {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState<string | null>(null);
   const active = thingsToDo.filters.find((f) => f.id === filter);
-  const venues = mapPoints.filter(
-    (p) =>
-      venueKinds.includes(p.kind) && (filter === "all" || (active?.kinds ?? []).includes(p.kind)),
-  );
-  const shownActivities = activities.filter((a) => filter === "all" || filter === a.group);
+  const venueCount = (f: { id: string; kinds?: MapKind[] }) =>
+    mapPoints.filter(
+      (p) => venueKinds.includes(p.kind) && (f.id === "all" || (f.kinds ?? []).includes(p.kind)),
+    ).length;
+  const countFor = (f: { id: string; kinds?: MapKind[] }) =>
+    venueCount(f) + activities.filter((a) => f.id === "all" || f.id === a.group).length;
+  const venues = filter
+    ? mapPoints.filter(
+        (p) =>
+          venueKinds.includes(p.kind) &&
+          (filter === "all" || (active?.kinds ?? []).includes(p.kind)),
+      )
+    : [];
+  const shownActivities = filter
+    ? activities.filter((a) => filter === "all" || filter === a.group)
+    : [];
 
   return (
     <GuideSection id="todo" n={n} tone={tone} title={thingsToDo.title}>
-      <div role="group" aria-label="Filter" className="mb-4 flex flex-wrap gap-2">
-        {thingsToDo.filters.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            aria-pressed={f.id === filter}
-            onClick={() => setFilter(f.id)}
-            className={`h-9 rounded-full border-[1.5px] px-4 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${f.id === filter ? "border-ink bg-ink text-paper" : "border-border bg-card text-foreground"}`}
-          >
-            {f.label}
-          </button>
-        ))}
+      <div
+        role="group"
+        aria-label="Areas"
+        className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7"
+      >
+        {thingsToDo.filters.map((f) => {
+          const { Icon, tile } = AREA_STYLE[f.id] ?? AREA_STYLE["all"]!;
+          const on = f.id === filter;
+          return (
+            <button
+              key={f.id}
+              type="button"
+              aria-pressed={on}
+              onClick={() => setFilter(on ? null : f.id)}
+              className={`flex aspect-[5/4] flex-col items-start justify-between rounded-2xl p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tile} ${on ? "ring-2 ring-ink ring-offset-2 ring-offset-background" : "hover:brightness-95"}`}
+            >
+              <Icon className="size-7" aria-hidden="true" />
+              <span>
+                <span className="block text-base font-semibold leading-tight">{f.label}</span>
+                <span className="block text-sm font-medium">{countFor(f)} places</span>
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <ul hidden={!filter} className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {venues.map((p) => {
           const { label, Icon } = KIND_STYLE[p.kind];
           return (
