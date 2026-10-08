@@ -3,6 +3,7 @@ import {
   Beer,
   ExternalLink,
   LayoutGrid,
+  Martini,
   Mountain,
   MapPin,
   Music,
@@ -19,10 +20,15 @@ import {
   activities,
   activityGroups,
   googleMapsUrl,
+  mapKinds,
   mapPoints,
   thingsToDo,
   type MapKind,
 } from "@/lib/trip";
+
+function mapColor(id: MapKind) {
+  return mapKinds.find((k) => k.id === id)?.color ?? "#1F3A47";
+}
 
 const KIND_STYLE: Record<MapKind, { label: string; Icon: LucideIcon }> = {
   stay: { label: "Stay", Icon: MapPin },
@@ -34,15 +40,18 @@ const KIND_STYLE: Record<MapKind, { label: string; Icon: LucideIcon }> = {
   indoors: { label: "Indoors", Icon: MapPin },
 };
 
-// One coloured tile per area; the filter ids come from `thingsToDo.filters`.
-const AREA_STYLE: Record<string, { Icon: LucideIcon; tile: string }> = {
-  all: { Icon: LayoutGrid, tile: "bg-[#1F3A47] text-white" },
-  eat: { Icon: Utensils, tile: "bg-[#FFD166] text-[#14232B]" },
-  apres: { Icon: Beer, tile: "bg-[#FFB45E] text-[#14232B]" },
-  late: { Icon: Music, tile: "bg-[#8A4A66] text-white" },
-  thrills: { Icon: Zap, tile: "bg-[#B8322A] text-white" },
-  views: { Icon: Mountain, tile: "bg-[#2A66CC] text-white" },
-  indoors: { Icon: Waves, tile: "bg-[#1F7A70] text-white" },
+// One coloured tile per area. Areas that are also map pins use the pin's
+// colour (`mapKinds`), so the tiles and the map match; Thrills and Top views
+// have no pins and keep their own.
+const AREA_STYLE: Record<string, { Icon: LucideIcon; color: string; dark?: boolean }> = {
+  all: { Icon: LayoutGrid, color: "#1F3A47" },
+  eat: { Icon: Utensils, color: mapColor("restaurant"), dark: true },
+  apres: { Icon: Beer, color: mapColor("apres") },
+  bars: { Icon: Martini, color: mapColor("bar") },
+  late: { Icon: Music, color: mapColor("club") },
+  thrills: { Icon: Zap, color: "#BE123C" },
+  views: { Icon: Mountain, color: "#2A66CC" },
+  indoors: { Icon: Waves, color: mapColor("indoors") },
 };
 
 const venueKinds: MapKind[] = ["restaurant", "apres", "bar", "club"];
@@ -75,7 +84,7 @@ export function ThingsToDo({ n, tone }: SectionProps) {
         className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8"
       >
         {thingsToDo.filters.map((f) => {
-          const { Icon, tile } = AREA_STYLE[f.id] ?? AREA_STYLE["all"]!;
+          const { Icon, color, dark } = AREA_STYLE[f.id] ?? AREA_STYLE["all"]!;
           const on = f.id === filter;
           return (
             <button
@@ -83,7 +92,8 @@ export function ThingsToDo({ n, tone }: SectionProps) {
               type="button"
               aria-pressed={on}
               onClick={() => setFilter(on ? null : f.id)}
-              className={`flex h-[84px] flex-col items-start justify-between rounded-2xl p-3 text-left sm:aspect-[5/4] sm:h-auto sm:p-4 ${f.id === "all" ? "col-span-2" : ""} transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tile} ${on ? "ring-2 ring-ink ring-offset-2 ring-offset-background" : "hover:brightness-95"}`}
+              style={{ backgroundColor: color }}
+              className={`flex h-[84px] flex-col items-start justify-between rounded-2xl p-3 text-left sm:aspect-[5/4] sm:h-auto sm:p-4  transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${dark ? "text-[#14232B]" : "text-white"} ${on ? "ring-2 ring-ink ring-offset-2 ring-offset-background" : "hover:brightness-95"}`}
             >
               <Icon className="size-5 sm:size-7" aria-hidden="true" />
               <span>

@@ -1282,7 +1282,8 @@ export const thingsToDo = {
   filters: [
     { id: "all", label: "Everything" },
     { id: "eat", label: "Eat", kinds: ["restaurant"] },
-    { id: "apres", label: "Après & bars", kinds: ["apres", "bar"] },
+    { id: "apres", label: "Après", kinds: ["apres"] },
+    { id: "bars", label: "Bars", kinds: ["bar"] },
     { id: "late", label: "Clubs", kinds: ["club"] },
     ...activityGroups.map((g) => ({ id: g.id, label: g.label })),
   ] as Array<{ id: string; label: string; kinds?: MapKind[] }>,
