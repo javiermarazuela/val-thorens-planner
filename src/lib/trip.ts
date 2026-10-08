@@ -185,7 +185,7 @@ export const stay = {
     "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
   roomsNote: "Housing signups to be released in due course.",
   // A smaller group is staying at these two. Addresses are from each place's
-  // own website; the map pins are at their OpenStreetMap positions.
+  // own website; the map pins are at their Google Maps positions.
   othersTitle: "Also staying",
   othersQualifier: "(small groups)",
   others: [
@@ -643,28 +643,30 @@ export const mapPoints: Array<{
   status: GuideStatus;
 }> = [
   {
-    // Real position, from OpenStreetMap (Village Montana - Plein Sud, Rue du
-    // Soleil). The other pins are still approximate.
+    // Google Maps' own pin for the residence (453 Rue du Soleil), from the
+    // committee's Condos sheet. It is the Montana Premier, Valbel and Soleil
+    // complex, by the Montana shuttle stop; not "Village Montana - Plein Sud",
+    // a separate residence further west. The other pins are still approximate.
     name: "Résidence Village Montana",
     kind: "stay",
-    lat: 45.29731,
-    lng: 6.57608,
+    lat: 45.2967123,
+    lng: 6.5786458,
     status: "partial",
   },
   {
-    // OpenStreetMap position ("L'Oxalys", Voie de la Boucle).
+    // Google Maps' own pin, from the committee's Condos sheet.
     name: "Résidence L’Oxalys",
     kind: "stay",
-    lat: 45.29784,
-    lng: 6.57711,
+    lat: 45.297788,
+    lng: 6.576942,
     status: "partial",
   },
   {
-    // OpenStreetMap position ("Hameau du Kashmir Resort", Rue du Soleil).
+    // Google Maps' own pin (Grande Rue), from the committee's Condos sheet.
     name: "Hôtel Le Hameau du Kashmir",
     kind: "stay",
-    lat: 45.29864,
-    lng: 6.57612,
+    lat: 45.2988305,
+    lng: 6.5763971,
     status: "partial",
   },
   // Lift pins sit on each lift's village station, taken from OpenStreetMap's
@@ -1163,65 +1165,88 @@ export const otherRoutes = {
   ],
 };
 
-// Getting around. Hours, frequency and circuits are the resort's free shuttle
-// timetable for winter 2025–26; the 2026–27 one is not out yet, so the page
-// says so. Home-from-the-clubs advice follows from those hours.
+// Getting around. Everything here is the resort's free shuttle as published
+// for winter 2025–26 (timetable, stop map and the list of which stop serves
+// which hotel); the 2026–27 one is not out yet, so the page says so. The line
+// geometry is in `shuttle-route.ts`. Stop positions are OpenStreetMap's, which
+// agree with the resort's stop map.
 export const gettingAround = {
   status: "partial" as GuideStatus,
   title: "Getting around",
-  intro:
-    "Val Thorens is compact and mostly on foot. For the rest, a free shuttle loops the resort all day.",
+  tiles: {
+    home: {
+      title: "Back to the chalet",
+    },
+    late: {
+      title: "Late at night",
+      body: "Last bus around 20:00 (22:00 on Saturday). After that, walk or book a taxi (pre-booking is mandatory).",
+    },
+    valley: {
+      title: "Other villages",
+      body: "A separate free bus from the bus station to Les Menuires and Saint-Martin, about hourly. Not on Saturdays.",
+    },
+  },
   shuttle: {
     title: "Free resort shuttle",
-    seasonNote: "Last winter’s timetable. 2026–27 to follow.",
+    seasonNote:
+      "Last winter’s timetable and stops (22 November 2025 to 3 May 2026). 2026–27 to follow.",
     hours: [
       { days: "Sunday to Friday", times: "08:00 – 20:00" },
       { days: "Saturday", times: "06:15 – 22:00" },
     ],
     frequency: "Every 20 minutes, and every 10 minutes Sunday to Friday in peak season.",
-    start: "Buses start from the bus station at place des Arolles.",
-    circuits: [
+    // One bus drives a figure of eight through the bus station: the west loop
+    // first, then the east loop, about 20 minutes in all.
+    hub: { name: "Bus station", note: "Place des Arolles", lat: 45.29799, lng: 6.57986 },
+    loops: [
       {
-        name: "Circuit du Soleil",
-        note: "Our side of town. It passes Village Montana and the Hameau du Kashmir.",
+        id: "west" as const,
+        name: "West loop",
+        note: "Rue du Soleil side. Our side of town.",
+        color: "#d97706",
         stops: [
-          "Bus station",
-          "Rue du Soleil",
-          "Montagnettes du Soleil",
-          "Village Montana",
-          "Temples du Soleil",
-          "Parking P2 and Altapura",
-          "Hameau du Kashmir",
+          { name: "Les Montagnettes", lat: 45.29656, lng: 6.58044 },
+          { name: "Montana", lat: 45.29678, lng: 6.5791 },
+          { name: "Les Temples du Soleil", lat: 45.29697, lng: 6.5775 },
+          { name: "P2", lat: 45.29799, lng: 6.57611 },
+          { name: "Cairn", lat: 45.29869, lng: 6.57792 },
+          { name: "Les Arolles", lat: 45.298, lng: 6.57885 },
         ],
-        highlight: ["Village Montana", "Hameau du Kashmir"],
       },
       {
-        name: "Circuit de la Boucle",
-        note: "Up through the centre of the resort.",
+        id: "east" as const,
+        name: "East loop",
+        note: "Through the centre and up to Les Balcons.",
+        color: "#0f766e",
         stops: [
-          "Bus station",
-          "Tourist office",
-          "Church",
-          "Place Péclet",
-          "Rue de Gébroulaz",
-          "Parking P0",
-          "Les Balcons",
+          { name: "Maison de Val Thorens", lat: 45.29859, lng: 6.582 },
+          { name: "Église", lat: 45.29808, lng: 6.58343 },
+          { name: "Place Péclet", lat: 45.29663, lng: 6.58426 },
+          { name: "Les Névés", lat: 45.29777, lng: 6.58474 },
+          { name: "P0", lat: 45.29919, lng: 6.5831 },
+          { name: "Les Balcons", lat: 45.29992, lng: 6.57917 },
         ],
-        highlight: [] as string[],
       },
     ],
+    // Which stop the resort's brochure lists each of our places under. `pin` is
+    // the place's name in `mapPoints`, which holds its position.
+    stays: [
+      { name: "Village Montana", pin: "Résidence Village Montana", stop: "Montana" },
+      { name: "L’Oxalys", pin: "Résidence L’Oxalys", stop: "Cairn" },
+      { name: "Hameau du Kashmir", pin: "Hôtel Le Hameau du Kashmir", stop: "Cairn" },
+    ],
+    // Our places have no stop of their own; the shuttle has none named Kashmir.
+    stayNote: "Dotted lines show the walk from each place to its stop.",
     link: {
       label: "Official shuttle page",
       href: "https://www.valthorens.com/en/sejour/infos-pratiques/navettes-gratuites/",
     },
   },
   valley: {
-    title: "Belleville valley shuttle",
-    body: "Free to Les Menuires and Saint-Martin-de-Belleville, Sunday to Friday. It does not run on Saturdays.",
-  },
-  home: {
-    title: "Home from après and the clubs",
-    body: "The shuttle stops at 20:00 Sunday to Friday and 22:00 on Saturday, so later than that you walk home or take a taxi. Book a taxi in advance if you plan to stay out.",
+    title: "Belleville valley bus",
+    body: "Free to Les Menuires (about 20 minutes) and Saint-Martin-de-Belleville (about 40), roughly hourly from 08:30 to 19:00. Sunday to Friday only.",
+    mapLabel: "Valley bus to Les Menuires and Saint-Martin",
+    mapNote: "Not on Saturdays",
   },
 };
 

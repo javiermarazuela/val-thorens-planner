@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap, Marker } from "maplibre-gl";
 
 import { loadStyle } from "@/components/map-style";
-import { GLYPH } from "@/lib/map-glyphs";
+import { markerHtml } from "@/lib/map-glyphs";
 import {
   googleMapsUrl,
   mapArea,
@@ -12,11 +12,6 @@ import {
   type MapIcon,
   type MapKind,
 } from "@/lib/trip";
-
-function markerHtml(color: string, icon: MapIcon, ink = "#fff", ring = "#fff"): string {
-  const size = 24;
-  return `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:1.5px solid ${ring};display:grid;place-items:center;box-sizing:border-box;"><svg viewBox="0 0 24 24" width="${Math.round(size * 0.6)}" height="${Math.round(size * 0.6)}" fill="none" stroke="${ink}" color="${ink}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[icon]}</svg></div>`;
-}
 
 function kindOf(id: MapKind) {
   return mapKinds.find((k) => k.id === id) ?? mapKinds[0]!;
