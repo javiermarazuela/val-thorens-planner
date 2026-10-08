@@ -14,3 +14,14 @@ export const GLYPH: Record<MapIcon, string> = {
   wave: '<path d="M3 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
   cross: '<path fill="currentColor" d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>',
 };
+
+// The round map pin: a coloured disc with the kind's glyph in it.
+export function markerHtml(
+  color: string,
+  icon: MapIcon,
+  ink = "#fff",
+  ring = "#fff",
+  size = 24,
+): string {
+  return `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:1.5px solid ${ring};display:grid;place-items:center;box-sizing:border-box;"><svg viewBox="0 0 24 24" width="${Math.round(size * 0.6)}" height="${Math.round(size * 0.6)}" fill="none" stroke="${ink}" color="${ink}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[icon]}</svg></div>`;
+}
