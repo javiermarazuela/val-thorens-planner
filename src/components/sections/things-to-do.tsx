@@ -1,20 +1,16 @@
 import { useState } from "react";
 import {
-  Beer,
   ExternalLink,
   LayoutGrid,
-  Martini,
   Mountain,
   MapPin,
-  Music,
   Sparkles,
-  Utensils,
-  Waves,
   Zap,
   type LucideIcon,
 } from "lucide-react";
 
 import { GuideSection } from "@/components/guide-section";
+import { MapGlyph } from "@/components/map-glyph";
 import type { SectionProps } from "@/components/sections/registry";
 import {
   activities,
@@ -23,35 +19,30 @@ import {
   mapKinds,
   mapPoints,
   thingsToDo,
+  type MapIcon,
   type MapKind,
 } from "@/lib/trip";
 
-function mapColor(id: MapKind) {
-  return mapKinds.find((k) => k.id === id)?.color ?? "#1F3A47";
+function mapKind(id: MapKind) {
+  const k = mapKinds.find((m) => m.id === id)!;
+  return { glyph: k.icon, color: k.color, dark: k.ink !== undefined };
 }
 
-const KIND_STYLE: Record<MapKind, { label: string; Icon: LucideIcon }> = {
-  stay: { label: "Stay", Icon: MapPin },
-  lift: { label: "Lift", Icon: MapPin },
-  restaurant: { label: "Eat", Icon: Utensils },
-  apres: { label: "Après", Icon: Beer },
-  bar: { label: "Bar", Icon: Beer },
-  club: { label: "Club", Icon: Music },
-  indoors: { label: "Indoors", Icon: MapPin },
-};
-
-// One coloured tile per area. Areas that are also map pins use the pin's
-// colour (`mapKinds`), so the tiles and the map match; Thrills and Top views
-// have no pins and keep their own.
-const AREA_STYLE: Record<string, { Icon: LucideIcon; color: string; dark?: boolean }> = {
+// One coloured tile per area. Areas that are also map pins take the pin's
+// colour and icon (`mapKinds`), so the tiles and the map match; Thrills, Top
+// views and Everything have no pins and keep their own.
+type AreaStyle = { color: string; dark?: boolean } & (
+  { glyph: MapIcon; Icon?: undefined } | { Icon: LucideIcon; glyph?: undefined }
+);
+const AREA_STYLE: Record<string, AreaStyle> = {
   all: { Icon: LayoutGrid, color: "#1F3A47" },
-  eat: { Icon: Utensils, color: mapColor("restaurant"), dark: true },
-  apres: { Icon: Beer, color: mapColor("apres") },
-  bars: { Icon: Martini, color: mapColor("bar") },
-  late: { Icon: Music, color: mapColor("club") },
-  thrills: { Icon: Zap, color: "#BE123C" },
+  eat: mapKind("restaurant"),
+  apres: mapKind("apres"),
+  bars: mapKind("bar"),
+  late: mapKind("club"),
+  thrills: { Icon: Zap, color: "#DB2777" },
   views: { Icon: Mountain, color: "#2A66CC" },
-  indoors: { Icon: Waves, color: mapColor("indoors") },
+  indoors: mapKind("indoors"),
 };
 
 const venueKinds: MapKind[] = ["restaurant", "apres", "bar", "club"];
@@ -84,7 +75,7 @@ export function ThingsToDo({ n, tone }: SectionProps) {
         className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8"
       >
         {thingsToDo.filters.map((f) => {
-          const { Icon, color, dark } = AREA_STYLE[f.id] ?? AREA_STYLE["all"]!;
+          const { Icon, glyph, color, dark } = AREA_STYLE[f.id] ?? AREA_STYLE["all"]!;
           const on = f.id === filter;
           return (
             <button
@@ -95,7 +86,11 @@ export function ThingsToDo({ n, tone }: SectionProps) {
               style={{ backgroundColor: color }}
               className={`flex h-[84px] flex-col items-start justify-between rounded-2xl p-3 text-left sm:aspect-[5/4] sm:h-auto sm:p-4  transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${dark ? "text-[#14232B]" : "text-white"} ${on ? "ring-2 ring-ink ring-offset-2 ring-offset-background" : "hover:brightness-95"}`}
             >
-              <Icon className="size-5 sm:size-7" aria-hidden="true" />
+              {glyph ? (
+                <MapGlyph icon={glyph} className="size-5 sm:size-7" />
+              ) : (
+                Icon && <Icon className="size-5 sm:size-7" aria-hidden="true" />
+              )}
               <span>
                 <span className="block text-sm font-semibold leading-tight sm:text-base">
                   {f.label}
@@ -109,13 +104,13 @@ export function ThingsToDo({ n, tone }: SectionProps) {
 
       <ul hidden={!filter} className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {venues.map((p) => {
-          const { label, Icon } = KIND_STYLE[p.kind];
+          const kind = mapKinds.find((k) => k.id === p.kind)!;
           return (
             <li key={p.name} className="flex flex-col rounded-xl border border-border bg-card">
               <div className="flex flex-1 flex-col px-4 py-3">
                 <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  <Icon className="size-3.5" aria-hidden="true" />
-                  {label}
+                  <MapGlyph icon={kind.icon} className="size-3.5" />
+                  {kind.label}
                 </span>
                 <h3 className="mt-1 font-sans text-base font-semibold normal-case leading-snug">
                   {p.name}
