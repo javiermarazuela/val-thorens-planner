@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap, Marker } from "maplibre-gl";
 
 import { loadStyle } from "@/components/map-style";
+import { GLYPH } from "@/lib/map-glyphs";
 import {
   googleMapsUrl,
   mapArea,
@@ -12,21 +13,9 @@ import {
   type MapKind,
 } from "@/lib/trip";
 
-// Minimal glyphs, drawn at 24x24 inside each marker. Kept as raw paths rather
-// than components because the marker element is built as an HTML string.
-const GLYPH: Record<MapIcon, string> = {
-  house: '<path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9.5 21v-6h5v6"/>',
-  lift: '<path d="M4 4h16"/><path d="M12 4v6"/><path d="M7 10h10l-1.5 8h-7z"/>',
-  fork: '<path d="M7 3v8a2 2 0 0 0 4 0V3"/><path d="M9 11v10"/><path d="M17 3c-1.5 2-2 4-2 6h4c0-2-.5-4-2-6z"/><path d="M17 9v12"/>',
-  glass: '<path d="M5 3h14l-6 8v7"/><path d="M9 21h6"/>',
-  mug: '<path d="M5 6h10v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M15 9h2.5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H15"/><path d="M8 3v1.5M12 3v1.5"/>',
-  wave: '<path d="M3 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
-  note: '<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
-};
-
-function markerHtml(color: string, icon: MapIcon): string {
-  const size = 30;
-  return `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:2.5px solid #fff;display:grid;place-items:center;box-sizing:border-box;"><svg viewBox="0 0 24 24" width="${Math.round(size * 0.55)}" height="${Math.round(size * 0.55)}" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[icon]}</svg></div>`;
+function markerHtml(color: string, icon: MapIcon, ink = "#fff", ring = "#fff"): string {
+  const size = 24;
+  return `<div style="width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:1.5px solid ${ring};display:grid;place-items:center;box-sizing:border-box;"><svg viewBox="0 0 24 24" width="${Math.round(size * 0.6)}" height="${Math.round(size * 0.6)}" fill="none" stroke="${ink}" color="${ink}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[icon]}</svg></div>`;
 }
 
 function kindOf(id: MapKind) {
@@ -98,7 +87,7 @@ export function ResortMap() {
         pin.title = p.name;
         pin.setAttribute("aria-label", p.name);
         pin.style.cssText = "background:none;border:0;padding:0;cursor:pointer;";
-        pin.innerHTML = markerHtml(kind.color, kind.icon);
+        pin.innerHTML = markerHtml(kind.color, kind.icon, kind.ink, kind.ring);
         // Clicking a pin opens a small popup with the place's name, which links
         // to it in Google Maps. MapLibre toggles it on the marker click itself.
         const link = document.createElement("a");
@@ -181,7 +170,10 @@ export function ResortMap() {
         >
           <span
             className="size-2.5 rounded-full"
-            style={{ background: kind.color }}
+            style={{
+              background: kind.color,
+              boxShadow: kind.ring ? `inset 0 0 0 1.5px ${kind.ring}` : undefined,
+            }}
             aria-hidden="true"
           />
           {kind.label}

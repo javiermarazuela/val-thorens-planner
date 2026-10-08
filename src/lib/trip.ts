@@ -590,22 +590,49 @@ export const mapArea = {
 // kinds (lifts, restaurants), which were already pale. Après is dark teal
 // rather than pink, which merged with the lift green under deuteranopia, and
 // clubs are near-black slate.
-export type MapKind = "stay" | "lift" | "restaurant" | "apres" | "bar" | "club" | "indoors";
-export type MapIcon = "house" | "lift" | "fork" | "mug" | "glass" | "note" | "wave";
+export type MapKind =
+  "stay" | "lift" | "restaurant" | "apres" | "bar" | "club" | "indoors" | "health";
+export type MapIcon = "house" | "lift" | "fork" | "skis" | "beer" | "disco" | "wave" | "cross";
 
 export const mapKinds: Array<{
   id: MapKind;
   label: string;
   icon: MapIcon;
   color: string;
+  // Icon colour (white unless the pin is pale) and the pin's outline (white
+  // unless it would vanish against the snow).
+  ink?: string;
+  ring?: string;
 }> = [
   { id: "stay", label: "Where we stay", icon: "house", color: "#2563eb" },
   { id: "lift", label: "Lifts", icon: "lift", color: "#10b981" },
-  { id: "restaurant", label: "Restaurants", icon: "fork", color: "#f59e0b" },
-  { id: "apres", label: "Après", icon: "mug", color: "#0f766e" },
-  { id: "bar", label: "Bars", icon: "glass", color: "#b91c1c" },
-  { id: "club", label: "Clubs", icon: "note", color: "#1f2937" },
-  { id: "indoors", label: "Indoors", icon: "wave", color: "#7c3aed" },
+  {
+    id: "restaurant",
+    label: "Restaurants",
+    icon: "fork",
+    color: "#f29b35",
+    ink: "#14232B",
+    ring: "#c97a16",
+  },
+  { id: "apres", label: "Après", icon: "skis", color: "#0f766e" },
+  { id: "bar", label: "Bars", icon: "beer", color: "#b91c1c" },
+  { id: "club", label: "Clubs", icon: "disco", color: "#7c3aed" },
+  {
+    id: "indoors",
+    label: "Indoors",
+    icon: "wave",
+    color: "#7dd3fc",
+    ink: "#14232B",
+    ring: "#0284c7",
+  },
+  {
+    id: "health",
+    label: "Medical",
+    icon: "cross",
+    color: "#ffffff",
+    ink: "#dc2626",
+    ring: "#dc2626",
+  },
 ];
 
 export const mapPoints: Array<{
@@ -782,6 +809,21 @@ export const mapPoints: Array<{
     kind: "indoors",
     lat: 45.2976927,
     lng: 6.5830715,
+    status: "partial",
+  },
+  // Medical centre and pharmacy; positions from OpenStreetMap.
+  {
+    name: "Centre Médical de Val Thorens",
+    kind: "health",
+    lat: 45.2969784,
+    lng: 6.5793033,
+    status: "partial",
+  },
+  {
+    name: "Pharmacie Les 3 Vallées",
+    kind: "health",
+    lat: 45.2973802,
+    lng: 6.5846388,
     status: "partial",
   },
 ];
@@ -1281,8 +1323,9 @@ export const thingsToDo = {
     "Where to eat on the mountain and in town, where to go after, and what to do when your legs say no.",
   filters: [
     { id: "all", label: "Everything" },
-    { id: "eat", label: "Eat", kinds: ["restaurant"] },
-    { id: "apres", label: "Après & bars", kinds: ["apres", "bar"] },
+    { id: "eat", label: "Restaurants", kinds: ["restaurant"] },
+    { id: "apres", label: "Après", kinds: ["apres"] },
+    { id: "bars", label: "Bars", kinds: ["bar"] },
     { id: "late", label: "Clubs", kinds: ["club"] },
     ...activityGroups.map((g) => ({ id: g.id, label: g.label })),
   ] as Array<{ id: string; label: string; kinds?: MapKind[] }>,
