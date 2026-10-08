@@ -91,7 +91,7 @@ export function ThingsToDo({ n, tone }: SectionProps) {
               ) : (
                 Icon && <Icon className="size-5 sm:size-7" aria-hidden="true" />
               )}
-              <span>
+              <span className="block translate-y-1">
                 <span className="block text-sm font-semibold leading-tight sm:text-base">
                   {f.label}
                 </span>
