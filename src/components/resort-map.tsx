@@ -86,7 +86,9 @@ export function ResortMap() {
         pin.type = "button";
         pin.title = p.name;
         pin.setAttribute("aria-label", p.name);
-        pin.style.cssText = "background:none;border:0;padding:0;cursor:pointer;";
+        // Indoors and medical pins sit behind the rest where they overlap.
+        const behind = p.kind === "indoors" || p.kind === "health";
+        pin.style.cssText = `background:none;border:0;padding:0;cursor:pointer;z-index:${behind ? 1 : 2};`;
         pin.innerHTML = markerHtml(kind.color, kind.icon, kind.ink, kind.ring);
         // Clicking a pin opens a small popup with the place's name, which links
         // to it in Google Maps. MapLibre toggles it on the marker click itself.
@@ -101,6 +103,11 @@ export function ResortMap() {
           closeButton: false,
           maxWidth: "220px",
         }).setDOMContent(link);
+        // Popups stay above every pin.
+        popup.on("open", () => {
+          const el = popup.getElement();
+          if (el) el.style.zIndex = "10";
+        });
         markersRef.current[p.name] = new ml.Marker({ element: pin })
           .setLngLat([p.lng, p.lat])
           .setPopup(popup)

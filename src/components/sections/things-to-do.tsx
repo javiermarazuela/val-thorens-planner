@@ -84,7 +84,7 @@ export function ThingsToDo({ n, tone }: SectionProps) {
               aria-pressed={on}
               onClick={() => setFilter(on ? null : f.id)}
               style={{ backgroundColor: color }}
-              className={`flex h-[84px] flex-col items-start justify-between rounded-2xl p-3 text-left sm:aspect-[5/4] sm:h-auto sm:p-4  transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${dark ? "text-[#14232B]" : "text-white"} ${on ? "ring-2 ring-ink ring-offset-2 ring-offset-background" : "hover:brightness-95"}`}
+              className={`flex h-[96px] flex-col items-start justify-between rounded-2xl p-3 text-left sm:aspect-[5/4] sm:h-auto sm:p-4  transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${dark ? "text-[#14232B]" : "text-white"} ${on ? "ring-2 ring-ink ring-offset-2 ring-offset-background" : "hover:brightness-95"}`}
             >
               {glyph ? (
                 <MapGlyph icon={glyph} className="size-5 sm:size-7" />
