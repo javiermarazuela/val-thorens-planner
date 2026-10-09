@@ -487,7 +487,7 @@ export const faqs: Array<{
   },
   {
     q: "I didn’t pre-book rental. Where do I go?",
-    a: "Recommended rental shops near Village Montana are coming soon. Pre-booking is cheaper and faster than queueing on the Sunday morning, so if you can still book, do.",
+    a: "You can rent on site from the shops in resort, but you miss SkiSync’s group discount, which walk-up rentals rarely get, and you will queue on the Sunday morning. Recommended rental shops near Village Montana are coming soon. If you can still add rentals on SkiSync, do.",
     status: "soon",
   },
   {
@@ -528,6 +528,23 @@ export const faqs: Array<{
     featured: true,
   },
   {
+    q: "Can I add a lift pass or rentals later?",
+    // The early-December date is the committee's expectation, not a SkiSync
+    // term, so the badge stays on until SkiSync confirms it.
+    a: "You should be able to add or change extra packages, like lift passes and rentals, from your SkiSync profile until early December. We recommend doing it as soon as you can. If the online window has closed, contact SkiSync.",
+    status: "preliminary",
+  },
+  {
+    q: "Where do I collect my lift pass and rentals?",
+    a: "SkiSync emails detailed check-in instructions two to three weeks before you arrive. If you are unsure once you are there, ask one of the trip leaders.",
+    status: "partial",
+  },
+  {
+    q: "My name or passport details are wrong. What do I do?",
+    a: "Names must match your passport exactly, and the passport must be valid for at least six months after 16 January. SkiSync asks you to check your details at least 30 days before departure, which for us is around 10 December. Changes need written confirmation from SkiSync by email.",
+    status: "partial",
+  },
+  {
     q: "Can I cancel?",
     archived: true,
     a: "Lodging, the social package and the deposit are non-refundable, and every cancellation carries a €75 fee. Lift passes and rentals are refundable (minus the 4% card fee) until 10 December; after that, nothing comes back.",
@@ -553,6 +570,15 @@ export const faqs: Array<{
     q: "How much luggage can I bring?",
     a: "On the coach: one large suitcase, your ski or board gear if you’re not renting, and one small bag.",
     status: "confirmed",
+  },
+  {
+    q: "Can I cancel or transfer my place?",
+    a: "You can cancel lift passes and rentals for a refund until 10 December. Lodging, the social package and the deposit are non-refundable. You can transfer your place to someone not already booked, for €75, rising to €225 on 20 December; transfers close on 26 December and take about ten days, so start early. Everything goes through SkiSync.",
+    status: "confirmed",
+    link: {
+      label: "Full terms on SkiSync",
+      href: "https://gw.skisync.com/register?tripid=752&rep=cbssnowsports27%40gmail.com&tripName=SocialTrip",
+    },
   },
 ];
 

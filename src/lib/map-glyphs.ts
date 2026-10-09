@@ -7,7 +7,8 @@ export const GLYPH: Record<MapIcon, string> = {
   house: '<path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9.5 21v-6h5v6"/>',
   lift: '<path d="M4 4h16"/><path d="M12 4v6"/><path d="M7 10h10l-1.5 8h-7z"/>',
   fork: '<path d="M7 3v8a2 2 0 0 0 4 0V3"/><path d="M9 11v10"/><path d="M17 3c-1.5 2-2 4-2 6h4c0-2-.5-4-2-6z"/><path d="M17 9v12"/>',
-  skis: '<path d="M7 3c-1.2.2-2 1-2.2 2.2L18 21"/><path d="M17 3c1.2.2 2 1 2.2 2.2L6 21"/>',
+  // Two skis crossed in an X, tips up.
+  skis: '<path d="M3.5 21.5 17 6.2c.7-.8 1.6-1.2 2.8-1.1"/><path d="M20.5 21.5 7 6.2c-.7-.8-1.6-1.2-2.8-1.1"/>',
   beer: '<path d="M5 9h10v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M15 11h2.5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H15"/><path d="M5 9c-1-2 .5-4 2.5-3.5C8.5 3.5 11.5 3.5 12.5 5.5 14.5 5 16 7 15 9"/>',
   disco:
     '<path d="M12 2v3"/><circle cx="12" cy="13" r="8"/><path d="M4 13h16"/><path d="M6 8.5h12M6 17.5h12"/><path d="M12 5c-3 3-3 13 0 16"/><path d="M12 5c3 3 3 13 0 16"/>',
