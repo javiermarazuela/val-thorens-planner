@@ -14,6 +14,7 @@ import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as MembersRouteImport } from './routes/members'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TestdataRouteImport } from './routes/testdata'
 import { Route as GuideIndexRouteImport } from './routes/guide.index'
 import { Route as GuideSlugRouteImport } from './routes/guide.$slug'
 
@@ -42,6 +43,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestdataRoute = TestdataRouteImport.update({
+  id: '/testdata',
+  path: '/testdata',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuideIndexRoute = GuideIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/guide': typeof GuideRouteWithChildren
   '/members': typeof MembersRoute
   '/privacy': typeof PrivacyRoute
+  '/testdata': typeof TestdataRoute
   '/guide/$slug': typeof GuideSlugRoute
   '/guide/': typeof GuideIndexRoute
 }
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/archive': typeof ArchiveRoute
   '/members': typeof MembersRoute
   '/privacy': typeof PrivacyRoute
+  '/testdata': typeof TestdataRoute
   '/guide/$slug': typeof GuideSlugRoute
   '/guide': typeof GuideIndexRoute
 }
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/guide': typeof GuideRouteWithChildren
   '/members': typeof MembersRoute
   '/privacy': typeof PrivacyRoute
+  '/testdata': typeof TestdataRoute
   '/guide/$slug': typeof GuideSlugRoute
   '/guide/': typeof GuideIndexRoute
 }
@@ -88,10 +97,18 @@ export interface FileRouteTypes {
     | '/guide'
     | '/members'
     | '/privacy'
+    | '/testdata'
     | '/guide/$slug'
     | '/guide/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/archive' | '/members' | '/privacy' | '/guide/$slug' | '/guide'
+  to:
+    | '/'
+    | '/archive'
+    | '/members'
+    | '/privacy'
+    | '/testdata'
+    | '/guide/$slug'
+    | '/guide'
   id:
     | '__root__'
     | '/'
@@ -99,6 +116,7 @@ export interface FileRouteTypes {
     | '/guide'
     | '/members'
     | '/privacy'
+    | '/testdata'
     | '/guide/$slug'
     | '/guide/'
   fileRoutesById: FileRoutesById
@@ -109,6 +127,7 @@ export interface RootRouteChildren {
   GuideRoute: typeof GuideRouteWithChildren
   MembersRoute: typeof MembersRoute
   PrivacyRoute: typeof PrivacyRoute
+  TestdataRoute: typeof TestdataRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/testdata': {
+      id: '/testdata'
+      path: '/testdata'
+      fullPath: '/testdata'
+      preLoaderRoute: typeof TestdataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guide/': {
       id: '/guide/'
       path: '/'
@@ -183,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   GuideRoute: GuideRouteWithChildren,
   MembersRoute: MembersRoute,
   PrivacyRoute: PrivacyRoute,
+  TestdataRoute: TestdataRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

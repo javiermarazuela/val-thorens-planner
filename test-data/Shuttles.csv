@@ -1,0 +1,201 @@
+﻿Email,Name,Arrival coach,Arrival time,Arrival pick-up,Departure coach,Departure time,Departure pick-up,Note
+aarav.dubois@gsb.columbia.test,Aarav Dubois,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+aarav.fischer@gsb.columbia.test,Aarav Fischer,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+aarav.vargas@gsb.columbia.test,Aarav Vargas,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+aarav.yamamoto@gsb.columbia.test,Aarav Yamamoto,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+adaeze.martinez@gsb.columbia.test,Adaeze Martinez,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+adaeze.pham@gsb.columbia.test,Adaeze Pham,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+adaeze.rivera@gsb.columbia.test,Adaeze Rivera,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+aiko.lee@gsb.columbia.test,Aiko Lee,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+aiko.petrov@gsb.columbia.test,Aiko Petrov,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+alessandra.andersson@gsb.columbia.test,Alessandra Andersson,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Not taking the coach
+alex.hoffman@gsb.columbia.test,Alex Hoffman,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+alex.johansson@gsb.columbia.test,Alex Johansson,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Not taking the coach
+alex.perez@gsb.columbia.test,Alex Perez,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+alex.rivera@gsb.columbia.test,Alex Rivera,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+amara.pham@gsb.columbia.test,Amara Pham,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+amara.suzuki@gsb.columbia.test,Amara Suzuki,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+amelia.delgado@gsb.columbia.test,Amelia Delgado,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+amelia.petrov@gsb.columbia.test,Amelia Petrov,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+andre.banerjee@gsb.columbia.test,Andre Banerjee,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+andre.klein@gsb.columbia.test,Andre Klein,,,,,,,Arrival: Not taking the coach. Departure: Not taking the coach
+andre.pham@gsb.columbia.test,Andre Pham,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+andre.wright@gsb.columbia.test,Andre Wright,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+anika.perez@gsb.columbia.test,Anika Perez,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+antonio.nguyen@gsb.columbia.test,Antonio Nguyen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+ava.brooks@gsb.columbia.test,Ava Brooks,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not decided yet
+ava.carter@gsb.columbia.test,Ava Carter,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Not taking the coach
+beatriz.malik@gsb.columbia.test,Beatriz Malik,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Not decided yet
+beatriz.sorensen@gsb.columbia.test,Beatriz Sorensen,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+benjamin.chang@gsb.columbia.test,Benjamin Chang,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+bianca.ahmed@gsb.columbia.test,Bianca Ahmed,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+bianca.wright@gsb.columbia.test,Bianca Wright,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Not taking the coach
+carlos.huang@gsb.columbia.test,Carlos Huang,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+carlos.khan@gsb.columbia.test,Carlos Khan,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+chen.brooks@gsb.columbia.test,Chen Brooks,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+chen.ito@gsb.columbia.test,Chen Ito,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+chen.lee@gsb.columbia.test,Chen Lee,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+chen.nakamura@gsb.columbia.test,Chen Nakamura,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+chen.tran@gsb.columbia.test,Chen Tran,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+chloe.cruz@gsb.columbia.test,Chloe Cruz,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Not taking the coach
+clara.oliveira@gsb.columbia.test,Clara Oliveira,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+clara.shah@gsb.columbia.test,Clara Shah,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+daniel.zhang@gsb.columbia.test,Daniel Zhang,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+daria.fernandez@gsb.columbia.test,Daria Fernandez,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not decided yet
+david.bailey@gsb.columbia.test,David Bailey,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+david.martinez@gsb.columbia.test,David Martinez,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+david.russo@gsb.columbia.test,David Russo,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+david.sorensen@gsb.columbia.test,David Sorensen,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not decided yet
+diego.harper@gsb.columbia.test,Diego Harper,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+diego.torres@gsb.columbia.test,Diego Torres,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not decided yet
+elena.harper@gsb.columbia.test,Elena Harper,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+elias.banerjee@gsb.columbia.test,Elias Banerjee,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+elias.cruz@gsb.columbia.test,Elias Cruz,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+elias.hansen@gsb.columbia.test,Elias Hansen,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+elias.jensen@gsb.columbia.test,Elias Jensen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not decided yet
+emma.mehta@gsb.columbia.test,Emma Mehta,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+emma.meyer@gsb.columbia.test,Emma Meyer,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+ethan.diaz@gsb.columbia.test,Ethan Diaz,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+ethan.fernandez@gsb.columbia.test,Ethan Fernandez,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Not taking the coach
+fatima.martin@gsb.columbia.test,Fatima Martin,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+fatima.nguyen@gsb.columbia.test,Fatima Nguyen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+fatima.ortiz@gsb.columbia.test,Fatima Ortiz,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Not taking the coach
+felix.moreau@gsb.columbia.test,Felix Moreau,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+felix.silva@gsb.columbia.test,Felix Silva,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+gabriel.ortiz@gsb.columbia.test,Gabriel Ortiz,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+gabriel.russo@gsb.columbia.test,Gabriel Russo,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+gabriel.santos@gsb.columbia.test,Gabriel Santos,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+giulia.bailey@gsb.columbia.test,Giulia Bailey,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+giulia.dang@gsb.columbia.test,Giulia Dang,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Not taking the coach
+giulia.hughes@gsb.columbia.test,Giulia Hughes,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Not taking the coach
+giulia.lund@gsb.columbia.test,Giulia Lund,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+giulia.malik@gsb.columbia.test,Giulia Malik,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+grace.malik@gsb.columbia.test,Grace Malik,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+hana.clarke@gsb.columbia.test,Hana Clarke,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+hana.khan@gsb.columbia.test,Hana Khan,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+hana.lam@gsb.columbia.test,Hana Lam,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+henry.alvarez@gsb.columbia.test,Henry Alvarez,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+henry.banerjee@gsb.columbia.test,Henry Banerjee,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+henry.garcia@gsb.columbia.test,Henry Garcia,,,,,,,Arrival: Not taking the coach. Departure: Flight is too early for the first coach (05:15)
+henry.nakamura@gsb.columbia.test,Henry Nakamura,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not decided yet
+hiro.reid@gsb.columbia.test,Hiro Reid,,,,,,,Arrival: Not decided yet. Departure: Not taking the coach
+ibrahim.gonzalez@gsb.columbia.test,Ibrahim Gonzalez,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+ibrahim.lopez@gsb.columbia.test,Ibrahim Lopez,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+ibrahim.ortiz@gsb.columbia.test,Ibrahim Ortiz,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+ines.bianchi@gsb.columbia.test,Ines Bianchi,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+ines.garcia@gsb.columbia.test,Ines Garcia,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+ines.hansen@gsb.columbia.test,Ines Hansen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+ines.mehta@gsb.columbia.test,Ines Mehta,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+ines.wong@gsb.columbia.test,Ines Wong,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+isabella.ortiz@gsb.columbia.test,Isabella Ortiz,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+jack.fischer@gsb.columbia.test,Jack Fischer,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+jack.ibrahim@gsb.columbia.test,Jack Ibrahim,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+jack.nielsen@gsb.columbia.test,Jack Nielsen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+jamal.ahmed@gsb.columbia.test,Jamal Ahmed,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+jamal.wright@gsb.columbia.test,Jamal Wright,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+javier.costa@gsb.columbia.test,Javier Costa,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+javier.nielsen@gsb.columbia.test,Javier Nielsen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+javier.schmidt@gsb.columbia.test,Javier Schmidt,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+javier.wagner@gsb.columbia.test,Javier Wagner,,,,,,,Arrival: Not taking the coach. Departure: Flight is too early for the first coach (05:15)
+jin.reid@gsb.columbia.test,Jin Reid,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+joao.petrov@gsb.columbia.test,Joao Petrov,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+joao.singh@gsb.columbia.test,Joao Singh,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+julia.malik@gsb.columbia.test,Julia Malik,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+julia.zhou@gsb.columbia.test,Julia Zhou,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+kai.ahmed@gsb.columbia.test,Kai Ahmed,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+kai.costa@gsb.columbia.test,Kai Costa,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+kai.wagner@gsb.columbia.test,Kai Wagner,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+kavya.becker@gsb.columbia.test,Kavya Becker,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+kavya.wang@gsb.columbia.test,Kavya Wang,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not decided yet
+lara.pham@gsb.columbia.test,Lara Pham,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Not decided yet
+leo.gonzalez@gsb.columbia.test,Leo Gonzalez,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+leo.williams@gsb.columbia.test,Leo Williams,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+liam.oliveira@gsb.columbia.test,Liam Oliveira,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+liam.rossi@gsb.columbia.test,Liam Rossi,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Not taking the coach
+liam.yamamoto@gsb.columbia.test,Liam Yamamoto,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+lucas.brooks@gsb.columbia.test,Lucas Brooks,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+lucas.costa@gsb.columbia.test,Lucas Costa,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+luisa.abbott@gsb.columbia.test,Luisa Abbott,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+luisa.harper@gsb.columbia.test,Luisa Harper,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+luisa.morgan@gsb.columbia.test,Luisa Morgan,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+madison.ibrahim@gsb.columbia.test,Madison Ibrahim,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+mateo.chang@gsb.columbia.test,Mateo Chang,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+mateo.kim@gsb.columbia.test,Mateo Kim,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+mateo.li@gsb.columbia.test,Mateo Li,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+mateo.oliveira@gsb.columbia.test,Mateo Oliveira,,,,,,,Arrival: Not taking the coach. Departure: Flight is too early for the first coach (05:15)
+maya.andersson@gsb.columbia.test,Maya Andersson,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+maya.carter@gsb.columbia.test,Maya Carter,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+maya.torres@gsb.columbia.test,Maya Torres,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+mei.diaz@gsb.columbia.test,Mei Diaz,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+mei.lam@gsb.columbia.test,Mei Lam,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+mei.park@gsb.columbia.test,Mei Park,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+mei.roy@gsb.columbia.test,Mei Roy,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+mei.williams@gsb.columbia.test,Mei Williams,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+mei.wright@gsb.columbia.test,Mei Wright,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not taking the coach
+mia.edwards@gsb.columbia.test,Mia Edwards,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+mia.jensen@gsb.columbia.test,Mia Jensen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+mia.ortiz@gsb.columbia.test,Mia Ortiz,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+mohamed.klein@gsb.columbia.test,Mohamed Klein,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+nadia.bailey@gsb.columbia.test,Nadia Bailey,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+nadia.young@gsb.columbia.test,Nadia Young,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+naomi.tan@gsb.columbia.test,Naomi Tan,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+nathan.martin@gsb.columbia.test,Nathan Martin,,,,,,,Arrival: Not decided yet. Departure: Flight is too early for the first coach (05:15)
+nathan.nielsen@gsb.columbia.test,Nathan Nielsen,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+nathan.rivera@gsb.columbia.test,Nathan Rivera,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+nathan.suzuki@gsb.columbia.test,Nathan Suzuki,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+nia.williams@gsb.columbia.test,Nia Williams,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+nia.wright@gsb.columbia.test,Nia Wright,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+noah.meyer@gsb.columbia.test,Noah Meyer,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+noah.ortiz@gsb.columbia.test,Noah Ortiz,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+noah.zhang@gsb.columbia.test,Noah Zhang,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+nora.brooks@gsb.columbia.test,Nora Brooks,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+nora.lopez@gsb.columbia.test,Nora Lopez,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+omar.campbell@gsb.columbia.test,Omar Campbell,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+omar.evans@gsb.columbia.test,Omar Evans,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not decided yet
+oscar.castillo@gsb.columbia.test,Oscar Castillo,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+oscar.murphy@gsb.columbia.test,Oscar Murphy,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+priya.quinn@gsb.columbia.test,Priya Quinn,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+priya.taylor@gsb.columbia.test,Priya Taylor,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+rafael.novak@gsb.columbia.test,Rafael Novak,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+rahul.dang@gsb.columbia.test,Rahul Dang,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+rahul.evans@gsb.columbia.test,Rahul Evans,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+rania.chang@gsb.columbia.test,Rania Chang,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not decided yet
+rania.lund@gsb.columbia.test,Rania Lund,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+rania.wright@gsb.columbia.test,Rania Wright,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+rosa.castillo@gsb.columbia.test,Rosa Castillo,,,,Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not taking the coach
+rosa.dubois@gsb.columbia.test,Rosa Dubois,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not decided yet
+rosa.rossi@gsb.columbia.test,Rosa Rossi,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+ryan.gonzalez@gsb.columbia.test,Ryan Gonzalez,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+ryan.lund@gsb.columbia.test,Ryan Lund,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Not decided yet
+ryan.silva@gsb.columbia.test,Ryan Silva,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+sakura.petrov@gsb.columbia.test,Sakura Petrov,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+sakura.ramirez@gsb.columbia.test,Sakura Ramirez,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),,,,Departure: Not taking the coach
+sakura.rivera@gsb.columbia.test,Sakura Rivera,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+samir.vargas@gsb.columbia.test,Samir Vargas,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+sara.lewis@gsb.columbia.test,Sara Lewis,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+sara.martin@gsb.columbia.test,Sara Martin,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+sara.zhang@gsb.columbia.test,Sara Zhang,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+sebastian.dang@gsb.columbia.test,Sebastian Dang,,,,,,,Arrival: Not taking the coach. Departure: Flight is too early for the first coach (05:15)
+sebastian.weber@gsb.columbia.test,Sebastian Weber,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),
+sofia.abbott@gsb.columbia.test,Sofia Abbott,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+sofia.li@gsb.columbia.test,Sofia Li,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+soren.evans@gsb.columbia.test,Soren Evans,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+tara.martinez@gsb.columbia.test,Tara Martinez,Coach A2,"Sat 9 Jan, 10:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+tara.russo@gsb.columbia.test,Tara Russo,,,,,,,Arrival: Lands too late for the last coach (14:15). Departure: Flight is too early for the first coach (05:15)
+theo.sanchez@gsb.columbia.test,Theo Sanchez,,,,Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),Arrival: Lands too late for the last coach (14:15)
+theo.silva@gsb.columbia.test,Theo Silva,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+thomas.walker@gsb.columbia.test,Thomas Walker,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+valentina.clarke@gsb.columbia.test,Valentina Clarke,Coach A1,"Sat 9 Jan, 08:30",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+valentina.malik@gsb.columbia.test,Valentina Malik,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+wei.alvarez@gsb.columbia.test,Wei Alvarez,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+wei.diaz@gsb.columbia.test,Wei Diaz,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),,,,Departure: Flight is too early for the first coach (05:15)
+wei.kim@gsb.columbia.test,Wei Kim,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+wei.lewis@gsb.columbia.test,Wei Lewis,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+wei.singh@gsb.columbia.test,Wei Singh,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
+wei.wang@gsb.columbia.test,Wei Wang,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D4,"Sat 16 Jan, 09:30",Outside the residence (test data),
+yara.park@gsb.columbia.test,Yara Park,,,,Coach D1,"Sat 16 Jan, 05:15",Outside the residence (test data),Arrival: Not taking the coach
+yusuf.flores@gsb.columbia.test,Yusuf Flores,,,,Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),Arrival: Not decided yet
+zara.nielsen@gsb.columbia.test,Zara Nielsen,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+zara.quinn@gsb.columbia.test,Zara Quinn,Coach A3,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D3,"Sat 16 Jan, 09:30",Outside the residence (test data),
+zoe.castillo@gsb.columbia.test,Zoe Castillo,,,,,,,Arrival: Not coming through Geneva. Departure: Not flying from Geneva
+zoe.walker@gsb.columbia.test,Zoe Walker,Coach A4,"Sat 9 Jan, 14:15",Geneva airport arrivals (test data),Coach D2,"Sat 16 Jan, 07:30",Outside the residence (test data),
