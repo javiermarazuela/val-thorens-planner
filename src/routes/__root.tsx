@@ -11,6 +11,7 @@ import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "../components/site-header";
+import { TestSiteTag } from "../components/test-site-tag";
 import { site } from "../lib/trip";
 
 function NotFoundComponent() {
@@ -130,6 +131,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <TestSiteTag />
       <SiteHeader />
       <main>
         <Outlet />
