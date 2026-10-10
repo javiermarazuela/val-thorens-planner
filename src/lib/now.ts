@@ -17,3 +17,7 @@ export function appNow(): Date {
   }
   return new Date();
 }
+
+// The test branch has src/lib/test-clock.ts, which installs window.__euroSkiNow.
+// A glob, so the real site builds without it.
+import.meta.glob("./test-clock.ts", { eager: true });
