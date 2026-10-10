@@ -35,12 +35,7 @@ function toProfile(p: TestPerson): ChatProfile {
       roommates: p.room.roommates,
     },
     arrival: leg(p.arrival, p.coach.arrival, "Sat 9 Jan", "Geneva airport arrivals (test data)"),
-    departure: leg(
-      p.departure,
-      p.coach.departure,
-      "Sat 16 Jan",
-      "outside your residence (test data)",
-    ),
+    departure: leg(p.departure, p.coach.departure, "Sat 16 Jan", "your residence (test data)"),
   };
 }
 
