@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { TEST_PERSONA_KEY, TEST_PERSONA_NAME_KEY } from "@/lib/test-persona-keys";
 import data from "@/test-data/people.json";
 
 // Test site only: the 200 invented travellers from scripts/gen-test-data.mjs,
@@ -32,7 +33,7 @@ export type TestPerson = {
 
 export const testPeople = data.people as unknown as TestPerson[];
 
-const KEY = "euro-ski-test-persona";
+const KEY = TEST_PERSONA_KEY;
 const EVENT = "euro-ski-test-persona-change";
 
 // Where the choice lives if the browser won't let us use localStorage.
@@ -66,8 +67,11 @@ export function useTestPersona() {
   const choose = useCallback((email: string | null) => {
     memory = email;
     try {
+      const name = testPeople.find((p) => p.email === email)?.name;
       if (email) window.localStorage.setItem(KEY, email);
       else window.localStorage.removeItem(KEY);
+      if (name) window.localStorage.setItem(TEST_PERSONA_NAME_KEY, name);
+      else window.localStorage.removeItem(TEST_PERSONA_NAME_KEY);
     } catch {
       // Private mode: the choice just won't survive a reload.
     }
