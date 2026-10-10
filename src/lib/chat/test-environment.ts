@@ -42,7 +42,14 @@ function toProfile(p: TestPerson): ChatProfile {
 function useTestIdentity(): ChatIdentity {
   const { person } = useTestPersona();
   if (person === undefined) {
-    return { status: "loading", profile: null, profileLoaded: false, signIn: null };
+    return {
+      status: "loading",
+      profile: null,
+      profileLoaded: false,
+      signIn: null,
+      accessToken: "",
+      testEmail: "",
+    };
   }
   if (!person) {
     // Nobody picked yet: "sign in" means going to the picker.
@@ -51,12 +58,22 @@ function useTestIdentity(): ChatIdentity {
       profile: null,
       profileLoaded: true,
       signIn: () => window.location.assign("/testdata"),
+      accessToken: "",
+      testEmail: "",
     };
   }
-  return { status: "signed-in", profile: toProfile(person), profileLoaded: true, signIn: null };
+  return {
+    status: "signed-in",
+    profile: toProfile(person),
+    profileLoaded: true,
+    signIn: null,
+    accessToken: "",
+    testEmail: person.email,
+  };
 }
 
 export const testEnvironment: ChatEnvironment = {
+  env: "test",
   useIdentity: useTestIdentity,
   // Test people count as members, so they also get the members-only starter rows.
   loadKnowledge: (identity) =>
