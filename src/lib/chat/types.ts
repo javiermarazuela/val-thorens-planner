@@ -46,8 +46,12 @@ export type Reply = {
   links?: ChatLink[];
   /** Offer a sign-in button under the message. */
   signIn?: boolean;
-  /** Which part of the bot answered, for the log later. */
+  /** Which part of the bot answered, for the log. */
   source: "profile" | "schedule" | "activity" | "search" | "login" | "unknown";
+  /** The topic the question belonged to, for grouping in the log. */
+  area?: string;
+  /** True when the bot had nothing real to say (a "to be confirmed" row). */
+  unanswered?: boolean;
 };
 
 /** Everything a reply can use. */

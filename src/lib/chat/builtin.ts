@@ -64,3 +64,30 @@ export function guideRows(): KbRow[] {
       sort: 1000 + i,
     }));
 }
+
+/**
+ * Everything the bot may use for one person. Sheet rows win over built-in ones
+ * with the same id. `includeMembersFallback` adds the bundled members-only
+ * starter rows too, which is what the test site wants (its people aren't signed
+ * in with Google, so the database would hide those rows from them).
+ */
+export function mergeKnowledge(
+  sheet: KbRow[],
+  options: { isMember: boolean; includeMembersFallback?: boolean },
+): KbRow[] {
+  const byId = new Map<string, KbRow>();
+  const visible = (r: KbRow) =>
+    r.status !== "hidden" && (r.visibility === "everyone" || options.isMember);
+
+  // Built-in rows only fill in when the sheet has nothing for that id.
+  for (const r of [...guideRows(), ...starterRows]) {
+    if (!visible(r)) continue;
+    if (r.visibility === "members" && !options.includeMembersFallback && sheet.length) continue;
+    byId.set(r.id, r);
+  }
+  for (const r of sheet) {
+    if (visible(r)) byId.set(r.id, r);
+    else byId.delete(r.id); // hidden in the sheet means hidden, even if a starter row exists
+  }
+  return [...byId.values()];
+}

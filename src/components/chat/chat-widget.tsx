@@ -5,6 +5,9 @@ import { Julian } from "@/components/chat/julian";
 import { pickEnvironment, type ChatEnvironment, type ChatIdentity } from "@/lib/chat/environment";
 import { answer, makeBrain, type ChatBrain } from "@/lib/chat/reply";
 import type { ChatLink, KbRow } from "@/lib/chat/types";
+import { askJulian } from "@/lib/chat/ask.functions";
+import { logChat, type LogEntry } from "@/lib/chat/log";
+import { profileToText } from "@/lib/chat/profile-text";
 import { appNow } from "@/lib/now";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +34,49 @@ const quick = [
 
 const greeting =
   "Hi, I'm Julian, the snowman who knows the trip. Ask me about your room, your coach, the plans or what to do, or tap an idea below.";
+
+// Asks the server (Haiku) and turns its answer into text plus how to log it.
+async function askAi(
+  question: string,
+  who: ChatIdentity,
+  now: Date,
+): Promise<{ text: string; area: string; outcome: LogEntry["outcome"] }> {
+  try {
+    const result = await askJulian({
+      data: {
+        question,
+        accessToken: who.accessToken,
+        testEmail: who.testEmail,
+        profileText: profileToText(who.profile),
+        nowIso: now.toISOString(),
+      },
+    });
+    switch (result.kind) {
+      case "answer":
+        return {
+          text: result.text,
+          area: result.area,
+          outcome: /whatsapp/i.test(result.text) ? "unknown" : "answered",
+        };
+      case "offtopic":
+        return { text: result.text, area: "Off topic", outcome: "offtopic" };
+      case "banned":
+        return { text: result.text, area: "Off topic", outcome: "blocked" };
+      case "limit":
+        return { text: result.text, area: "Other", outcome: "limit" };
+      case "login":
+        return { text: result.text, area: "Other", outcome: "login_prompt" };
+      default:
+        return { text: result.text, area: "Other", outcome: "unknown" };
+    }
+  } catch {
+    return {
+      text: "Julian's brain is taking a snow nap. Try again later, or message us on the trip WhatsApp group.",
+      area: "Other",
+      outcome: "unknown",
+    };
+  }
+}
 
 export function ChatWidget() {
   const [env, setEnv] = useState<ChatEnvironment | null>(null);
@@ -119,12 +165,38 @@ function ChatPanel({ env }: { env: ChatEnvironment }) {
         }
       }
       const { identity: who } = latest.current;
-      const reply = answer(question, current, {
-        now: appNow(),
-        signedIn: who.status === "signed-in",
+      const now = appNow();
+      const signedIn = who.status === "signed-in";
+      let reply = answer(question, current, {
+        now,
+        signedIn,
         profile: who.profile,
         profileLoaded: who.profileLoaded,
       });
+
+      // What the free search could not answer goes to Haiku, for signed-in people only.
+      let source: LogEntry["source"] = reply.source === "unknown" ? "none" : reply.source;
+      let outcome: LogEntry["outcome"] = reply.unanswered
+        ? "unknown"
+        : reply.source === "login"
+          ? "login_prompt"
+          : reply.source === "unknown"
+            ? "unknown"
+            : "answered";
+      if (reply.source === "unknown" && signedIn) {
+        const ai = await askAi(question, who, now);
+        reply = { text: ai.text, source: "unknown", area: ai.area };
+        source = "ai";
+        outcome = ai.outcome;
+      }
+      logChat({
+        env: env.env,
+        area: reply.area ?? "Other",
+        source,
+        outcome,
+        question,
+      });
+
       // A short pause so it feels like Julian is thinking, not a form submit.
       const wait = Math.max(0, 450 - (Date.now() - started));
       window.setTimeout(() => {
