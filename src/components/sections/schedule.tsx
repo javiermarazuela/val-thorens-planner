@@ -6,10 +6,11 @@ import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
 import { dayDetails, dayDetailsStatus, week, weekSection } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
+import { appNow } from "@/lib/now";
 
 export function Schedule({ n, tone }: SectionProps) {
   const [today, setToday] = useState<number | null>(null);
-  useEffect(() => setToday(tripDayIndex(new Date())), []);
+  useEffect(() => setToday(tripDayIndex(appNow())), []);
 
   return (
     <GuideSection id="schedule" n={n} tone={tone} title={weekSection.title}>
