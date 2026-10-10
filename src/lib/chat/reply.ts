@@ -372,13 +372,15 @@ function rowReply(row: KbRow): Reply {
       text: `That one's still to be confirmed. Check back soon, or ${WHATSAPP}.`,
       links: link,
       source: "search",
+      area: row.area,
+      unanswered: true,
     };
   }
   const hedge =
     row.status === "tbc" && !/to be confirmed|tbc|preliminary/i.test(row.answer)
       ? " (Still to be confirmed.)"
       : "";
-  return { text: `${row.answer.trim()}${hedge}`, links: link, source: "search" };
+  return { text: `${row.answer.trim()}${hedge}`, links: link, source: "search", area: row.area };
 }
 
 // ---------- the front door --------------------------------------------------------
@@ -389,7 +391,22 @@ export function makeBrain(rows: KbRow[]): ChatBrain {
   return { index: buildIndex(rows) };
 }
 
+const defaultArea: Record<Reply["source"], string> = {
+  profile: "My details",
+  schedule: "Social",
+  activity: "Things to do",
+  search: "Other",
+  login: "Other",
+  unknown: "Other",
+};
+
+/** Julian's free-tier answer, with the topic filled in for the log. */
 export function answer(question: string, brain: ChatBrain, ctx: ReplyContext): Reply {
+  const reply = answerCore(question, brain, ctx);
+  return reply.area ? reply : { ...reply, area: defaultArea[reply.source] };
+}
+
+function answerCore(question: string, brain: ChatBrain, ctx: ReplyContext): Reply {
   const raw = question.trim();
   const q = normalise(raw);
 

@@ -17,9 +17,15 @@ export type ChatIdentity = {
   /** True once we have tried to load the person's own details. */
   profileLoaded: boolean;
   signIn: (() => void) | null;
+  /** The member's login token, for the server. Empty for a test person. */
+  accessToken: string;
+  /** Test site only: the invented person's email. Empty otherwise. */
+  testEmail: string;
 };
 
 export type ChatEnvironment = {
+  /** Which site this is, so logged questions can be told apart. */
+  env: "live" | "test";
   /** A React hook: who is asking right now. */
   useIdentity: () => ChatIdentity;
   loadKnowledge: (identity: ChatIdentity) => Promise<KbRow[]>;
@@ -113,7 +119,14 @@ function useLiveIdentity(): ChatIdentity {
   }, [supabase, userId]);
 
   if (session === undefined) {
-    return { status: "loading", profile: null, profileLoaded: false, signIn: null };
+    return {
+      status: "loading",
+      profile: null,
+      profileLoaded: false,
+      signIn: null,
+      accessToken: "",
+      testEmail: "",
+    };
   }
   if (!session) {
     return {
@@ -121,12 +134,22 @@ function useLiveIdentity(): ChatIdentity {
       profile: null,
       profileLoaded: true,
       signIn: supabase ? signIn : null,
+      accessToken: "",
+      testEmail: "",
     };
   }
-  return { status: "signed-in", profile: loaded.profile, profileLoaded: loaded.done, signIn: null };
+  return {
+    status: "signed-in",
+    profile: loaded.profile,
+    profileLoaded: loaded.done,
+    signIn: null,
+    accessToken: session.access_token,
+    testEmail: "",
+  };
 }
 
 export const liveEnvironment: ChatEnvironment = {
+  env: "live",
   useIdentity: useLiveIdentity,
   loadKnowledge: (identity) => loadKnowledge({ isMember: identity.status === "signed-in" }),
 };
