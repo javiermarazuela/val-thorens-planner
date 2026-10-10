@@ -10,6 +10,7 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { ChatWidget } from "../components/chat/chat-widget";
 import { SiteHeader } from "../components/site-header";
 import { TestSiteTag } from "../components/test-site-tag";
 import { site } from "../lib/trip";
@@ -136,6 +137,7 @@ function RootComponent() {
       <main>
         <Outlet />
       </main>
+      <ChatWidget />
     </QueryClientProvider>
   );
 }

@@ -5,6 +5,7 @@ import { sectionComponents } from "@/components/sections/registry";
 import { pickOrder, sectionsFor, stopsFor, type GuideOrder } from "@/lib/guide-order";
 import { site, trip, type SectionId } from "@/lib/trip";
 import { useScrollSpy } from "@/lib/use-scroll-spy";
+import { appNow } from "@/lib/now";
 
 const available = new Set(Object.keys(sectionComponents) as SectionId[]);
 
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { order: override } = Route.useSearch();
-  const ids = sectionsFor(pickOrder(new Date(), override), available);
+  const ids = sectionsFor(pickOrder(appNow(), override), available);
   const stops = stopsFor(ids);
   const { index, progress } = useScrollSpy(ids);
 

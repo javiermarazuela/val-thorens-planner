@@ -4,11 +4,12 @@ import heroImage from "@/assets/val-thorens-trip.jpg";
 import { FlightsBanner } from "@/components/flights-banner";
 import { hero, trip } from "@/lib/trip";
 import { daysToGo } from "@/lib/trip-day";
+import { appNow } from "@/lib/now";
 
 export function Welcome() {
   const [toGo, setToGo] = useState<number | null>(null);
   const [banner, setBanner] = useState(false); // the "tell us how" strip is showing
-  useEffect(() => setToGo(daysToGo(new Date())), []);
+  useEffect(() => setToGo(daysToGo(appNow())), []);
 
   return (
     <section id="welcome" className="scroll-mt-[var(--header-h)]">
