@@ -6,7 +6,25 @@ import type { KbRow } from "./types";
 // Rows that ship with the app, so the bot has something to say before the
 // knowledge sheet has been published, and never contradicts the guide.
 
-export const starterRows = starter as unknown as KbRow[];
+// Test site only: src/test-data/knowledge-fill.json holds invented answers for
+// the starter rows the committee has not filled in yet, so a demo has something
+// to say. A glob, so the real site builds without it; under bun (the check
+// scripts) the glob does not exist, hence the try.
+let testFill: Record<string, string> = {};
+try {
+  const mods = import.meta.glob<Record<string, string>>("../../test-data/knowledge-fill.json", {
+    eager: true,
+    import: "default",
+  });
+  testFill = Object.values(mods)[0] ?? {};
+} catch {
+  // not running under Vite
+}
+
+export const starterRows = (starter as unknown as KbRow[]).map((r) => {
+  const fill = testFill[r.id];
+  return !r.answer.trim() && fill ? { ...r, answer: fill } : r;
+});
 
 // Other ways people ask the guide's own FAQs, so the free search finds them.
 const alsoAsked: Record<string, string[]> = {
