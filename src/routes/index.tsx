@@ -30,7 +30,8 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { order: override } = Route.useSearch();
-  const ids = sectionsFor(pickOrder(appNow(), override), available);
+  const now = appNow();
+  const ids = sectionsFor(pickOrder(now, override), available, now);
   const stops = stopsFor(ids);
   const { index, progress } = useScrollSpy(ids);
 

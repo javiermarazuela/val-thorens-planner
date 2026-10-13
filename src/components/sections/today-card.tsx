@@ -9,6 +9,28 @@ import { appNow } from "@/lib/now";
 
 const snowReport = mountain.links.find((l) => l.label === "Snow report");
 
+// Test site only: src/test-data/weather.json holds an invented forecast per day, so
+// the demo needs no weather API. A glob, so the real site builds without it, and a
+// try for the bun scripts, where the glob doesn't exist.
+type DayWeather = {
+  sky: string;
+  high: number;
+  low: number;
+  wind: string;
+  fresh: string;
+  base: string;
+};
+let testWeather: DayWeather[] = [];
+try {
+  const mods = import.meta.glob<DayWeather[]>("../../test-data/weather.json", {
+    eager: true,
+    import: "default",
+  });
+  testWeather = Object.values(mods)[0] ?? [];
+} catch {
+  // not running under Vite
+}
+
 const label = "text-xs font-medium uppercase tracking-wider text-muted-foreground";
 
 // A compact dashboard for one day of the trip, the same for everyone. It opens
@@ -25,6 +47,7 @@ export function TodayCard() {
 
   const info = week[day];
   const more = dayDetails[day];
+  const forecast = testWeather[day];
   if (!info || !more) return null;
 
   return (
@@ -88,10 +111,24 @@ export function TodayCard() {
         </div>
 
         <div className="rounded-2xl bg-mint p-4">
-          <p className={label}>Weather &amp; snow</p>
-          <p className="mt-2 text-base font-semibold leading-snug">
-            Live forecast coming. Until then, the resort’s own report is one tap away.
-          </p>
+          <div className="flex items-center justify-between gap-2">
+            <p className={label}>Weather &amp; snow</p>
+            {forecast && <StatusBadge status="preliminary" />}
+          </div>
+          {forecast ? (
+            <>
+              <p className="mt-2 text-base font-semibold leading-snug">
+                {forecast.sky}, {forecast.high}° / {forecast.low}°C
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Wind {forecast.wind} · fresh snow {forecast.fresh} · base {forecast.base}
+              </p>
+            </>
+          ) : (
+            <p className="mt-2 text-base font-semibold leading-snug">
+              Live forecast coming. Until then, the resort’s own report is one tap away.
+            </p>
+          )}
           {snowReport && (
             <a
               href={snowReport.href}

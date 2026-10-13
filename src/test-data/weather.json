@@ -1,0 +1,52 @@
+[
+  {
+    "sky": "Light snow",
+    "high": -3,
+    "low": -9,
+    "wind": "15 km/h",
+    "fresh": "5 cm",
+    "base": "210 cm"
+  },
+  { "sky": "Sunny", "high": -5, "low": -12, "wind": "10 km/h", "fresh": "0 cm", "base": "215 cm" },
+  {
+    "sky": "Mostly sunny",
+    "high": -4,
+    "low": -11,
+    "wind": "12 km/h",
+    "fresh": "0 cm",
+    "base": "215 cm"
+  },
+  {
+    "sky": "Cloudy, flurries",
+    "high": -2,
+    "low": -8,
+    "wind": "25 km/h",
+    "fresh": "8 cm",
+    "base": "222 cm"
+  },
+  {
+    "sky": "Heavy snow",
+    "high": -3,
+    "low": -7,
+    "wind": "30 km/h",
+    "fresh": "20 cm",
+    "base": "240 cm"
+  },
+  {
+    "sky": "Clearing, cold",
+    "high": -7,
+    "low": -15,
+    "wind": "18 km/h",
+    "fresh": "2 cm",
+    "base": "242 cm"
+  },
+  { "sky": "Sunny", "high": -6, "low": -14, "wind": "8 km/h", "fresh": "0 cm", "base": "242 cm" },
+  {
+    "sky": "Sunny spells",
+    "high": -4,
+    "low": -10,
+    "wind": "10 km/h",
+    "fresh": "0 cm",
+    "base": "240 cm"
+  }
+]

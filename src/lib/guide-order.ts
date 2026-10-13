@@ -22,8 +22,13 @@ export function sectionsFor(
   now: Date = new Date(),
 ): SectionId[] {
   const started = now.getTime() >= new Date(tripStartsAt).getTime();
+  // Once the trip has started the Daily plan (today, with a day picker) replaces
+  // The week, so the guide doesn't show the same days twice.
   return (order === "trip" ? tripOrder : journeyOrder).filter(
-    (id) => available.has(id) && !(id === "daily-plan" && hideDailyPlanUntilTrip && !started),
+    (id) =>
+      available.has(id) &&
+      !(id === "daily-plan" && hideDailyPlanUntilTrip && !started) &&
+      !(id === "schedule" && started),
   );
 }
 
