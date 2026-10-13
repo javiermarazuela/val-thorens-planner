@@ -508,7 +508,7 @@ export const faqs: Array<{
   },
   {
     q: "Do I need to have skied before?",
-    a: "No. A good share of the group will be on skis for the first time. The beginner slopes start in the village and lesson options are being arranged.",
+    a: "You don't need to have skied before. A good share of the group will be on skis for the first time, so you won't be the only beginner. The beginner slopes start in the village and lesson options are being arranged.",
     status: "partial",
   },
   {
