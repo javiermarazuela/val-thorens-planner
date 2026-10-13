@@ -150,7 +150,9 @@ async function callHaiku(system: string, userTurn: string, apiKey: string): Prom
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 800,
+        // Haiku 5.5 thinks by default and thinking counts against this cap, so
+        // leave room; at 800 a long think could leave no text and show the nap message.
+        max_tokens: 2000,
         output_config: { effort: "low" },
         // The knowledge base is the same for everyone, so it is cached; the
         // person and the question come after it in the user turn.
