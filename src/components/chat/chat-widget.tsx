@@ -251,7 +251,7 @@ function ChatPanel({ env }: { env: ChatEnvironment }) {
         <section
           role="dialog"
           aria-label="Chat with Julian"
-          className="fixed bottom-3 left-8 right-3 z-50 flex h-[72dvh] flex-col overflow-hidden rounded-2xl border-[1.5px] border-border bg-card shadow-[0_20px_60px_-20px_oklch(0.27_0.06_258/0.6)] sm:bottom-4 sm:left-auto sm:right-4 sm:h-[34rem] sm:max-h-[calc(100dvh-2rem)] sm:w-[23.5rem] sm:rounded-2xl"
+          className="fixed bottom-3 left-14 right-3 z-50 flex h-[64dvh] flex-col overflow-hidden rounded-2xl border-[1.5px] border-border bg-card shadow-[0_20px_60px_-20px_oklch(0.27_0.06_258/0.6)] sm:bottom-4 sm:left-auto sm:right-4 sm:h-[34rem] sm:max-h-[calc(100dvh-2rem)] sm:w-[23.5rem] sm:rounded-2xl"
         >
           <header className="flex items-center gap-3 border-b border-border bg-paper px-4 py-2.5">
             <Julian className="size-10 shrink-0" />
