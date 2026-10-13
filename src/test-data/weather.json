@@ -5,16 +5,29 @@
     "low": -9,
     "wind": "15 km/h",
     "fresh": "5 cm",
-    "base": "210 cm"
+    "base": "210 cm",
+    "lifts": [31, 34],
+    "snow": "Good snow conditions"
   },
-  { "sky": "Sunny", "high": -5, "low": -12, "wind": "10 km/h", "fresh": "0 cm", "base": "215 cm" },
+  {
+    "sky": "Sunny",
+    "high": -5,
+    "low": -12,
+    "wind": "10 km/h",
+    "fresh": "0 cm",
+    "base": "215 cm",
+    "lifts": [34, 34],
+    "snow": "Good snow conditions"
+  },
   {
     "sky": "Mostly sunny",
     "high": -4,
     "low": -11,
     "wind": "12 km/h",
     "fresh": "0 cm",
-    "base": "215 cm"
+    "base": "215 cm",
+    "lifts": [34, 34],
+    "snow": "Good snow conditions"
   },
   {
     "sky": "Cloudy, flurries",
@@ -22,7 +35,9 @@
     "low": -8,
     "wind": "25 km/h",
     "fresh": "8 cm",
-    "base": "222 cm"
+    "base": "222 cm",
+    "lifts": [29, 34],
+    "snow": "Fresh powder"
   },
   {
     "sky": "Heavy snow",
@@ -30,7 +45,9 @@
     "low": -7,
     "wind": "30 km/h",
     "fresh": "20 cm",
-    "base": "240 cm"
+    "base": "240 cm",
+    "lifts": [22, 34],
+    "snow": "Deep powder"
   },
   {
     "sky": "Clearing, cold",
@@ -38,15 +55,28 @@
     "low": -15,
     "wind": "18 km/h",
     "fresh": "2 cm",
-    "base": "242 cm"
+    "base": "242 cm",
+    "lifts": [32, 34],
+    "snow": "Excellent snow conditions"
   },
-  { "sky": "Sunny", "high": -6, "low": -14, "wind": "8 km/h", "fresh": "0 cm", "base": "242 cm" },
+  {
+    "sky": "Sunny",
+    "high": -6,
+    "low": -14,
+    "wind": "8 km/h",
+    "fresh": "0 cm",
+    "base": "242 cm",
+    "lifts": [34, 34],
+    "snow": "Excellent snow conditions"
+  },
   {
     "sky": "Sunny spells",
     "high": -4,
     "low": -10,
     "wind": "10 km/h",
     "fresh": "0 cm",
-    "base": "240 cm"
+    "base": "240 cm",
+    "lifts": [34, 34],
+    "snow": "Good snow conditions"
   }
 ]

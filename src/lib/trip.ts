@@ -103,7 +103,7 @@ export type Grade = "green" | "blue" | "red" | "black";
 
 export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
   welcome: { label: "Welcome", grade: "green" },
-  "daily-plan": { label: "Daily plan", grade: "green" },
+  "daily-plan": { label: "Today’s plan", grade: "green" },
   "getting-here": { label: "Getting here & away", grade: "blue" },
   stay: { label: "Where we stay", grade: "green" },
   schedule: { label: "The week", grade: "green" },
