@@ -39,6 +39,13 @@ const unavailable: AskResult = {
   text: `Julian's brain is taking a snow nap, so I can't answer that one right now. Try again later, or ${WHATSAPP}.`,
 };
 
+// Logs why the AI step failed. On the test host the reason is also appended to
+// the message, so a trial can be debugged without opening the Vercel log.
+function fail(reason: string, showReason: boolean): AskResult {
+  console.error(`[julian] ${reason}`);
+  return showReason ? { ...unavailable, text: `${unavailable.text} [${reason}]` } : unavailable;
+}
+
 function supabaseBase() {
   const url = process.env["VITE_SUPABASE_URL"];
   const key = process.env["VITE_SUPABASE_ANON_KEY"];
@@ -136,7 +143,9 @@ function parse(text: string): Model | null {
   }
 }
 
-async function callHaiku(system: string, userTurn: string, apiKey: string): Promise<Model | null> {
+type HaikuResult = ({ ok: true } & Model) | { ok: false; reason: string };
+
+async function callHaiku(system: string, userTurn: string, apiKey: string): Promise<HaikuResult> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 25_000);
   try {
@@ -160,19 +169,25 @@ async function callHaiku(system: string, userTurn: string, apiKey: string): Prom
         messages: [{ role: "user", content: userTurn }],
       }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 200);
+      return { ok: false, reason: `Anthropic ${res.status}: ${detail}` };
+    }
     const body = (await res.json()) as {
       stop_reason?: string;
       content?: Array<{ type: string; text?: string }>;
     };
-    if (body.stop_reason === "refusal") return null;
+    if (body.stop_reason === "refusal") return { ok: false, reason: "Anthropic refused" };
     const text = (body.content ?? [])
       .filter((b) => b.type === "text")
       .map((b) => b.text ?? "")
       .join("");
-    return parse(text);
-  } catch {
-    return null;
+    const model = parse(text);
+    return model
+      ? { ok: true, ...model }
+      : { ok: false, reason: `unreadable reply (${body.stop_reason}): ${text.slice(0, 120)}` };
+  } catch (e) {
+    return { ok: false, reason: `Anthropic call failed: ${e instanceof Error ? e.message : e}` };
   } finally {
     clearTimeout(timer);
   }
@@ -198,11 +213,15 @@ export const askJulian = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }): Promise<AskResult> => {
     const apiKey = process.env["ANTHROPIC_API_KEY"];
-    if (!apiKey || !supabaseBase()) return unavailable;
-
     // The test deploy and localhost may act as an invented person; the real site never does.
     const host = (getRequestHeader("host") ?? "").toLowerCase();
     const onTestHost = host.startsWith("test.") || host.startsWith("localhost");
+    if (!apiKey || !supabaseBase()) {
+      return fail(
+        `missing ${!apiKey ? "ANTHROPIC_API_KEY" : "VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY"} on the server`,
+        onTestHost,
+      );
+    }
     const subject =
       !data.accessToken && onTestHost && data.testEmail ? `test:${data.testEmail}` : null;
     if (!data.accessToken && !subject) {
@@ -238,7 +257,7 @@ export const askJulian = createServerFn({ method: "POST" })
       const userTurn = `Now (Val Thorens time): ${prettyTime(now)}\n\nPERSON:\n${data.profileText}\n\nQUESTION:\n<question>${data.question}</question>`;
 
       const model = await callHaiku(knowledgeText(rows), userTurn, apiKey);
-      if (!model) return unavailable;
+      if (!model.ok) return fail(model.reason, onTestHost);
 
       const after = await rpc<{ strikes: number; banned_until: string | null }>(
         "chat_after",
@@ -262,7 +281,7 @@ export const askJulian = createServerFn({ method: "POST" })
         text: model.answer || `I don't have that one yet. Please ${WHATSAPP}.`,
         area: model.area,
       };
-    } catch {
-      return unavailable;
+    } catch (e) {
+      return fail(e instanceof Error ? e.message : "unknown error", onTestHost);
     }
   });
