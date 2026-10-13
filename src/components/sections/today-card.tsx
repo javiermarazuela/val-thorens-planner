@@ -11,6 +11,7 @@ import {
 
 import { EventIcon } from "@/components/event-icon";
 import { WeekList } from "@/components/sections/schedule";
+import { TransportTile } from "@/components/sections/transport-tile";
 import { StatusBadge } from "@/components/status-badge";
 import { dayDetails, dayDetailsStatus, mountain, week } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
@@ -91,8 +92,6 @@ export function TodayCard() {
   const forecast = testWeather[day];
   if (!info || !more) return null;
 
-  const travelDay = more.busStatus === "preliminary";
-
   return (
     <div className="rounded-3xl border-[1.5px] border-border bg-card p-5 shadow-[0_12px_40px_-20px_oklch(0.27_0.06_258/0.45)] sm:p-7">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
@@ -156,7 +155,6 @@ export function TodayCard() {
               </li>
             ))}
           </ul>
-          {travelDay && <p className="mt-3 text-sm text-muted-foreground">{more.bus}</p>}
         </div>
 
         <div className="rounded-2xl bg-mint p-4">
@@ -209,7 +207,9 @@ export function TodayCard() {
           )}
         </div>
 
-        <div className="rounded-2xl bg-mustard/30 p-4 text-ink sm:col-span-2 lg:col-span-2">
+        <TransportTile day={day} />
+
+        <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
             <StatusBadge status={dayDetailsStatus} />
