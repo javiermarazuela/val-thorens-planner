@@ -12,8 +12,7 @@ import {
 import { EventIcon } from "@/components/event-icon";
 import { WeekList } from "@/components/sections/schedule";
 import { TransportTile } from "@/components/sections/transport-tile";
-import { StatusBadge } from "@/components/status-badge";
-import { dayDetails, dayDetailsStatus, mountain, week } from "@/lib/trip";
+import { dayDetails, mountain, week } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
 import { appNow } from "@/lib/now";
 
@@ -138,7 +137,6 @@ export function TodayCard() {
         <div className="rounded-2xl bg-mint p-4 sm:row-span-2">
           <div className="flex items-center justify-between gap-2">
             <p className={label}>Events</p>
-            <StatusBadge status={dayDetailsStatus} />
           </div>
           <ul className="mt-2">
             <li className="flex items-center gap-3 border-b border-border py-2.5 text-sm sm:text-base">
@@ -160,7 +158,6 @@ export function TodayCard() {
         <div className="rounded-2xl bg-mint p-4">
           <div className="flex items-center justify-between gap-2">
             <p className={label}>Weather</p>
-            {forecast && <StatusBadge status="preliminary" />}
           </div>
           {forecast ? (
             <>
@@ -182,7 +179,6 @@ export function TodayCard() {
         <div className="rounded-2xl bg-mint p-4">
           <div className="flex items-center justify-between gap-2">
             <p className={label}>Lifts &amp; snow</p>
-            {forecast && <StatusBadge status="preliminary" />}
           </div>
           {forecast && (
             <>
@@ -212,7 +208,6 @@ export function TodayCard() {
         <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
-            <StatusBadge status={dayDetailsStatus} />
           </div>
           <p className="mt-2 text-base font-semibold leading-snug">{more.challenge}</p>
         </div>

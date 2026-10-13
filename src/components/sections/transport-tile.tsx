@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Bus, Plane } from "lucide-react";
 
-import { StatusBadge } from "@/components/status-badge";
 import { pickEnvironment, type ChatEnvironment } from "@/lib/chat/environment";
 import type { ChatProfile, LegInfo } from "@/lib/chat/types";
 import { appNow } from "@/lib/now";
@@ -101,7 +100,6 @@ function TileFrame({ day, profile }: { day: number; profile: ChatProfile | null 
       <div className="rounded-2xl bg-mint p-4">
         <div className="flex items-center justify-between gap-2">
           <p className={label}>{day === 0 ? "Your coach in" : "Your coach home"}</p>
-          <StatusBadge status="preliminary" />
         </div>
         <p className="mt-2 flex items-center gap-2.5 text-base font-semibold leading-snug">
           <Plane className="size-6 shrink-0 text-primary" aria-hidden="true" />
@@ -112,6 +110,10 @@ function TileFrame({ day, profile }: { day: number; profile: ChatProfile | null 
       </div>
     );
   }
+
+  // On a travel day, say why there is no coach instead of leaving it a mystery.
+  const travelLeg = day === 0 ? profile?.arrival : day === 7 ? profile?.departure : null;
+  const noCoachWhy = travelLeg?.coachWhy ?? null;
 
   const h = hours(day);
   const stop = stopFor(profile);
@@ -134,13 +136,17 @@ function TileFrame({ day, profile }: { day: number; profile: ChatProfile | null 
     <div className="rounded-2xl bg-mint p-4">
       <div className="flex items-center justify-between gap-2">
         <p className={label}>{stop ? `Resort shuttle · ${stop} stop` : "Resort shuttle"}</p>
-        <StatusBadge status="preliminary" />
       </div>
       <p className="mt-2 flex items-center gap-2.5 text-base font-semibold leading-snug">
         <Bus className="size-6 shrink-0 text-primary" aria-hidden="true" />
         <span>{headline}</span>
       </p>
       <p className="mt-1 text-sm">{detail}</p>
+      {noCoachWhy && (
+        <p className="mt-1 text-sm text-muted-foreground">
+          No airport coach: {noCoachWhy.charAt(0).toLowerCase() + noCoachWhy.slice(1)}.
+        </p>
+      )}
       {!stop && profile === null && (
         <p className="mt-1 text-sm text-muted-foreground">
           Sign in to see the stop for your place.
