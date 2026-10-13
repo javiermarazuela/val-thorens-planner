@@ -869,11 +869,12 @@ export const privacy = {
   title: "Privacy",
   intro: `${siteName} is run by the CBS Snow Sports committee. This is what happens to your data.`,
   points: [
-    "The public page collects nothing. No accounts, no tracking, no ads.",
+    "The public page needs no account and has no tracking or ads. The only thing it records is the questions asked to Julian, described below.",
     "If you sign in with Google to reach the members area, we receive your name and email address from Google. That is all. We don't see your Google password or anything else in your account.",
     "We use your email only to check you're a Columbia student or an approved guest, and to show you the members area. We don't share it, sell it or use it for marketing.",
     "If you fill in the flight details form, we store what you enter, along with your name, and the committee keeps it in a private spreadsheet so it can organise transfers. To find your flight we send the flight number and date, nothing about you, to an airline data service.",
     "Your checklist on the page is saved on your own device, not on our servers.",
+    "If you ask Julian the snowman a question, we keep the question text (cut to 300 characters) in a log with no name, email or account attached, so the committee can see what to add to the guide. Please don't put personal details in your questions. When you're signed in and the guide has no ready answer, your question is also sent to Anthropic, the AI provider behind Julian, to write a reply. To enforce the daily limits and the 24-hour off-topic pause, we also keep, against your account, how many AI answers you have had each day and your current off-topic count. None of the question text is stored there.",
     "Want your data removed? Ask in the trip WhatsApp group and the committee will delete it.",
   ],
 };
