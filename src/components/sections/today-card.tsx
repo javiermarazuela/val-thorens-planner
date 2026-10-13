@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ExternalLink } from "lucide-react";
+import {
+  ChevronDown,
+  Cloud,
+  CloudSnow,
+  CloudSun,
+  ExternalLink,
+  Snowflake,
+  Sun,
+} from "lucide-react";
 
 import { EventIcon } from "@/components/event-icon";
 import { WeekList } from "@/components/sections/schedule";
@@ -37,12 +45,31 @@ try {
 const label = "text-xs font-medium uppercase tracking-wider text-muted-foreground";
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const MONTHS = ["January"];
 
-// "Saturday 9 January" for day 0 to 7 of the trip (Saturday 9 January 2027).
+function ordinal(n: number): string {
+  if (n >= 11 && n <= 13) return `${n}th`;
+  return `${n}${["th", "st", "nd", "rd"][n % 10 > 3 ? 0 : n % 10] ?? "th"}`;
+}
+
+// "Saturday, January 9th" for day 0 to 7 of the trip (Saturday 9 January 2027).
 function longDate(day: number): string {
   const d = new Date(Date.UTC(2027, 0, 9 + day));
-  return `${WEEKDAYS[d.getUTCDay()]} ${d.getUTCDate()} ${MONTHS[0]}`;
+  return `${WEEKDAYS[d.getUTCDay()]}, January ${ordinal(d.getUTCDate())}`;
+}
+
+// The icon that goes with the day's sky, picked from the words in it.
+function SkyIcon({ sky, className }: { sky: string; className?: string }) {
+  const s = sky.toLowerCase();
+  const Icon = s.includes("heavy")
+    ? Snowflake
+    : s.includes("snow") || s.includes("flurr")
+      ? CloudSnow
+      : s.includes("spells") || s.includes("mostly") || s.includes("clearing")
+        ? CloudSun
+        : s.includes("cloud")
+          ? Cloud
+          : Sun;
+  return <Icon className={className} aria-hidden="true" />;
 }
 
 // A compact dashboard for one day of the trip, the same for everyone. It opens
@@ -139,8 +166,11 @@ export function TodayCard() {
           </div>
           {forecast ? (
             <>
-              <p className="mt-2 text-base font-semibold leading-snug">
-                {forecast.sky}, {forecast.high}° / {forecast.low}°C
+              <p className="mt-2 flex items-center gap-2.5 text-base font-semibold leading-snug">
+                <SkyIcon sky={forecast.sky} className="size-7 shrink-0 text-primary" />
+                <span>
+                  {forecast.sky}, {forecast.high}° / {forecast.low}°C
+                </span>
               </p>
               <p className="mt-1 text-sm text-muted-foreground">Wind {forecast.wind}</p>
             </>
