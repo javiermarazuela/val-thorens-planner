@@ -342,7 +342,7 @@ function activityReply(q: string, ctx: ReplyContext): Reply | null {
   const evening = pick.lead.startsWith("For tonight") ? " Or ask me what's on tonight." : "";
   return {
     text: `${pick.lead} ${list(items)}. These are ideas, so check opening hours and prices before you go.${evening}`,
-    links: [...pick.links, { label: "Things to do", href: "/#todo" }].slice(0, 5),
+    links: [...pick.links, { label: "Beyond the slopes", href: "/#todo" }].slice(0, 5),
     source: "activity",
   };
 }
@@ -394,7 +394,7 @@ export function makeBrain(rows: KbRow[]): ChatBrain {
 const defaultArea: Record<Reply["source"], string> = {
   profile: "My details",
   schedule: "Social",
-  activity: "Things to do",
+  activity: "Beyond the slopes",
   search: "Other",
   login: "Other",
   unknown: "Other",

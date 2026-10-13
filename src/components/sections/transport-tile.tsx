@@ -115,7 +115,7 @@ function TileFrame({ day, profile }: { day: number; profile: ChatProfile | null 
 
   const h = hours(day);
   const stop = stopFor(profile);
-  let headline = `Every bus ${h.every}`;
+  let headline = `A bus ${h.every}`;
   let detail = `Runs ${clock(h.open)} to ${clock(h.close)}.`;
   if (isToday) {
     if (mins < h.open) {

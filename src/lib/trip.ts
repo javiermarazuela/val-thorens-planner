@@ -109,7 +109,7 @@ export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
   schedule: { label: "The week", grade: "green" },
   maps: { label: "Maps", grade: "blue" },
   around: { label: "Getting around", grade: "blue" },
-  todo: { label: "Things to do", grade: "red" },
+  todo: { label: "Beyond the slopes", grade: "red" },
   faqs: { label: "FAQs", grade: "black" },
   trouble: { label: "In case of trouble", grade: "black" },
   links: { label: "Links & packing", grade: "black" },
@@ -1370,7 +1370,7 @@ export const activities: Array<{ name: string; group: ActivityGroup; url: string
 // Things to do. The venue cards come from `mapPoints`, so the map and this list
 // never disagree; the activity cards come from `activities`.
 export const thingsToDo = {
-  title: "Things to do",
+  title: "Beyond the slopes",
   intro:
     "Where to eat on the mountain and in town, where to go after, and what to do when your legs say no.",
   filters: [
