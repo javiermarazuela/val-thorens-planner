@@ -23,7 +23,9 @@ try {
 
 export const starterRows = (starter as unknown as KbRow[]).map((r) => {
   const fill = testFill[r.id];
-  return !r.answer.trim() && fill ? { ...r, answer: fill } : r;
+  // "confirmed" only so the "(Still to be confirmed.)" tag isn't stacked on the
+  // answers' own "(Test data.)" marker.
+  return !r.answer.trim() && fill ? { ...r, answer: fill, status: "confirmed" as const } : r;
 });
 
 // Other ways people ask the guide's own FAQs, so the free search finds them.
