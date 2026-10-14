@@ -29,7 +29,11 @@ export function TestSiteTag() {
     sync();
     // The clock file sits beside this one on the test branch only.
     void import("@/lib/test-clock").then((c) => setNow(c.getTestNowLocal()));
-    if (onTestHost && !saved(TEST_PERSONA_KEY) && window.location.pathname !== "/testdata") {
+    if (
+      onTestHost &&
+      !saved(TEST_PERSONA_KEY) &&
+      !["/testdata", "/demo"].includes(window.location.pathname)
+    ) {
       window.location.replace("/testdata");
     }
     window.addEventListener("euro-ski-test-persona-change", sync);

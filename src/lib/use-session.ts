@@ -7,7 +7,7 @@ import { getSupabase } from "@/lib/supabase";
  * The signed-in member, shared by /members and the flights card on the guide.
  * `session` is undefined while loading, null when signed out. Browser only.
  */
-export function useSession() {
+export function useSession(returnTo = "/members") {
   const supabase = getSupabase();
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -31,11 +31,11 @@ export function useSession() {
     void supabase?.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/members`,
+        redirectTo: `${window.location.origin}${returnTo}`,
         queryParams: { prompt: "select_account" },
       },
     });
-  }, [supabase]);
+  }, [supabase, returnTo]);
 
   return { supabase, session, authError, signIn };
 }
