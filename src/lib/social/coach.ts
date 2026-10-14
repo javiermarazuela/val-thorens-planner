@@ -15,7 +15,7 @@ const DEPARTURE_DAY = "2027-01-16";
  */
 export function coachFor(leg: Leg, direction: Direction): string | null {
   if (leg.mode !== "geneva" || leg.airport !== "GVA" || !leg.time) return null;
-  if (leg.shuttle === "no") return null;
+  if (leg.shuttle !== "yes") return null;
   if (direction === "arrival") {
     if (leg.date !== ARRIVAL_DAY) return null;
     return coachAfterLanding(leg.time, airportCoaches.out.times);
