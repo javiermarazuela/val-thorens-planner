@@ -207,7 +207,95 @@
   }
 }
 
+/* Rail skier: carves side to side and bobs, with icy-blue snow flicking off the ski tail. */
+@keyframes skier-carve {
+  0%,
+  100% {
+    transform: translate(0, 0.8px) rotate(-8deg);
+  }
+  50% {
+    transform: translate(1px, -1px) rotate(6deg);
+  }
+}
+
+@keyframes skier-spray {
+  0% {
+    opacity: 0;
+    transform: translate(3px, 1px) scale(0.5);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-7px, -6px) scale(1.2);
+  }
+}
+
+@keyframes skier-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.skier-body {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: skier-carve 1.1s ease-in-out infinite;
+}
+
+.skier-spray {
+  fill: #5fb3ea;
+  stroke: #1f78c1;
+  stroke-width: 0.7;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: skier-spray 0.9s ease-out infinite;
+}
+
+/* Still by default; runs only while the rail marks the skier as skiing. */
+.skier-body,
+.skier-spray {
+  animation-play-state: paused;
+}
+
+.skier-spray {
+  visibility: hidden;
+}
+
+[data-skiing="true"] .skier-body,
+[data-skiing="true"] .skier-spray {
+  animation-play-state: running;
+}
+
+[data-skiing="true"] .skier-spray {
+  visibility: visible;
+}
+
+.skier-spray-2 {
+  animation-delay: 0.3s;
+}
+
+.skier-spray-3 {
+  animation-delay: 0.6s;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* A small, calm version: slower sway, snow twinkles in place instead of flying. */
+  .skier-body {
+    animation-duration: 2.4s;
+  }
+
+  .skier-spray {
+    animation-name: skier-twinkle;
+    animation-duration: 1.8s;
+  }
+
   *,
   *::before,
   *::after {
