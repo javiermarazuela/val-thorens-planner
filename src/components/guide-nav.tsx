@@ -59,21 +59,31 @@ function stateOf(i: number, current: number): StopState {
 }
 
 // Desktop: the trail down the left edge. The line turns navy as you pass each stop.
-// A little skier in a side view, leaning down the slope.
+// A skier in a tucked, downhill pose. The whole figure carves gently from side to
+// side and bobs; a few flecks of snow fly off the back of the ski. Animation is in
+// styles.css (.skier-*) and switches off for reduced motion.
 function Skier() {
   return (
     <svg
-      viewBox="0 0 24 24"
-      className="size-6"
+      viewBox="0 0 32 32"
+      className="size-[18px] overflow-visible"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <circle cx="15.5" cy="4" r="1.8" fill="currentColor" stroke="none" />
-      <path d="M14 7.5 10.5 13l3.5 3.5M10.5 13 7 17M13.5 8.5l5 3M3 20l18-4" />
+      <circle className="skier-spray skier-spray-1" cx="1" cy="16" r="1.8" />
+      <circle className="skier-spray skier-spray-2" cx="-1" cy="21" r="1.4" />
+      <circle className="skier-spray skier-spray-3" cx="3" cy="24" r="1.2" />
+      <g className="skier-body">
+        <circle cx="26.5" cy="6" r="3" fill="currentColor" stroke="none" />
+        <path strokeWidth="2.2" d="M3 7 22 18" />
+        <path strokeWidth="3.4" d="M22 8 15 12.5" />
+        <path strokeWidth="3.4" d="M15 12.5 22 17.5 14.5 23" />
+        <path strokeWidth="2.6" d="M22 9.5 23.5 14 29 15.5" />
+        <path strokeWidth="2.4" d="M1.5 21 28 29" />
+      </g>
     </svg>
   );
 }
@@ -81,6 +91,22 @@ function Skier() {
 export function GuideRail({ stops, current }: { stops: Stop[]; current: number }) {
   const list = useRef<HTMLOListElement>(null);
   const [skierY, setSkierY] = useState<number | null>(null);
+  const [skiing, setSkiing] = useState(false);
+
+  // The skier only skis while the page scrolls, and coasts for a moment after.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      setSkiing(true);
+      clearTimeout(timer);
+      timer = setTimeout(() => setSkiing(false), 1200);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(timer);
+    };
+  }, []);
 
   // Park the skier beside the current stop; it glides there when the stop changes.
   useLayoutEffect(() => {
@@ -115,8 +141,9 @@ export function GuideRail({ stops, current }: { stops: Stop[]; current: number }
         {skierY !== null && (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-0 text-signal transition-transform duration-500 ease-out motion-reduce:transition-none"
-            style={{ transform: `translateY(${skierY - 12}px)` }}
+            data-skiing={skiing}
+            className="pointer-events-none absolute left-1 top-0 text-ink transition-transform duration-500 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateY(${skierY - 10}px)` }}
           >
             <Skier />
           </span>
