@@ -89,6 +89,12 @@ function Members() {
         ))}
         {links.length === 0 && !error && <li className="text-muted-foreground">Coming soon.</li>}
       </ul>
+      <a
+        href="/crew"
+        className="mt-5 block rounded-md border border-border px-4 py-3 font-bold hover:bg-secondary"
+      >
+        Crew: who is on your flight and coach
+      </a>
       <div className="mt-8 border-t border-border pt-8">
         <h2 className="mb-4 font-display text-2xl uppercase">Your flights</h2>
         <FlightForm supabase={supabase} session={session} />
