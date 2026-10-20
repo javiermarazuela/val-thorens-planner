@@ -49,23 +49,18 @@ function Crew() {
 
   return (
     <Shell>
-      <label className="flex items-start gap-3 rounded-md border border-border p-4">
-        <input
-          type="checkbox"
-          className="mt-1 size-4"
-          checked={social.visible}
-          onChange={(e) => void social.setVisible(e.target.checked)}
-        />
-        <span>
-          <span className="block font-bold">Show me to other members</span>
-          <span className="block text-sm text-muted-foreground">
-            Other members can see your name next to your flight. Untick to hide yourself.
-          </span>
-        </span>
-      </label>
       <div className="mt-6">
         <CrewFlights mates={social.mates} />
       </div>
+      <label className="mt-10 flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
+        <input
+          type="checkbox"
+          className="size-3.5"
+          checked={!social.visible}
+          onChange={(e) => void social.setVisible(!e.target.checked)}
+        />
+        Hide me from other members
+      </label>
     </Shell>
   );
 }
