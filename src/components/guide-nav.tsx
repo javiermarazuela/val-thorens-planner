@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Plane } from "lucide-react";
+import { Plane, Users } from "lucide-react";
 
 import sscLogo from "@/assets/ssc-logo.jpg";
 import { Button } from "@/components/ui/button";
+import { useCrewAccess } from "@/lib/social/source";
 import { goToSection, scrollToTop } from "@/lib/use-scroll-spy";
 import type { Stop } from "@/lib/guide-order";
 import { sectionMeta, site, trip, type Grade } from "@/lib/trip";
@@ -197,6 +198,7 @@ export function GuideHeader({
   progress: number;
 }) {
   const chips = useRef<HTMLDivElement>(null);
+  const crew = useCrewAccess();
 
   useEffect(() => {
     const box = chips.current;
@@ -246,6 +248,14 @@ export function GuideHeader({
               My flights
             </a>
           </Button>
+          {crew.signedIn && (
+            <Button asChild variant="outline" size="sm" className="rounded-md">
+              <a href="/crew#teams" aria-label="Crew">
+                <Users aria-hidden="true" className="size-4" />
+                <span className="hidden min-[440px]:inline">Crew</span>
+              </a>
+            </Button>
+          )}
           <Button asChild variant="outline" size="sm" className="rounded-md">
             <a href="/members">Members</a>
           </Button>

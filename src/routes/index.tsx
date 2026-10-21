@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { GuideHeader, GuideRail } from "@/components/guide-nav";
+import { TeamReveal } from "@/components/team-reveal";
 import { sectionComponents } from "@/components/sections/registry";
 import { pickOrder, sectionsFor, stopsFor, type GuideOrder } from "@/lib/guide-order";
 import { site, trip, type SectionId } from "@/lib/trip";
@@ -39,6 +40,7 @@ function Home() {
     <div id="top" className="min-[1100px]:pl-[var(--rail-w)]">
       <GuideRail stops={stops} current={index} />
       <GuideHeader stops={stops} current={index} progress={progress} />
+      <TeamReveal />
 
       {stops.map((stop) => {
         const Section = sectionComponents[stop.id];

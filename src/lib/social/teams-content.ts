@@ -1,3 +1,5 @@
+import { dayDetails } from "@/lib/trip";
+
 // Team names, colours and challenges. Kept apart from trip.ts for now; the
 // challenge wording and points are preliminary until the committee confirms them.
 
@@ -79,3 +81,31 @@ export const challenges: Challenge[] = [
 ];
 
 export const challengeById = (id: string) => challenges.find((c) => c.id === id);
+
+// Which challenge belongs to which evening, by the event's name in the week
+// plan. A name used twice (the two club nights) lists one challenge per night,
+// in order.
+const eventChallengeIds: Record<string, string[]> = {
+  "Bar Crawl": ["creature-hunt"],
+  Après: ["apres-outfit"],
+  "Club Night": ["theme-1", "theme-2"],
+};
+
+/** The challenge for the nth time an event name comes up in the week, if any. */
+export function challengeForEvent(what: string, occurrence: number): Challenge | undefined {
+  const id = eventChallengeIds[what]?.[occurrence];
+  return id ? challengeById(id) : undefined;
+}
+
+/** The challenge for the eventIndex-th event on the dayIndex-th day of the week plan. */
+export function challengeAt(dayIndex: number, eventIndex: number): Challenge | undefined {
+  const what = dayDetails[dayIndex]?.events[eventIndex]?.what;
+  if (!what) return undefined;
+  let before = 0;
+  for (let d = 0; d <= dayIndex; d++) {
+    const events = dayDetails[d]?.events ?? [];
+    const upTo = d === dayIndex ? eventIndex : events.length;
+    for (let e = 0; e < upTo; e++) if (events[e]?.what === what) before++;
+  }
+  return challengeForEvent(what, before);
+}

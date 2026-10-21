@@ -35,3 +35,12 @@ export type TeamsState = {
   /** Admin: give a team points. */
   award: (team: number, points: number, reason: string) => Promise<string | null>;
 };
+
+/** Light version of the teams state, for the guide: who is signed in and their team. */
+export type CrewAccess = {
+  signedIn: boolean;
+  /** Null until the committee has put this person on a team. */
+  team: number | null;
+  /** False while the team is still being looked up. */
+  teamKnown: boolean;
+};

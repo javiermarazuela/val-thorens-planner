@@ -11,6 +11,8 @@ import {
 
 import { EventIcon } from "@/components/event-icon";
 import { WeekList } from "@/components/sections/schedule";
+import { useCrewAccess } from "@/lib/social/source";
+import { challengeAt } from "@/lib/social/teams-content";
 import { TransportTile } from "@/components/sections/transport-tile";
 import { dayDetails, mountain, week } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
@@ -79,6 +81,7 @@ export function TodayCard() {
   const [day, setDay] = useState(0);
   const [today, setToday] = useState<number | null>(null);
   const [showWeek, setShowWeek] = useState(false);
+  const crew = useCrewAccess();
 
   useEffect(() => {
     const index = tripDayIndex(appNow());
@@ -143,15 +146,24 @@ export function TodayCard() {
               <EventIcon icon={info.daytime.icon} />
               <span>{info.daytime.label}</span>
             </li>
-            {more.events.map((e) => (
-              <li
-                key={e.what}
-                className="flex items-center gap-3 border-b border-border py-2.5 text-sm last:border-b-0 sm:text-base"
-              >
-                <EventIcon icon={e.icon} />
-                <span>{e.what}</span>
-              </li>
-            ))}
+            {more.events.map((e, ei) => {
+              const challenge =
+                crew.signedIn && crew.team !== null ? challengeAt(day, ei) : undefined;
+              return (
+                <li
+                  key={e.what}
+                  className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border py-2.5 text-sm last:border-b-0 sm:text-base"
+                >
+                  <EventIcon icon={e.icon} />
+                  <span>{e.what}</span>
+                  {challenge && (
+                    <span className="rounded-full bg-mustard/40 px-2.5 py-0.5 text-xs font-bold">
+                      Team challenge: {challenge.title}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
 

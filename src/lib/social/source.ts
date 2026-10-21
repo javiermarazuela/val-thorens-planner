@@ -1,6 +1,6 @@
 import { useRealSocial } from "./real-source";
-import { useRealTeams } from "./real-teams-source";
-import type { TeamsState } from "./teams-types";
+import { useRealCrewAccess, useRealTeams } from "./real-teams-source";
+import type { CrewAccess, TeamsState } from "./teams-types";
 import type { SocialState } from "./types";
 
 // Exists only on the test branch. A glob, not an import, so the real site builds
@@ -27,15 +27,23 @@ export function useSocial(): SocialState {
   return useHook();
 }
 
-const testTeamModules = import.meta.glob<{ useTestTeams: () => TeamsState }>(
-  "./test-teams-source.ts",
-  { eager: true },
-);
+const testTeamModules = import.meta.glob<{
+  useTestTeams: () => TeamsState;
+  useTestCrewAccess: () => CrewAccess;
+}>("./test-teams-source.ts", { eager: true });
 
-const useTestTeamsHook = Object.values(testTeamModules)[0]?.useTestTeams;
+const testTeams = Object.values(testTeamModules)[0];
+const useTestTeamsHook = testTeams?.useTestTeams;
+const useTestAccessHook = testTeams?.useTestCrewAccess;
 
 /** Same idea as useSocial, for the teams tab. */
 export function useTeams(): TeamsState {
   const useHook = useTestTeamsHook && onTestHost() ? useTestTeamsHook : useRealTeams;
+  return useHook();
+}
+
+/** Who is signed in and which team they are on, for the guide pages. */
+export function useCrewAccess(): CrewAccess {
+  const useHook = useTestAccessHook && onTestHost() ? useTestAccessHook : useRealCrewAccess;
   return useHook();
 }
