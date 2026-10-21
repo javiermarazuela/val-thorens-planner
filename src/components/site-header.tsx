@@ -1,7 +1,7 @@
 import { useRouterState } from "@tanstack/react-router";
 
 import sscLogo from "@/assets/ssc-logo.jpg";
-import { Button } from "@/components/ui/button";
+import { HeaderActions } from "@/components/header-actions";
 import { site, trip } from "@/lib/trip";
 
 // The plain header for every page except the guide, which has its own with the trail.
@@ -20,16 +20,14 @@ export function SiteHeader() {
             height={36}
             className="size-9 shrink-0 rounded-md object-cover"
           />
-          <span>
+          <span className="hidden min-[440px]:block">
             <span className="block font-display text-sm uppercase leading-none">{site.name}</span>
             <span className="mt-1 block text-[0.65rem] font-bold text-muted-foreground">
               {trip.datesShort}
             </span>
           </span>
         </a>
-        <Button asChild variant="outline" size="sm" className="rounded-md">
-          <a href="/members">Members</a>
-        </Button>
+        <HeaderActions onGuide={false} />
       </div>
     </header>
   );
