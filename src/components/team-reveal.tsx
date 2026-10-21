@@ -21,6 +21,8 @@ export function TeamReveal() {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
+    // Not on top of the flights pop-up, which a My flights link opens straight away.
+    if (window.location.hash === "#flights") return;
     if (signedIn && team !== null && seen() !== String(team)) setOpen(true);
   }, [signedIn, team]);
 
