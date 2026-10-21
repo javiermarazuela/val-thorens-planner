@@ -3,9 +3,11 @@ import { ArrowLeft } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import { CrewFlights } from "@/components/crew-flights";
+import { CrewSlopes } from "@/components/crew-slopes";
 import { CrewTeams } from "@/components/crew-teams";
 import { Button } from "@/components/ui/button";
-import { useSocial, useTeams } from "@/lib/social/source";
+import { initialSlopeDay, slopesNow } from "@/lib/social/slopes-content";
+import { useSlopes, useSocial, useTeams } from "@/lib/social/source";
 import { site } from "@/lib/trip";
 
 // Members only. The session lives in the browser, so render on the client only;
@@ -18,12 +20,15 @@ export const Route = createFileRoute("/crew")({
   component: Crew,
 });
 
-type Tab = "teams" | "flights";
+type Tab = "teams" | "slopes" | "flights";
+
+const tabLabels: Record<Tab, string> = { teams: "Teams", slopes: "Slopes", flights: "Flights" };
 
 function Crew() {
-  const [tab, setTab] = useState<Tab>(() =>
-    window.location.hash === "#flights" ? "flights" : "teams",
-  );
+  const [tab, setTab] = useState<Tab>(() => {
+    const hash = window.location.hash.replace("#", "");
+    return hash === "flights" || hash === "slopes" ? hash : "teams";
+  });
   const choose = (next: Tab) => {
     setTab(next);
     window.history.replaceState(null, "", `#${next}`);
@@ -32,7 +37,7 @@ function Crew() {
   return (
     <Shell>
       <div role="tablist" className="mb-6 flex gap-2">
-        {(["teams", "flights"] as const).map((id) => (
+        {(["teams", "slopes", "flights"] as const).map((id) => (
           <button
             key={id}
             role="tab"
@@ -44,11 +49,11 @@ function Crew() {
                 : "border-border hover:bg-secondary"
             }`}
           >
-            {id === "teams" ? "Teams" : "Flights"}
+            {tabLabels[id]}
           </button>
         ))}
       </div>
-      {tab === "teams" ? <TeamsTab /> : <FlightsTab />}
+      {tab === "teams" ? <TeamsTab /> : tab === "slopes" ? <SlopesTab /> : <FlightsTab />}
     </Shell>
   );
 }
@@ -84,6 +89,16 @@ function TeamsTab() {
   return (
     <Gated state={teams}>
       <CrewTeams state={teams} />
+    </Gated>
+  );
+}
+
+function SlopesTab() {
+  const [day, setDay] = useState(() => initialSlopeDay(slopesNow()));
+  const slopes = useSlopes(day);
+  return (
+    <Gated state={slopes}>
+      <CrewSlopes state={slopes} day={day} onDay={setDay} />
     </Gated>
   );
 }
