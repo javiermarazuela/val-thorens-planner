@@ -44,9 +44,9 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - `/members` shows its generic "isn't on the list" message for any sign-in error. Read `error_description` in the URL or the Supabase Auth logs to find the real cause.
   - Supabase's redirect URLs must include every address sign-in can return to.
 
-## Chatbot: Julian the snowman (state on 11 Oct 2026)
+## Chatbot: Julian the snowman (state on 21 Oct 2026)
 
-Rules and structure are in CLAUDE.md (the chatbot entry, rules 10 and 11). Design decisions came from the user: a hybrid, so the free search handles most questions and Haiku is used only for signed-in members when search finds nothing; each question stands alone; playful trip-leader tone, English only; relevant but unknown questions say "message us on the trip WhatsApp group"; signed-out visitors get chips and search only, with "please sign in for more complex questions"; three off-topic questions in a row means a 24-hour ban.
+Rules and structure are in CLAUDE.md (the chatbot entry, rules 10 and 11). Design decisions came from the user: a hybrid, but since 21 Oct the free tier answers only the default questions (chips and knowledge-row questions, exact match) and Haiku handles every other typed question for signed-in people, because keyword matching misread multi-part questions; each question stands alone; playful trip-leader tone, English only; relevant but unknown questions say "message us on the trip WhatsApp group"; signed-out visitors get the default questions only, with "please sign in for more complex questions"; three off-topic questions in a row means a 24-hour ban.
 
 **Branches** (`chatbot`, `chatbot-ai` and `testdata` are pushed; `chatbot-foundations` is contained in them):
 
@@ -58,6 +58,15 @@ Rules and structure are in CLAUDE.md (the chatbot entry, rules 10 and 11). Desig
 | `testdata` | `chatbot-ai` plus the test site: 200 fake travellers, the `/testdata` picker, the pretend clock, the test chat environment. Never merge into `main` |
 
 **Done outside the repo:** migrations `0006` and `0007` run in Supabase; an Anthropic workspace with a $20 monthly limit, its key set in Vercel as `ANTHROPIC_API_KEY`; `test.cbseuroski.com` assigned to the `testdata` branch in Vercel (Domains, Preview, branch `testdata`) with a DNS-only CNAME in Cloudflare.
+
+**21 Oct 2026 (test site, commit `2bbf686` on `testdata`, not on `chatbot-ai` or `main`):** free text goes to Haiku, which now also sees the week, places, activities, the person's team and the leaderboard. Checked on test.cbseuroski.com with five questions: a two-part Wednesday club night question, an unknown guest question, a snow-day idea, an off-topic question (one strike) and a wifi question all behaved. Not yet checked: the daily caps and the 24-hour ban. Port the change to `chatbot-ai` before the real pull request.
+
+## Crew and the test site (21 Oct 2026)
+
+`/crew` (flights, teams, slopes) is live on main (PR #36); see the Crew entry in CLAUDE.md. Migrations `0008` to `0011` have all been run. Still to do on the real site: load the teams CSV with `scripts/allocate-teams.ts` (needs year, gender and residence per person), add the user's email to `admins`, promote Julian's team answers once `chatbot-ai` merges, and decide the final challenge list.
+
+The test site (`test.cbseuroski.com`, branch `testdata`) was walked through in a browser on 21 Oct as a test persona: `/testdata`, the home page, all three Crew tabs, Julian's chips and free text all worked. `/demo` (guest sign-up through Google) was not clicked through. The one console error is React #418, the harmless pretend-clock hydration warning. `testdata` is 9 commits behind `main` (the same Crew code under other hashes), so merging main in may conflict in the schedule, today-card and welcome sections. Wifi and some other answers on the test site come from invented `src/test-data/knowledge-fill.json`.
+
 
 **Not done yet:**
 
