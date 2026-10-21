@@ -355,11 +355,6 @@ export const mountain = {
   ],
 };
 
-export const teamGames = {
-  status: "soon" as GuideStatus,
-  body: "Your apartment is your team. Points are earned across the week for challenges on and off the mountain, and the rules and scoring will be published here in full. This site shows the rules only — there is no scoreboard and nothing to submit.",
-};
-
 export const packing: Array<{ group: string; items: string[] }> = [
   {
     group: "On the mountain",
@@ -873,6 +868,7 @@ export const privacy = {
     "If you sign in with Google to reach the members area, we receive your name and email address from Google. That is all. We don't see your Google password or anything else in your account.",
     "We use your email only to check you're a Columbia student or an approved guest, and to show you the members area. We don't share it, sell it or use it for marketing.",
     "If you fill in the flight details form, we store what you enter, along with your name, and the committee keeps it in a private spreadsheet so it can organise transfers. To find your flight we send the flight number and date, nothing about you, to an airline data service.",
+    'Other signed-in members can see your name next to your flight, and who is on the same flight or airport coach. Tick "Hide me from other members" at the bottom of the Crew page to opt out. Your email, room and everything else stay private.',
     "Your checklist on the page is saved on your own device, not on our servers.",
     "Want your data removed? Ask in the trip WhatsApp group and the committee will delete it.",
   ],

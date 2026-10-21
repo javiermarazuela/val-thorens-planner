@@ -1,8 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Plane } from "lucide-react";
 
 import sscLogo from "@/assets/ssc-logo.jpg";
-import { Button } from "@/components/ui/button";
+import { HeaderActions } from "@/components/header-actions";
 import { goToSection, scrollToTop } from "@/lib/use-scroll-spy";
 import type { Stop } from "@/lib/guide-order";
 import { sectionMeta, site, trip, type Grade } from "@/lib/trip";
@@ -181,10 +180,6 @@ export function GuideRail({ stops, current }: { stops: Stop[]; current: number }
   );
 }
 
-// Tells the flights card (in Getting here & away) to open, even when the hash is
-// already #flights and so will not change.
-const openFlights = () => window.dispatchEvent(new Event("open-flights"));
-
 // Sticky top bar. Phone: wordmark, Members button and a scrolling chip bar.
 // Desktop: the current section's name (the rail does the navigating).
 export function GuideHeader({
@@ -239,17 +234,7 @@ export function GuideHeader({
             </>
           )}
         </p>
-        <div className="flex items-center gap-2">
-          <Button asChild size="sm" className="rounded-md">
-            <a href="#flights" onClick={openFlights}>
-              <Plane aria-hidden="true" className="size-4" />
-              My flights
-            </a>
-          </Button>
-          <Button asChild variant="outline" size="sm" className="rounded-md">
-            <a href="/members">Members</a>
-          </Button>
-        </div>
+        <HeaderActions onGuide />
       </div>
       <div
         ref={chips}
