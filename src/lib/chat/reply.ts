@@ -10,7 +10,9 @@ import type { ChatLink, ChatProfile, KbRow, LegInfo, Reply, ReplyContext } from 
 //   3. what is on today or tonight,
 //   4. suggestions for something to do,
 //   5. the knowledge rows (free search),
-//   6. a polite "I don't know" (step 2b puts Haiku between 5 and 6).
+//   6. a polite "I don't know".
+// Steps 2 to 6 only run for the default questions (the chips and the knowledge
+// rows' own questions). Any other wording is left to Haiku (ask.functions.ts).
 
 const WHATSAPP = "message us on the trip WhatsApp group";
 
@@ -431,10 +433,31 @@ function rowReply(row: KbRow): Reply {
 
 // ---------- the front door --------------------------------------------------------
 
-export type ChatBrain = { index: Index };
+/** The suggestion chips. These exact questions are answered here, without the AI. */
+export const quickQuestions = [
+  { label: "What's next?", ask: "What's the next event?" },
+  { label: "Where's my room?", ask: "Where is my room?" },
+  { label: "My shuttle", ask: "What time is my shuttle?" },
+  { label: "My team", ask: "Which team am I on?" },
+  { label: "Who's winning?", ask: "Who is winning?" },
+  { label: "Tonight", ask: "What are the plans for tonight?" },
+  { label: "What to pack", ask: "What should I pack?" },
+  { label: "Something to do", ask: "What can I do today?" },
+];
+
+export type ChatBrain = {
+  index: Index;
+  /** Normalised chip questions and knowledge-row questions: the ones answered without the AI. */
+  defaults: Set<string>;
+};
 
 export function makeBrain(rows: KbRow[]): ChatBrain {
-  return { index: buildIndex(rows) };
+  const defaults = new Set<string>(quickQuestions.map((c) => normalise(c.ask)));
+  for (const r of rows) {
+    defaults.add(normalise(r.question));
+    for (const p of r.phrasings) defaults.add(normalise(p));
+  }
+  return { index: buildIndex(rows), defaults };
 }
 
 const defaultArea: Record<Reply["source"], string> = {
@@ -471,6 +494,20 @@ function answerCore(question: string, brain: ChatBrain, ctx: ReplyContext): Repl
       text: "I'm Julian, the snowman who knows the trip. Ask me about rooms, coaches, plans, packing, money or what to do.",
       source: "search",
     };
+
+  // Only the default questions (chips and knowledge-row questions) are answered
+  // here. Anything typed freely goes to the AI step, which reads the person's
+  // details and the whole knowledge base, instead of guessing from keywords.
+  if (!brain.defaults.has(q)) {
+    if (!ctx.signedIn) {
+      return {
+        text: "That's a bit more complex for me. Please sign in for more complex questions.",
+        signIn: true,
+        source: "login",
+      };
+    }
+    return { text: "", source: "unknown" };
+  }
 
   const profile = ctx.profile;
 

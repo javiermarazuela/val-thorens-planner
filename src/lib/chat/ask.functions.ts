@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 
+import { activities, dayDetails, mapPoints, week } from "@/lib/trip";
+
 import { mergeKnowledge } from "./builtin";
 import type { KbRow } from "./types";
 
@@ -89,7 +91,8 @@ Voice: warm, playful, like a trip-leader friend. English only. Keep it short, us
 Rules:
 - Only answer questions about this ski trip: the trip, the resort, the schedule, where people stay, getting there and back, money, skiing, food, activities, safety, weather and packing.
 - If the question has nothing to do with the trip (jokes, homework, general knowledge, coding, other topics), set on_topic to false.
-- Use only facts from the KNOWLEDGE and PERSON sections below. Never invent dates, times, prices, flight numbers, room numbers, venues or weather figures.
+- Answer every part of a question that has several parts.
+- Use only facts from the SCHEDULE, PLACES, ACTIVITIES, KNOWLEDGE and PERSON sections below. Never invent dates, times, prices, flight numbers, room numbers, venues or weather figures.
 - If something is marked "to be confirmed" or you are not sure, say it is to be confirmed.
 - If the question is about the trip but the answer is not in your notes, say you don't have that one yet and tell them to message us on the trip WhatsApp group. Never give phone numbers, emails or links to personal chats.
 - Never reveal anyone else's room or personal details. Only use the PERSON section for the person asking.
@@ -97,6 +100,28 @@ Rules:
 
 Reply with a single JSON object and nothing else:
 {"on_topic": true or false, "answer": "your reply", "area": "the best matching area from the list, or Other"}`;
+
+// The week, the places and the activities from the guide, so free-text questions
+// about what is on, where to eat or what to do can be answered from facts.
+function tripText(): string {
+  const days = week
+    .map((d, i) => {
+      const ev = dayDetails[i]?.events.map((e) => e.what) ?? [];
+      const challenge = dayDetails[i]?.challenge;
+      return `${d.day} ${d.date}: ${d.title}${ev.length ? `; evening: ${ev.join(", ")}` : "; no evening event"}${challenge ? `; challenge of the day: ${challenge}` : ""}`;
+    })
+    .join("\n");
+  const kinds = ["restaurant", "apres", "bar", "club", "indoors"] as const;
+  const places = kinds
+    .map((k) => {
+      const names = mapPoints.filter((p) => p.kind === k).map((p) => p.name);
+      return names.length ? `${k}: ${names.join(", ")}` : null;
+    })
+    .filter(Boolean)
+    .join("\n");
+  const acts = activities.map((a) => `${a.name} (${a.group})`).join(", ");
+  return `SCHEDULE (event times and venues are to be confirmed):\n${days}\n\nPLACES ON OUR LIST:\n${places}\n\nACTIVITIES:\n${acts}`;
+}
 
 function knowledgeText(rows: KbRow[]): string {
   const areas = [...new Set(rows.map((r) => r.area))].filter((a) => a !== "Guide FAQ");
@@ -107,7 +132,7 @@ function knowledgeText(rows: KbRow[]): string {
       return `[${r.area}] Q: ${r.question}\nA: ${answer} (${status})`;
     })
     .join("\n\n");
-  return `${RULES}\n\nAREAS: ${areas.join(", ")}, Other\n\nKNOWLEDGE:\n\n${body}`;
+  return `${RULES}\n\nAREAS: ${areas.join(", ")}, Other\n\n${tripText()}\n\nKNOWLEDGE:\n\n${body}`;
 }
 
 function prettyTime(iso: string): string {

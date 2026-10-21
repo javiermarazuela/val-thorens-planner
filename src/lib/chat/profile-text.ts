@@ -26,9 +26,15 @@ export function profileToText(p: ChatProfile | null): string {
         p.room.roommates?.length ? `, sharing with ${p.room.roommates.join(", ")}` : ""
       }`
     : "Room: not assigned yet (to be confirmed)";
+  const team = p.team ? `Team: ${p.team.name}` : "Team: not announced yet (to be confirmed)";
+  const scores = p.standings?.length
+    ? `Team points: ${p.standings.map((s) => `${s.name} ${s.points}`).join(", ")}`
+    : null;
   return [
     `Name: ${p.name ?? "unknown"}`,
     room,
+    team,
+    ...(scores ? [scores] : []),
     legText("Coming", p.arrival),
     legText("Going home", p.departure),
   ].join("\n");

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 
 import { Julian } from "@/components/chat/julian";
 import { pickEnvironment, type ChatEnvironment, type ChatIdentity } from "@/lib/chat/environment";
-import { answer, makeBrain, type ChatBrain } from "@/lib/chat/reply";
+import { answer, makeBrain, quickQuestions, type ChatBrain } from "@/lib/chat/reply";
 import type { ChatLink, KbRow } from "@/lib/chat/types";
 import { askJulian } from "@/lib/chat/ask.functions";
 import { logChat, type LogEntry } from "@/lib/chat/log";
@@ -23,16 +23,7 @@ type Message = {
   signIn: boolean;
 };
 
-const quick = [
-  { label: "What's next?", ask: "What's the next event?" },
-  { label: "Where's my room?", ask: "Where is my room?" },
-  { label: "My shuttle", ask: "What time is my shuttle?" },
-  { label: "My team", ask: "Which team am I on?" },
-  { label: "Who's winning?", ask: "Who is winning?" },
-  { label: "Tonight", ask: "What are the plans for tonight?" },
-  { label: "What to pack", ask: "What should I pack?" },
-  { label: "Something to do", ask: "What can I do today?" },
-];
+const quick = quickQuestions;
 
 const greeting =
   "Hi, I'm Julian, the snowman who knows the trip. Ask me about your room, your coach, the plans or what to do, or tap an idea below.";
