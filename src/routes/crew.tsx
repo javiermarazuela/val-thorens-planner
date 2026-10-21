@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 import { CrewFlights } from "@/components/crew-flights";
+import { CrewTeams } from "@/components/crew-teams";
 import { Button } from "@/components/ui/button";
-import { useSocial } from "@/lib/social/source";
+import { useSocial, useTeams } from "@/lib/social/source";
 import { site } from "@/lib/trip";
 
 // Members only. The session lives in the browser, so render on the client only;
@@ -17,41 +18,81 @@ export const Route = createFileRoute("/crew")({
   component: Crew,
 });
 
-function Crew() {
-  const social = useSocial();
+type Tab = "teams" | "flights";
 
-  if (social.status === "loading") {
-    return (
-      <Shell>
-        <p className="text-muted-foreground">Loading…</p>
-      </Shell>
-    );
-  }
-  if (social.status === "unavailable") {
-    return (
-      <Shell>
-        <p>The crew pages aren't available right now. Try again in a moment.</p>
-      </Shell>
-    );
-  }
-  if (social.status === "signed-out") {
-    return (
-      <Shell>
-        <p>Sign in with your Columbia Google account to see who is travelling with you.</p>
-        {social.signIn && (
-          <Button className="mt-5" onClick={social.signIn}>
-            Sign in with Google
-          </Button>
-        )}
-      </Shell>
-    );
-  }
+function Crew() {
+  const [tab, setTab] = useState<Tab>(() =>
+    window.location.hash === "#flights" ? "flights" : "teams",
+  );
+  const choose = (next: Tab) => {
+    setTab(next);
+    window.history.replaceState(null, "", `#${next}`);
+  };
 
   return (
     <Shell>
-      <div className="mt-6">
-        <CrewFlights mates={social.mates} />
+      <div role="tablist" className="mb-6 flex gap-2">
+        {(["teams", "flights"] as const).map((id) => (
+          <button
+            key={id}
+            role="tab"
+            aria-selected={tab === id}
+            onClick={() => choose(id)}
+            className={`rounded-full border px-4 py-1.5 text-sm font-bold uppercase ${
+              tab === id
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border hover:bg-secondary"
+            }`}
+          >
+            {id === "teams" ? "Teams" : "Flights"}
+          </button>
+        ))}
       </div>
+      {tab === "teams" ? <TeamsTab /> : <FlightsTab />}
+    </Shell>
+  );
+}
+
+type Gate = {
+  status: "loading" | "signed-out" | "signed-in" | "unavailable";
+  signIn: (() => void) | null;
+};
+
+/** The same loading, sign-in and error screens for every tab. */
+function Gated({ state, children }: { state: Gate; children: ReactNode }) {
+  if (state.status === "loading") return <p className="text-muted-foreground">Loading…</p>;
+  if (state.status === "unavailable") {
+    return <p>The crew pages aren't available right now. Try again in a moment.</p>;
+  }
+  if (state.status === "signed-out") {
+    return (
+      <>
+        <p>Sign in with your Columbia Google account to see your crew.</p>
+        {state.signIn && (
+          <Button className="mt-5" onClick={state.signIn}>
+            Sign in with Google
+          </Button>
+        )}
+      </>
+    );
+  }
+  return <>{children}</>;
+}
+
+function TeamsTab() {
+  const teams = useTeams();
+  return (
+    <Gated state={teams}>
+      <CrewTeams state={teams} />
+    </Gated>
+  );
+}
+
+function FlightsTab() {
+  const social = useSocial();
+  return (
+    <Gated state={social}>
+      <CrewFlights mates={social.mates} />
       <label className="mt-10 flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
         <input
           type="checkbox"
@@ -61,7 +102,7 @@ function Crew() {
         />
         Hide me from other members
       </label>
-    </Shell>
+    </Gated>
   );
 }
 

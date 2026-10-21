@@ -1,4 +1,6 @@
 import { useRealSocial } from "./real-source";
+import { useRealTeams } from "./real-teams-source";
+import type { TeamsState } from "./teams-types";
 import type { SocialState } from "./types";
 
 // Exists only on the test branch. A glob, not an import, so the real site builds
@@ -22,5 +24,18 @@ function onTestHost(): boolean {
  */
 export function useSocial(): SocialState {
   const useHook = useTest && onTestHost() ? useTest : useRealSocial;
+  return useHook();
+}
+
+const testTeamModules = import.meta.glob<{ useTestTeams: () => TeamsState }>(
+  "./test-teams-source.ts",
+  { eager: true },
+);
+
+const useTestTeamsHook = Object.values(testTeamModules)[0]?.useTestTeams;
+
+/** Same idea as useSocial, for the teams tab. */
+export function useTeams(): TeamsState {
+  const useHook = useTestTeamsHook && onTestHost() ? useTestTeamsHook : useRealTeams;
   return useHook();
 }
