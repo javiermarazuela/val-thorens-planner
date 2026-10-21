@@ -96,6 +96,16 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - Once a PR merges, restart the branch from `main` rather than stacking on merged history.
   - Commit messages explain _why_.
 
+## Crew (live since 21 Oct 2026, PR 36)
+
+See the Crew bullet in CLAUDE.md. Still to do by hand:
+
+- Run `supabase/migrations/0011_slopes.sql` in the live Supabase project if not done (Slopes shows "not available" until then; 0008 to 0010 are run). Run migrations only in the project whose URL matches `VITE_SUPABASE_URL` in Vercel; an earlier run in the wrong project had to be cleaned up.
+- Load the teams: CSV with name, email, year, gender, residence, then `bun scripts/allocate-teams.ts people.csv > teams.sql` and run the SQL. Until then members see "Teams haven't been announced yet" (no reveal card, no strip).
+- Challenges and Slopes places and times are marked Preliminary; confirm or change them in `teams-content.ts` and `slopes-content.ts`.
+- Julian's "My team" and "Who's winning?" exist only on the `testdata` branch; they need `chatbot-ai` and the Crew code merged first.
+- Test site: `/testdata` picks one of 200 invented travellers, or `/demo` joins as a new member with Google (asks only year; saved in the browser, not Supabase).
+
 ## Next steps
 
 1. **Real map coordinates** from the committee, into `mapPoints`.
