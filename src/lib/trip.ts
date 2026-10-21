@@ -355,11 +355,6 @@ export const mountain = {
   ],
 };
 
-export const teamGames = {
-  status: "soon" as GuideStatus,
-  body: "Your apartment is your team. Points are earned across the week for challenges on and off the mountain, and the rules and scoring will be published here in full. This site shows the rules only — there is no scoreboard and nothing to submit.",
-};
-
 export const packing: Array<{ group: string; items: string[] }> = [
   {
     group: "On the mountain",
