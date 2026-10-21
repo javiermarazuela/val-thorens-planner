@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 
-import { testPeople, useTestPersona } from "@/lib/test-persona";
+import { allTestPeople, baseTeams } from "@/lib/test-guests";
+import { useTestPersona } from "@/lib/test-persona";
 
-import { allocateTeams } from "./allocate";
 import { shrinkImage } from "./image";
 import type { CrewAccess, Photo, PointsEntry, TeamsState } from "./teams-types";
 
@@ -42,14 +42,10 @@ function write(next: Stored) {
   }
 }
 
-const assignment = allocateTeams(
-  testPeople.map((p) => ({
-    key: p.email,
-    year: (p as unknown as { year: string }).year,
-    gender: (p as unknown as { gender: string }).gender,
-    residence: p.room.residence,
-  })),
-);
+// A guest (someone who signed in on /demo) carries their own team; the invented 200 come
+// from the shared allocation.
+const teamOf = (p: { email: string; team?: number }): number | null =>
+  p.team ?? baseTeams.get(p.email) ?? null;
 
 function toDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -70,15 +66,15 @@ export function useTestTeams(): TeamsState {
     setStore(next);
   }, []);
 
-  const myTeam = person ? (assignment.get(person.email) ?? null) : null;
+  const myTeam = person ? teamOf(person) : null;
 
   const roster = useMemo(
     () =>
-      testPeople
-        .filter((_, i) => i % 17 !== 0 || testPeople[i]!.email === email)
+      allTestPeople()
+        .filter((p, i) => i % 17 !== 0 || p.email === email)
         .map((p) => ({
           name: p.name,
-          team: assignment.get(p.email) ?? 1,
+          team: teamOf(p) ?? 1,
           isMe: p.email === email,
         })),
     [email],
@@ -182,12 +178,12 @@ export function useTestTeams(): TeamsState {
 export function useTestCrewAccess(): CrewAccess {
   const { person } = useTestPersona();
   if (!person) return { signedIn: false, team: null, teamKnown: person !== undefined };
-  return { signedIn: true, team: assignment.get(person.email) ?? null, teamKnown: true };
+  return { signedIn: true, team: teamOf(person), teamKnown: true };
 }
 
 /** The invented person's team, for Julian. */
 export function testTeamFor(email: string): number | null {
-  return assignment.get(email) ?? null;
+  return teamOf(allTestPeople().find((p) => p.email === email) ?? { email });
 }
 
 /** Every team with its points, best first, from what has been awarded in this browser. */

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 
-import { testPeople, useTestPersona, type TestLeg } from "@/lib/test-persona";
+import { allTestPeople } from "@/lib/test-guests";
+import { useTestPersona, type TestLeg } from "@/lib/test-persona";
 
 import type { Leg, Mate, SocialState } from "./types";
 
@@ -34,7 +35,7 @@ export function useTestSocial(): SocialState {
 
   const mates = useMemo<Mate[]>(() => {
     if (!person) return [];
-    return testPeople
+    return allTestPeople()
       .filter((p, i) => p.email === person.email || i % 17 !== 0)
       .map((p) => ({
         name: p.name,

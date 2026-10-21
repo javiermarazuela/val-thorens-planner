@@ -1,5 +1,6 @@
 import { coachAfterLanding, coachBeforeTakeoff } from "@/lib/flight-suggestions";
-import { testPeople } from "@/lib/test-persona";
+import { allTestPeople } from "@/lib/test-guests";
+import type { TestLeg, TestPerson } from "@/lib/test-persona";
 import { airportCoaches } from "@/lib/trip";
 
 // Test site only. Puts a newly signed-in person on an airport coach and in a
@@ -61,7 +62,7 @@ function hash(text: string): number {
 // How many invented travellers are already on each coach, by leg, slot and name.
 function load(leg: "arrival" | "departure") {
   const vehicles = new Map<string, { slot: string; riders: number }>();
-  for (const p of testPeople) {
+  for (const p of allTestPeople()) {
     const { slot, vehicle } = p.coach[leg];
     if (!slot || !vehicle) continue;
     const v = vehicles.get(vehicle) ?? { slot, riders: 0 };
@@ -98,5 +99,48 @@ export function allocate(email: string, flights: DemoFlights): DemoAllocation {
           why: "Flight is too early for the first coach (05:15)",
         },
     room: spare[hash(email.toLowerCase()) % spare.length]!,
+  };
+}
+
+const ARRIVAL_DAY = "2027-01-09";
+const DEPARTURE_DAY = "2027-01-16";
+
+/** The traveller the test site keeps for someone who signed in with Google. */
+export function toGuest(
+  name: string,
+  email: string,
+  year: string,
+  team: number,
+  flights: DemoFlights,
+  result: DemoAllocation,
+): TestPerson {
+  const leg = (l: DemoLeg, date: string): TestLeg => ({
+    mode: "geneva",
+    date,
+    flight: l.flight,
+    airline: "",
+    route: "",
+    airport: "GVA",
+    time: l.time,
+    shuttle: "yes",
+  });
+  const coach = (c: DemoCoach) => ({ slot: c.slot, vehicle: c.vehicle, why: c.why });
+  return {
+    id: `guest-${email}`,
+    name,
+    email,
+    group: "guest",
+    arrival: leg(flights.arrival, ARRIVAL_DAY),
+    departure: leg(flights.departure, DEPARTURE_DAY),
+    coach: { arrival: coach(result.arrival), departure: coach(result.departure) },
+    room: {
+      id: `guest-${result.room.room}`,
+      residence: result.room.residence,
+      room: result.room.room,
+      type: result.room.type,
+      roommates: [result.room.roommate],
+    },
+    year,
+    team,
   };
 }

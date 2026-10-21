@@ -1,16 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, BedDouble, Bus, Check, Loader2, Plane } from "lucide-react";
+import { ArrowLeft, BedDouble, Bus, Check, Loader2, Plane, Users } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
   allocate,
   SEATS,
+  toGuest,
   type DemoAllocation,
   type DemoCoach,
   type DemoFlights,
   type DemoLeg,
 } from "@/lib/demo-allocate";
+import { removeGuest, saveGuest, teamForGuest } from "@/lib/test-guests";
+import { useTestPersona } from "@/lib/test-persona";
+import { teamById } from "@/lib/social/teams-content";
 import { suggestionsFor, tripDates, type FlightSuggestion } from "@/lib/flight-suggestions";
 import { site } from "@/lib/trip";
 import { useSession } from "@/lib/use-session";
@@ -26,14 +30,16 @@ export const Route = createFileRoute("/demo")({
   component: Demo,
 });
 
-type Saved = { flights: DemoFlights; result: DemoAllocation };
+type Saved = { flights: DemoFlights; result: DemoAllocation; year: string; team: number };
 
 const storeKey = (userId: string) => `euro-ski-demo:${userId}`;
 
 function readSaved(userId: string): Saved | null {
   try {
     const raw = window.localStorage.getItem(storeKey(userId));
-    return raw ? (JSON.parse(raw) as Saved) : null;
+    const saved = raw ? (JSON.parse(raw) as Partial<Saved>) : null;
+    // An older save without a team means starting again.
+    return saved?.team ? (saved as Saved) : null;
   } catch {
     return null;
   }
@@ -43,6 +49,7 @@ function Demo() {
   const { supabase, session, authError, signIn } = useSession("/demo");
   const [saved, setSaved] = useState<Saved | null>(null);
   const [working, setWorking] = useState<number | null>(null);
+  const { choose } = useTestPersona();
   const userId = session?.user.id;
   const email = session?.user.email ?? "";
 
@@ -50,22 +57,28 @@ function Demo() {
     if (userId) setSaved(readSaved(userId));
   }, [userId]);
 
-  function submit(flights: DemoFlights) {
+  function submit(flights: DemoFlights, year: string) {
     if (!userId) return;
     const result = allocate(email, flights);
+    const team = teamForGuest(email, year);
+    const meta = session?.user.user_metadata as { full_name?: string } | undefined;
+    const name = meta?.full_name ?? email.split("@")[0] ?? "New member";
     // Three short steps so the matching is visible, then the answer.
     setWorking(0);
     setSaved(null);
-    [1, 2, 3].forEach((step, i) =>
+    [1, 2, 3, 4].forEach((step, i) =>
       window.setTimeout(
         () => {
-          if (step < 3) {
+          if (step < 4) {
             setWorking(step);
             return;
           }
           setWorking(null);
-          const next = { flights, result };
+          const next = { flights, result, year, team };
           setSaved(next);
+          // From here on the whole test site treats this person as a traveller.
+          saveGuest(toGuest(name, email, year, team, flights, result));
+          choose(email);
           try {
             window.localStorage.setItem(storeKey(userId), JSON.stringify(next));
           } catch {
@@ -78,6 +91,7 @@ function Demo() {
   }
 
   function reset() {
+    removeGuest(email);
     if (userId) {
       try {
         window.localStorage.removeItem(storeKey(userId));
@@ -107,8 +121,8 @@ function Demo() {
       <Shell>
         <ol className="grid gap-2 text-sm">
           <li>1. Sign in with Google</li>
-          <li>2. Log your flights</li>
-          <li>3. Get your coach and room, automatically</li>
+          <li>2. Log your flights and say which year you are in</li>
+          <li>3. Get your coach, room and team, automatically</li>
         </ol>
         {authError && (
           <p role="alert" className="mt-3 text-sm font-semibold text-destructive">
@@ -139,7 +153,12 @@ function Demo() {
   );
 }
 
-const steps = ["Reading your flights", "Finding your airport coaches", "Finding you a room"];
+const steps = [
+  "Reading your flights",
+  "Finding your airport coaches",
+  "Finding you a room",
+  "Picking your team",
+];
 
 function Working({ step }: { step: number }) {
   return (
@@ -240,9 +259,10 @@ function LegPicker({
   );
 }
 
-function FlightsStep({ onSubmit }: { onSubmit: (flights: DemoFlights) => void }) {
+function FlightsStep({ onSubmit }: { onSubmit: (flights: DemoFlights, year: string) => void }) {
   const [arrival, setArrival] = useState<DemoLeg | null>(null);
   const [departure, setDeparture] = useState<DemoLeg | null>(null);
+  const [year, setYear] = useState("");
   return (
     <>
       <h2 className="mt-6 font-display text-2xl uppercase">Your flights</h2>
@@ -253,10 +273,33 @@ function FlightsStep({ onSubmit }: { onSubmit: (flights: DemoFlights) => void })
         value={departure}
         onChange={setDeparture}
       />
+      <fieldset className="mt-5 rounded-md border border-border p-4">
+        <legend className="px-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          Your year
+        </legend>
+        <div className="flex gap-6">
+          {[
+            ["first", "First year"],
+            ["second", "Second year"],
+          ].map(([value, label]) => (
+            <label key={value} className="flex items-center gap-2 font-bold">
+              <input
+                type="radio"
+                name="year"
+                value={value}
+                checked={year === value}
+                onChange={() => setYear(value!)}
+                className="size-4"
+              />
+              {label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
       <Button
         className="mt-6"
-        disabled={!arrival || !departure}
-        onClick={() => arrival && departure && onSubmit({ arrival, departure })}
+        disabled={!arrival || !departure || !year}
+        onClick={() => arrival && departure && year && onSubmit({ arrival, departure }, year)}
       >
         Save and allocate me
       </Button>
@@ -309,12 +352,26 @@ function Result({ saved, onChange }: { saved: Saved; onChange: () => void }) {
           {result.room.type} room, with {result.room.roommate}
         </p>
       </Card>
+      <Card icon={<Users aria-hidden="true" className="size-4" />} title="Your team">
+        <p className="font-bold">
+          <span aria-hidden="true">{teamById(saved.team).emoji}</span> Team{" "}
+          {teamById(saved.team).name}
+        </p>
+        <p className="text-sm text-muted-foreground">
+          {saved.year === "first" ? "First" : "Second"} year, balanced across the four teams
+        </p>
+      </Card>
       <p className="mt-4 text-xs text-muted-foreground">
-        Test data: coaches and rooms are pretend and only saved in this browser.
+        Test data: coaches, rooms and teams are pretend and only saved in this browser.
       </p>
-      <Button variant="outline" className="mt-4" onClick={onChange}>
-        Change my flights
-      </Button>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Button asChild>
+          <a href="/crew#teams">Go to Crew</a>
+        </Button>
+        <Button variant="outline" onClick={onChange}>
+          Start again
+        </Button>
+      </div>
     </>
   );
 }

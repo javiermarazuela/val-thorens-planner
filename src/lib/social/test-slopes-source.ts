@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { testPeople, useTestPersona } from "@/lib/test-persona";
+import { allTestPeople } from "@/lib/test-guests";
+import { useTestPersona } from "@/lib/test-persona";
 
 import { slopeLevels, slopePlaces, slopeTimes } from "./slopes-content";
 import type { BoardEntry, SlopePlan, SlopesState } from "./slopes-types";
@@ -81,7 +82,7 @@ export function useTestSlopes(day: string): SlopesState {
 
   const entries = useMemo<BoardEntry[]>(() => {
     const others: BoardEntry[] = [];
-    testPeople.forEach((p, i) => {
+    allTestPeople().forEach((p, i) => {
       if (p.email === email || i % 17 === 0) return;
       const plan = fakePlan(p.id, day);
       if (plan) others.push({ ...plan, name: p.name, isMe: false });

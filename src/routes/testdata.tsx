@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
+import { allTestPeople } from "@/lib/test-guests";
 import { testPeople, useTestPersona, type TestLeg, type TestPerson } from "@/lib/test-persona";
 import { site } from "@/lib/trip";
 
@@ -27,6 +28,7 @@ const groupLabel: Record<string, string> = {
   "late-departure": "Leaves late",
   lyon: "Via Lyon",
   paris: "Via Paris",
+  guest: "New member",
 };
 
 function TestData() {
@@ -55,7 +57,7 @@ function Picker({ onPick }: { onPick: (email: string) => void }) {
   const [group, setGroup] = useState("");
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return testPeople.filter(
+    return allTestPeople().filter(
       (p) => (!group || p.group === group) && (!q || p.name.toLowerCase().includes(q)),
     );
   }, [query, group]);
@@ -63,6 +65,12 @@ function Picker({ onPick }: { onPick: (email: string) => void }) {
   return (
     <>
       <p>Pick who you are. This is test data: no real people, no real sign-in.</p>
+      <a
+        href="/demo"
+        className="mt-4 block rounded-md border-2 border-dashed border-border px-4 py-3 font-bold hover:bg-secondary"
+      >
+        Or join as a new member with your Google account
+      </a>
       <div className="mt-4 flex flex-wrap gap-2">
         <input
           type="search"
