@@ -1,4 +1,6 @@
 import { loadKnowledge } from "@/lib/chat/knowledge";
+import { testStandings, testTeamFor } from "@/lib/social/test-teams-source";
+import { teamById } from "@/lib/social/teams-content";
 import { useTestPersona, type TestLeg, type TestCoach, type TestPerson } from "@/lib/test-persona";
 
 import type { ChatEnvironment, ChatIdentity } from "./environment";
@@ -36,6 +38,11 @@ function toProfile(p: TestPerson): ChatProfile {
     },
     arrival: leg(p.arrival, p.coach.arrival, "Sat 9 Jan", "Geneva airport arrivals (test data)"),
     departure: leg(p.departure, p.coach.departure, "Sat 16 Jan", "your residence (test data)"),
+    team: (() => {
+      const id = testTeamFor(p.email);
+      return id === null ? null : { name: teamById(id).name, emoji: teamById(id).emoji };
+    })(),
+    standings: testStandings().map((s) => ({ name: teamById(s.team).name, points: s.points })),
   };
 }
 

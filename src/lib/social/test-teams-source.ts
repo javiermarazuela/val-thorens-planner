@@ -4,7 +4,7 @@ import { testPeople, useTestPersona } from "@/lib/test-persona";
 
 import { allocateTeams } from "./allocate";
 import { shrinkImage } from "./image";
-import type { Photo, PointsEntry, TeamsState } from "./teams-types";
+import type { CrewAccess, Photo, PointsEntry, TeamsState } from "./teams-types";
 
 // Test site only (this file does not exist on the real site's branch). Teams
 // come from running the real allocation over the 200 invented travellers.
@@ -176,4 +176,27 @@ export function useTestTeams(): TeamsState {
   if (person === undefined) return { ...base, status: "loading" };
   if (person === null) return { ...base, status: "signed-out" };
   return { ...base, status: "signed-in" };
+}
+
+/** The light version for the guide: signed in (a person was picked) and their team. */
+export function useTestCrewAccess(): CrewAccess {
+  const { person } = useTestPersona();
+  if (!person) return { signedIn: false, team: null, teamKnown: person !== undefined };
+  return { signedIn: true, team: assignment.get(person.email) ?? null, teamKnown: true };
+}
+
+/** The invented person's team, for Julian. */
+export function testTeamFor(email: string): number | null {
+  return assignment.get(email) ?? null;
+}
+
+/** Every team with its points, best first, from what has been awarded in this browser. */
+export function testStandings(): Array<{ team: number; points: number }> {
+  const { log } = read();
+  return [1, 2, 3, 4]
+    .map((team) => ({
+      team,
+      points: log.filter((l) => l.team === team).reduce((n, l) => n + l.points, 0),
+    }))
+    .sort((a, b) => b.points - a.points || a.team - b.team);
 }

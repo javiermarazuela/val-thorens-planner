@@ -1,6 +1,7 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
+import { teamById } from "@/lib/social/teams-content";
 import { useSession } from "@/lib/use-session";
 
 import { loadKnowledge } from "./knowledge";
@@ -70,13 +71,16 @@ function leg(f: FlightRow | null, s: ShuttleRow | null, which: "arr" | "dep"): L
 
 async function loadLiveProfile(supabase: SupabaseClient, session: Session): Promise<ChatProfile> {
   // Row level security means each of these returns only this person's own row.
-  const [room, shuttle, flights] = await Promise.all([
+  const [room, shuttle, flights, myTeam, scores] = await Promise.all([
     supabase.from("member_rooms").select("residence,room,note").maybeSingle(),
     supabase
       .from("member_shuttles")
       .select("arr_coach,arr_time,arr_pickup,dep_coach,dep_time,dep_pickup")
       .maybeSingle(),
     supabase.from("flights").select("*").maybeSingle(),
+    // Teams may not be set up yet; an error just means no team to talk about.
+    supabase.rpc("my_team"),
+    supabase.rpc("team_scores"),
   ]);
   const r = room.data as RoomRow | null;
   const s = shuttle.data as ShuttleRow | null;
@@ -91,6 +95,16 @@ async function loadLiveProfile(supabase: SupabaseClient, session: Session): Prom
         : null,
     arrival: leg(f, s, "arr"),
     departure: leg(f, s, "dep"),
+    team:
+      !myTeam.error && typeof myTeam.data === "number"
+        ? { name: teamById(myTeam.data).name, emoji: teamById(myTeam.data).emoji }
+        : null,
+    standings: scores.error
+      ? null
+      : ((scores.data as Array<{ team: number; points: number }> | null) ?? []).map((s) => ({
+          name: teamById(s.team).name,
+          points: Number(s.points),
+        })),
   };
 }
 

@@ -82,6 +82,52 @@ function roomReply(profile: ChatProfile | null, ctx: ReplyContext): Reply {
   };
 }
 
+function teamReply(profile: ChatProfile | null, ctx: ReplyContext): Reply {
+  if (!ctx.signedIn) return signInNudge("your team");
+  const team = profile?.team;
+  if (!team) {
+    return {
+      text: ctx.profileLoaded
+        ? `Teams haven't been announced yet, so yours is still to be confirmed. I'll know as soon as they are, or ${WHATSAPP}.`
+        : "Let me check my notes... ask me again in a second.",
+      source: "profile",
+    };
+  }
+  return {
+    text: `${pickOne(["Found you!", "Here you go.", "Got it."])} You're on Team ${team.name} ${team.emoji}. Challenges and the leaderboard are on the Crew page.`,
+    links: [{ label: "Your team", href: "/crew#teams" }],
+    source: "profile",
+  };
+}
+
+function standingsReply(profile: ChatProfile | null, ctx: ReplyContext): Reply {
+  if (!ctx.signedIn) return signInNudge("the leaderboard");
+  const rows = profile?.standings;
+  if (!rows || rows.every((s) => s.points === 0)) {
+    return {
+      text: "Nobody has scored yet, so it's all to play for. The leaderboard is on the Crew page.",
+      links: [{ label: "Leaderboard", href: "/crew#teams" }],
+      source: "profile",
+    };
+  }
+  const lead = rows[0]!;
+  const you = profile?.team && rows.find((s) => s.name === profile.team?.name);
+  const placing =
+    you && you.name === lead.name
+      ? " That's your team, nicely done!"
+      : you
+        ? ` You're on ${you.name} with ${you.points}, so there's time to catch up.`
+        : "";
+  return {
+    text: `${lead.name} lead with ${lead.points} points. ${rows
+      .slice(1)
+      .map((s) => `${s.name} ${s.points}`)
+      .join(", ")}.${placing}`,
+    links: [{ label: "Leaderboard", href: "/crew#teams" }],
+    source: "profile",
+  };
+}
+
 function legLine(leg: LegInfo, kind: "arrival" | "departure"): string {
   const verb = kind === "arrival" ? "in" : "out";
   const when = leg.coachWhen ? `${leg.coachWhen}` : "";
@@ -428,6 +474,18 @@ function answerCore(question: string, brain: ChatBrain, ctx: ReplyContext): Repl
 
   const profile = ctx.profile;
 
+  if (
+    has(q, /\b(my team|which team|what team|team am i)\b/) ||
+    has(q, /\bam i (in|on) (a|which) team\b/)
+  )
+    return teamReply(profile, ctx);
+  if (
+    has(
+      q,
+      /\b(whos winning|who is (winning|ahead|leading)|leaderboard|team (scores?|points|standings)|standings)\b/,
+    )
+  )
+    return standingsReply(profile, ctx);
   if (has(q, /\bmy flights?\b|\bwhen (do|does) my flight\b|\bwhat time (is|does) my flight\b/))
     return flightsReply(profile, ctx);
   if (

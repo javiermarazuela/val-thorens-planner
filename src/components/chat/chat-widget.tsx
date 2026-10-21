@@ -27,6 +27,8 @@ const quick = [
   { label: "What's next?", ask: "What's the next event?" },
   { label: "Where's my room?", ask: "Where is my room?" },
   { label: "My shuttle", ask: "What time is my shuttle?" },
+  { label: "My team", ask: "Which team am I on?" },
+  { label: "Who's winning?", ask: "Who is winning?" },
   { label: "Tonight", ask: "What are the plans for tonight?" },
   { label: "What to pack", ask: "What should I pack?" },
   { label: "Something to do", ask: "What can I do today?" },

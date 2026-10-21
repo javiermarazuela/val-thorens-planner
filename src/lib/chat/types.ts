@@ -36,6 +36,10 @@ export type ChatProfile = {
   room: { residence: string; room: string; type: string | null; roommates: string[] | null } | null;
   arrival: LegInfo | null;
   departure: LegInfo | null;
+  /** The person's team, once the committee has announced teams. */
+  team?: { name: string; emoji: string } | null;
+  /** Every team with its points, best first. */
+  standings?: Array<{ name: string; points: number }> | null;
 };
 
 export type ChatLink = { label: string; href: string };
