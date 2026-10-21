@@ -1,5 +1,7 @@
 import { useRealSocial } from "./real-source";
+import { useRealSlopes } from "./real-slopes-source";
 import { useRealCrewAccess, useRealTeams } from "./real-teams-source";
+import type { SlopesState } from "./slopes-types";
 import type { CrewAccess, TeamsState } from "./teams-types";
 import type { SocialState } from "./types";
 
@@ -46,4 +48,17 @@ export function useTeams(): TeamsState {
 export function useCrewAccess(): CrewAccess {
   const useHook = useTestAccessHook && onTestHost() ? useTestAccessHook : useRealCrewAccess;
   return useHook();
+}
+
+const testSlopeModules = import.meta.glob<{ useTestSlopes: (day: string) => SlopesState }>(
+  "./test-slopes-source.ts",
+  { eager: true },
+);
+
+const useTestSlopesHook = Object.values(testSlopeModules)[0]?.useTestSlopes;
+
+/** Same idea as useSocial, for the slopes tab. */
+export function useSlopes(day: string): SlopesState {
+  const useHook = useTestSlopesHook && onTestHost() ? useTestSlopesHook : useRealSlopes;
+  return useHook(day);
 }
