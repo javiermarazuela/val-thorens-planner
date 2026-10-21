@@ -4,12 +4,16 @@ import { EventIcon } from "@/components/event-icon";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
+import { useCrewAccess } from "@/lib/social/source";
+import { challengeAt } from "@/lib/social/teams-content";
 import { dayDetails, dayDetailsStatus, week, weekSection } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
 
 export function Schedule({ n, tone }: SectionProps) {
   const [today, setToday] = useState<number | null>(null);
   useEffect(() => setToday(tripDayIndex(new Date())), []);
+  const { signedIn, team } = useCrewAccess();
+  const showChallenges = signedIn && team !== null;
 
   return (
     <GuideSection id="schedule" n={n} tone={tone} title={weekSection.title}>
@@ -46,12 +50,22 @@ export function Schedule({ n, tone }: SectionProps) {
                 </p>
                 {events.length > 0 && (
                   <ul className="mt-3 border-t border-border pt-1">
-                    {events.map((e) => (
-                      <li key={e.what} className="flex items-center gap-2.5 py-1.5 text-sm">
-                        <EventIcon icon={e.icon} />
-                        <span>{e.what}</span>
-                      </li>
-                    ))}
+                    {events.map((e, ei) => {
+                      const challenge = showChallenges ? challengeAt(i, ei) : undefined;
+                      return (
+                        <li key={e.what} className="py-1.5 text-sm">
+                          <span className="flex items-center gap-2.5">
+                            <EventIcon icon={e.icon} />
+                            <span>{e.what}</span>
+                          </span>
+                          {challenge && (
+                            <span className="ml-[calc(1.5rem+0.625rem)] mt-1 inline-flex rounded-full bg-mustard/40 px-2.5 py-0.5 text-xs font-bold">
+                              Team challenge: {challenge.title}
+                            </span>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </div>
