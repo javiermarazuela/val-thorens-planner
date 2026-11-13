@@ -34,12 +34,12 @@ export type SlopeDay = { iso: string; label: string };
 
 /** The slope days of the week plan, as yyyy-mm-dd plus a short label. */
 export const slopeDays: SlopeDay[] = week
-  .filter((d) => d.daytime.label === "Slope day")
+  .filter((d) => d.slopeDay)
   .map((d) => {
     const dayOfMonth = Number(d.date.split(" ")[0]);
     return {
       iso: `2027-01-${String(dayOfMonth).padStart(2, "0")}`,
-      label: `${d.day} ${dayOfMonth}`,
+      label: `${d.weekday} ${dayOfMonth}`,
     };
   });
 

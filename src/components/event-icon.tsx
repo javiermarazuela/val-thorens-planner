@@ -1,10 +1,14 @@
 import {
   Beer,
   Disc3,
+  House,
   Luggage,
   Martini,
+  Music,
+  PartyPopper,
   Plane,
   Snowflake,
+  UtensilsCrossed,
   Wine,
   type LucideIcon,
 } from "lucide-react";
@@ -19,6 +23,10 @@ const icons: Record<EventIconKey, LucideIcon> = {
   apres: Martini,
   bar: Beer,
   club: Disc3,
+  food: UtensilsCrossed,
+  music: Music,
+  party: PartyPopper,
+  home: House,
   lastnight: Wine,
 };
 

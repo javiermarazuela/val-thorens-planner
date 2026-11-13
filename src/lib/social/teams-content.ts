@@ -1,4 +1,4 @@
-import { dayDetails } from "@/lib/trip";
+import { week } from "@/lib/trip";
 
 // Team names, colours and challenges. Kept apart from trip.ts for now; the
 // challenge wording and points are preliminary until the committee confirms them.
@@ -68,27 +68,28 @@ export const challenges: Challenge[] = [
   },
   {
     id: "theme-1",
-    title: "Theme night 1 outfit",
-    text: "Dress for the first club night's theme (announced nearer the time).",
+    title: "Wigs outfit",
+    text: "Monday's theme is wigs. Wear one to the club night.",
     points: 20,
   },
   {
     id: "theme-2",
-    title: "Theme night 2 outfit",
-    text: "Dress for the second club night's theme (announced nearer the time).",
+    title: "Retro outfit",
+    text: "Thursday's theme is retro. Wear it to La Folie Douce.",
     points: 20,
   },
 ];
 
 export const challengeById = (id: string) => challenges.find((c) => c.id === id);
 
-// Which challenge belongs to which evening, by the event's name in the week
-// plan. A name used twice (the two club nights) lists one challenge per night,
-// in order.
+// Which challenge belongs to which event, by the event's title in `week`
+// (trip.ts). A title used more than once lists one challenge per time, in order.
+// Rename an event there and its key here must change with it.
 const eventChallengeIds: Record<string, string[]> = {
-  "Bar Crawl": ["creature-hunt"],
-  Après: ["apres-outfit"],
-  "Club Night": ["theme-1", "theme-2"],
+  "AVP bar crawl": ["creature-hunt"],
+  "Big après": ["apres-outfit"],
+  "Club night": ["theme-1"],
+  "La Folie Douce": ["theme-2"],
 };
 
 /** The challenge for the nth time an event name comes up in the week, if any. */
@@ -99,13 +100,13 @@ export function challengeForEvent(what: string, occurrence: number): Challenge |
 
 /** The challenge for the eventIndex-th event on the dayIndex-th day of the week plan. */
 export function challengeAt(dayIndex: number, eventIndex: number): Challenge | undefined {
-  const what = dayDetails[dayIndex]?.events[eventIndex]?.what;
+  const what = week[dayIndex]?.events[eventIndex]?.title;
   if (!what) return undefined;
   let before = 0;
   for (let d = 0; d <= dayIndex; d++) {
-    const events = dayDetails[d]?.events ?? [];
+    const events = week[d]?.events ?? [];
     const upTo = d === dayIndex ? eventIndex : events.length;
-    for (let e = 0; e < upTo; e++) if (events[e]?.what === what) before++;
+    for (let e = 0; e < upTo; e++) if (events[e]?.title === what) before++;
   }
   return challengeForEvent(what, before);
 }
