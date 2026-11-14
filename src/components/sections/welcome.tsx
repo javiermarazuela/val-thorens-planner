@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 
 import heroImage from "@/assets/val-thorens-trip.jpg";
-import { FlightsBanner } from "@/components/flights-banner";
 import { TeamBanner } from "@/components/team-banner";
 import { hero, trip } from "@/lib/trip";
 import { daysToGo } from "@/lib/trip-day";
 
 export function Welcome() {
   const [toGo, setToGo] = useState<number | null>(null);
-  const [flightsStrip, setFlightsStrip] = useState(false); // the "tell us how" strip is showing
   const [teamStrip, setTeamStrip] = useState(false); // the "you're on a team" strip is showing
-  const banner = flightsStrip || teamStrip;
+  const banner = teamStrip;
   useEffect(() => setToGo(daysToGo(new Date())), []);
 
   return (
@@ -46,8 +44,7 @@ export function Welcome() {
             </p>
           )}
         </div>
-        <FlightsBanner onVisible={setFlightsStrip} />
-        <TeamBanner hidden={flightsStrip} onVisible={setTeamStrip} />
+        <TeamBanner hidden={false} onVisible={setTeamStrip} />
       </div>
     </section>
   );

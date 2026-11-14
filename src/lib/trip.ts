@@ -1,6 +1,14 @@
 // "preliminary" is sample data the committee has not confirmed yet. It shows a badge.
 export type GuideStatus = "confirmed" | "partial" | "soon" | "preliminary";
 
+// Switches for the real site. Flip one to true and its pieces come back.
+export const features = {
+  // Crew pages (teams, slopes board, flight mates), the team strip and reveal
+  // card, team challenge chips and the challenge of the day. Off for now; the
+  // test site keeps them on.
+  crew: false,
+};
+
 export const trip = {
   destination: "Val Thorens",
   region: "Les 3 Vallées, France",
@@ -183,7 +191,13 @@ export const stay = {
     "Self-catered apartments in the Plein Sud sector of Val Thorens, right by the slopes and a short walk from the lifts, the bars and each other.",
   imageAlt:
     "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
-  roomsNote: "Housing signups to be released in due course.",
+  // Room assignments. Paste the spreadsheet link into roomsLink when it is ready
+  // and the note gives way to a button.
+  roomsTitle: "Room assignments",
+  roomsNote: "Stay tuned. The link to the room list will go up here.",
+  roomsStatus: "soon" as GuideStatus,
+  roomsLink: "",
+  roomsLinkLabel: "See room assignments",
   // A smaller group is staying at these two. Addresses are from each place's
   // own website; the map pins are at their Google Maps positions.
   othersTitle: "Also staying",
@@ -267,8 +281,8 @@ export const week: WeekDay[] = [
         icon: "welcome",
       },
     ],
-    bus: "Airport coaches leave Geneva at 08:30, 10:30 and 14:15 (to be confirmed)",
-    busStatus: "preliminary",
+    bus: "Airport coaches from Geneva, organised by SkiSync. Times coming soon.",
+    busStatus: "soon",
     challenge: "Learn five names before dinner.",
   },
   {
@@ -404,8 +418,8 @@ export const week: WeekDay[] = [
     title: "Departure day",
     slopeDay: false,
     events: [{ title: "Transfers back", icon: "departures" }],
-    bus: "Coaches to Geneva leave at 05:15, 07:30 and 09:30 (to be confirmed)",
-    busStatus: "preliminary",
+    bus: "Airport coaches to Geneva, organised by SkiSync. Times coming soon.",
+    busStatus: "soon",
     challenge: "Sleep on the coach. Everyone else will.",
   },
 ];
@@ -1199,6 +1213,23 @@ export type KnownFlight = {
 
 export const knownFlights: KnownFlight[] = [];
 
+// The airport coaches as shown in Getting here & away. SkiSync runs them.
+export const coachesInfo = {
+  status: "soon" as GuideStatus,
+  title: "Airport coaches",
+  summary: "Organised by SkiSync",
+  body: "SkiSync is sorting out the coaches between Geneva and Val Thorens. Times and the meeting point are coming soon, so stay tuned.",
+};
+
+// Telling us your flights is optional now that SkiSync handles the coaches.
+// The form lives on the Members page only.
+export const flightsOptional = {
+  text: "Want the committee to know your flights? Totally optional. Add them on the",
+  linkLabel: "Members page",
+};
+
+// Earlier preliminary coach times. Not shown any more; kept for the flights form
+// code, which no longer asks about coaches (see askAboutCoach in flight-form.tsx).
 export const airportCoaches = {
   status: "preliminary" as GuideStatus,
   title: "Airport coaches",

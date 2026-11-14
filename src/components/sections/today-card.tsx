@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 
 import { EventIcon } from "@/components/event-icon";
 import { StatusBadge } from "@/components/status-badge";
-import { useCrewAccess } from "@/lib/social/source";
+import { crewOn, useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
 import { dailyChallengeStatus, mountain, week, weekStatus, dayIcon } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
@@ -17,12 +17,14 @@ const label = "text-xs font-medium uppercase tracking-wider text-muted-foregroun
 export function TodayCard() {
   const [day, setDay] = useState(0);
   const [today, setToday] = useState<number | null>(null);
+  const [games, setGames] = useState(false); // challenge of the day, only when Crew is on
   const crew = useCrewAccess();
 
   useEffect(() => {
     const index = tripDayIndex(new Date());
     setToday(index);
     if (index !== null) setDay(index);
+    setGames(crewOn());
   }, []);
 
   const info = week[day];
@@ -126,13 +128,15 @@ export function TodayCard() {
           )}
         </div>
 
-        <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
-            <StatusBadge status={dailyChallengeStatus} />
+        {games && (
+          <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
+              <StatusBadge status={dailyChallengeStatus} />
+            </div>
+            <p className="mt-2 text-base font-semibold leading-snug">{info.challenge}</p>
           </div>
-          <p className="mt-2 text-base font-semibold leading-snug">{info.challenge}</p>
-        </div>
+        )}
       </div>
     </div>
   );

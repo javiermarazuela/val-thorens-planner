@@ -7,7 +7,7 @@ import { CrewSlopes } from "@/components/crew-slopes";
 import { CrewTeams } from "@/components/crew-teams";
 import { Button } from "@/components/ui/button";
 import { initialSlopeDay, slopesNow } from "@/lib/social/slopes-content";
-import { useSlopes, useSocial, useTeams } from "@/lib/social/source";
+import { crewOn, useSlopes, useSocial, useTeams } from "@/lib/social/source";
 import { site } from "@/lib/trip";
 
 // Members only. The session lives in the browser, so render on the client only;
@@ -25,6 +25,17 @@ type Tab = "teams" | "slopes" | "flights";
 const tabLabels: Record<Tab, string> = { teams: "Teams", slopes: "Slopes", flights: "Flights" };
 
 function Crew() {
+  if (!crewOn()) {
+    return (
+      <Shell>
+        <p>Crew isn’t open yet. Check back nearer the trip.</p>
+      </Shell>
+    );
+  }
+  return <CrewTabs />;
+}
+
+function CrewTabs() {
   const [tab, setTab] = useState<Tab>(() => {
     const hash = window.location.hash.replace("#", "");
     return hash === "flights" || hash === "slopes" ? hash : "teams";
