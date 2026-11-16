@@ -60,6 +60,41 @@ function stopDot(loop: Loop["id"] | "hub", color: string): HTMLDivElement {
   return el;
 }
 
+// A small side-on bus (after the committee's icon), tinted in its loop's colour
+// with a white edge so it shows up on the line it rides. It faces right.
+function busElement(color: string): HTMLDivElement {
+  const el = document.createElement("div");
+  el.style.cssText = "width:30px;height:21px;z-index:4;pointer-events:none;";
+  el.innerHTML = `<svg viewBox="0 0 32 22" width="30" height="21" style="display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(20,35,43,.45));" aria-hidden="true"><rect x="17" y="1" width="7" height="3.5" rx="1" fill="${color}" stroke="#fff" stroke-width="1.2"/><rect x="1.5" y="3" width="29" height="13.5" rx="3.2" fill="${color}" stroke="#fff" stroke-width="1.6"/><path d="M25.2 5.6h3.4a.9.9 0 0 1 .9.9v4.2H26.6z" fill="#fff"/><rect x="4" y="5.6" width="4.6" height="4.6" rx=".9" fill="#fff"/><rect x="10.2" y="5.6" width="4.6" height="4.6" rx=".9" fill="#fff"/><rect x="16.4" y="5.6" width="4.6" height="4.6" rx=".9" fill="#fff"/><circle cx="9" cy="16.6" r="3.1" fill="${color}" stroke="#fff" stroke-width="1.5"/><circle cx="23" cy="16.6" r="3.1" fill="${color}" stroke="#fff" stroke-width="1.5"/><circle cx="9" cy="16.6" r="1" fill="#fff"/><circle cx="23" cy="16.6" r="1" fill="#fff"/></svg>`;
+  return el;
+}
+
+// A line as metres along it, so a bus can be placed at any distance from the
+// start and move at an even pace whatever the spacing of the points.
+function makeTrack(points: Array<[number, number]>) {
+  const pts = points.map(lngLat);
+  const cum = [0];
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1]!;
+    const [x1, y1] = pts[i]!;
+    cum.push(cum[i - 1]! + Math.hypot((x1 - x0) * 78000, (y1 - y0) * 111000));
+  }
+  return { pts, cum, total: cum[cum.length - 1]! };
+}
+
+type Track = ReturnType<typeof makeTrack>;
+
+function pointAt(track: Track, dist: number) {
+  const { pts, cum } = track;
+  let i = 1;
+  while (i < cum.length - 1 && cum[i]! < dist) i++;
+  const span = cum[i]! - cum[i - 1]! || 1;
+  const f = Math.min(1, Math.max(0, (dist - cum[i - 1]!) / span));
+  const [x0, y0] = pts[i - 1]!;
+  const [x1, y1] = pts[i]!;
+  return { lngLat: [x0 + (x1 - x0) * f, y0 + (y1 - y0) * f] as [number, number], east: x1 >= x0 };
+}
+
 export function ShuttleMap() {
   const [active, setActive] = useState<Active>("all");
   const [ready, setReady] = useState(false);
@@ -67,6 +102,8 @@ export function ShuttleMap() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const dotsRef = useRef<Array<{ marker: Marker; loop: string }>>([]);
+  const busesRef = useRef<Array<{ el: HTMLElement; loop: string }>>([]);
+  const stopBusesRef = useRef<(() => void) | null>(null);
 
   // Same lazy start as the town map: MapLibre is heavy and only runs in the
   // browser, so it loads once this box nears the screen.
@@ -297,6 +334,47 @@ export function ShuttleMap() {
             .addTo(map);
         }
 
+        // One bus per loop, driving round its line. They pause while the map is
+        // off screen, and take a slower lap if the person prefers less motion.
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const lapSeconds = reduce ? 90 : 45;
+        const buses = shuttle.loops.map((l, n) => {
+          const track = makeTrack(shuttleRoutes[l.id]);
+          const el = busElement(l.color);
+          const inner = el.firstElementChild as SVGElement;
+          const marker = new ml.Marker({ element: el })
+            .setLngLat(pointAt(track, 0).lngLat)
+            .addTo(map);
+          busesRef.current.push({ el, loop: l.id });
+          return { track, inner, marker, dist: track.total * (0.15 + 0.5 * n) };
+        });
+
+        let onScreen = true;
+        let last = performance.now();
+        let frame = 0;
+        const tick = (now: number) => {
+          const dt = Math.min(0.1, (now - last) / 1000);
+          last = now;
+          if (onScreen) {
+            for (const b of buses) {
+              b.dist = (b.dist + (b.track.total / lapSeconds) * dt) % b.track.total;
+              const p = pointAt(b.track, b.dist);
+              b.marker.setLngLat(p.lngLat);
+              b.inner.style.transform = p.east ? "" : "scaleX(-1)";
+            }
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+        const watch = new IntersectionObserver((entries) => {
+          onScreen = entries.some((e) => e.isIntersecting);
+        });
+        watch.observe(el);
+        stopBusesRef.current = () => {
+          cancelAnimationFrame(frame);
+          watch.disconnect();
+        };
+
         setReady(true);
       });
 
@@ -318,9 +396,12 @@ export function ShuttleMap() {
     return () => {
       cancelled = true;
       observer.disconnect();
+      stopBusesRef.current?.();
+      stopBusesRef.current = null;
       mapRef.current?.remove();
       mapRef.current = null;
       dotsRef.current = [];
+      busesRef.current = [];
     };
   }, []);
 
@@ -343,6 +424,9 @@ export function ShuttleMap() {
     );
     for (const { marker, loop } of dotsRef.current) {
       marker.getElement().style.opacity = loop === "hub" || on(loop) ? "1" : "0.25";
+    }
+    for (const { el, loop } of busesRef.current) {
+      el.style.opacity = on(loop) ? "1" : "0.25";
     }
   }, [active, ready]);
 
