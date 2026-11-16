@@ -5,6 +5,7 @@ import { EventIcon } from "@/components/event-icon";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
+import { ThemeTag } from "@/components/theme-tag";
 import { useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
 import { week, weekSection, weekStatus, dayIcon } from "@/lib/trip";
@@ -46,18 +47,12 @@ export function Schedule({ n, tone }: SectionProps) {
                   </span>
                 </span>
               </div>
+              {day.theme && <ThemeTag theme={day.theme} variant="strip" />}
               <div className="flex flex-1 flex-col p-4 pt-3">
                 <p className="flex items-center gap-2.5 text-base font-semibold">
                   <EventIcon icon={dayIcon(day, i)} />
                   {day.title}
                 </p>
-                {day.theme && (
-                  <p className="mt-2">
-                    <span className="inline-flex items-center rounded-full bg-mustard px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-ink">
-                      Theme: {day.theme}
-                    </span>
-                  </p>
-                )}
                 {day.events.length > 0 && (
                   <ul className="mt-3 divide-y divide-border border-t border-border">
                     {day.events.map((e, ei) => {
@@ -69,23 +64,26 @@ export function Schedule({ n, tone }: SectionProps) {
                               {e.time}
                             </p>
                           )}
-                          <p className="mt-0.5 flex items-start gap-2.5 text-sm font-semibold leading-snug">
+                          {/* The venue sits beside the title and drops below it when the card is narrow. */}
+                          <div className="mt-0.5 flex items-start gap-2.5 text-sm leading-snug">
                             <span className="mt-0.5">
                               <EventIcon icon={e.icon} />
                             </span>
-                            <span>{e.title}</span>
-                          </p>
+                            <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+                              <span className="font-semibold">{e.title}</span>
+                              {e.venue && (
+                                <span className="inline-flex items-baseline gap-1">
+                                  <MapPin
+                                    className="size-3.5 shrink-0 self-center text-muted-foreground"
+                                    aria-hidden="true"
+                                  />
+                                  <span className="sr-only">Where: </span>
+                                  {e.venue}
+                                </span>
+                              )}
+                            </p>
+                          </div>
                           <div className="ml-[calc(1rem+0.625rem)]">
-                            {e.venue && (
-                              <p className="mt-0.5 flex items-center gap-1 text-sm">
-                                <MapPin
-                                  className="size-3.5 shrink-0 text-muted-foreground"
-                                  aria-hidden="true"
-                                />
-                                <span className="sr-only">Where: </span>
-                                {e.venue}
-                              </p>
-                            )}
                             {e.description && (
                               <p className="mt-0.5 text-sm leading-snug text-muted-foreground">
                                 {e.description}
