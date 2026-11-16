@@ -1,6 +1,14 @@
 // "preliminary" is sample data the committee has not confirmed yet. It shows a badge.
 export type GuideStatus = "confirmed" | "partial" | "soon" | "preliminary";
 
+// Switches for the real site. Flip one to true and its pieces come back.
+export const features = {
+  // Crew pages (teams, slopes board, flight mates), the team strip and reveal
+  // card, team challenge chips and the challenge of the day. Off for now; the
+  // test site keeps them on.
+  crew: false,
+};
+
 export const trip = {
   destination: "Val Thorens",
   region: "Les 3 Vallées, France",
@@ -183,7 +191,13 @@ export const stay = {
     "Self-catered apartments in the Plein Sud sector of Val Thorens, right by the slopes and a short walk from the lifts, the bars and each other.",
   imageAlt:
     "Résidence Village Montana’s snow-covered timber chalet buildings, with skiers passing on the piste below",
-  roomsNote: "Housing signups to be released in due course.",
+  // Room assignments. Paste the spreadsheet link into roomsLink when it is ready
+  // and the note gives way to a button.
+  roomsTitle: "Room assignments",
+  roomsNote: "Stay tuned. The link to the room list will go up here.",
+  roomsStatus: "soon" as GuideStatus,
+  roomsLink: "",
+  roomsLinkLabel: "See room assignments",
   // A smaller group is staying at these two. Addresses are from each place's
   // own website; the map pins are at their Google Maps positions.
   othersTitle: "Also staying",
@@ -205,140 +219,214 @@ export const stay = {
 };
 
 export type EventIcon =
-  "arrivals" | "departures" | "snow" | "welcome" | "apres" | "bar" | "club" | "lastnight";
+  | "arrivals"
+  | "departures"
+  | "snow"
+  | "welcome"
+  | "apres"
+  | "bar"
+  | "club"
+  | "food"
+  | "music"
+  | "party"
+  | "home"
+  | "lastnight";
 
-export const week: Array<{
-  day: string;
-  date: string;
+export type WeekEvent = {
+  /** Free text, as you would say it: "6pm – 10pm", "From 3pm", "Evening". */
+  time?: string;
   title: string;
-  status: GuideStatus;
-  daytime: { icon: EventIcon; label: string };
-}> = [
-  {
-    day: "Sat",
-    date: "9 Jan",
-    title: "Arrivals",
-    status: "partial",
-    daytime: { icon: "arrivals", label: "Arrivals" },
-  },
-  {
-    day: "Sun",
-    date: "10 Jan",
-    title: "Slope day",
-    status: "partial",
-    daytime: { icon: "snow", label: "Slope day" },
-  },
-  {
-    day: "Mon",
-    date: "11 Jan",
-    title: "Slope day",
-    status: "soon",
-    daytime: { icon: "snow", label: "Slope day" },
-  },
-  {
-    day: "Tue",
-    date: "12 Jan",
-    title: "Slope day",
-    status: "soon",
-    daytime: { icon: "snow", label: "Slope day" },
-  },
-  {
-    day: "Wed",
-    date: "13 Jan",
-    title: "Slope day",
-    status: "soon",
-    daytime: { icon: "snow", label: "Slope day" },
-  },
-  {
-    day: "Thu",
-    date: "14 Jan",
-    title: "Slope day",
-    status: "soon",
-    daytime: { icon: "snow", label: "Slope day" },
-  },
-  {
-    day: "Fri",
-    date: "15 Jan",
-    title: "Slope day",
-    status: "soon",
-    daytime: { icon: "snow", label: "Slope day" },
-  },
-  {
-    day: "Sat",
-    date: "16 Jan",
-    title: "Departures",
-    status: "partial",
-    daytime: { icon: "departures", label: "Departures" },
-  },
-];
+  venue?: string;
+  /** One short line, optional. */
+  description?: string;
+  icon: EventIcon;
+  /** Leave out once the details are settled; "soon" shows a "Coming soon" badge. */
+  status?: GuideStatus;
+};
 
-// What happens each day, in the same order as `week`. The evening events follow
-// the committee's tracker (calendar, 7 Oct 2026). Venues, times and who each
-// event is for are deliberately not shown; the coach times come from the
-// committee's flights sheet and are marked TBC there.
-export const dayDetailsStatus: GuideStatus = "preliminary";
-export const dayDetails: Array<{
-  events: Array<{ icon: EventIcon; what: string }>;
+export type WeekDay = {
+  weekday: string;
+  date: string;
+  /** "Arrival day", "Slope day"… shown at the top of the day. */
+  title: string;
+  /** Lift-pass days. They also become the days on the Crew slopes board. */
+  slopeDay: boolean;
+  /** Optional dress-up theme, shown as a highlighted label on the day. */
+  theme?: string;
+  events: WeekEvent[];
+  // For the Daily plan card, which stays hidden until the trip starts.
   bus: string;
-  // The coach times are preliminary; the resort shuttle hours come from the resort.
   busStatus: GuideStatus;
   challenge: string;
-}> = [
+};
+
+// The week, one entry per day. This is the one place to edit the timetable:
+// times, venues, themes and status. The Week section, the Daily plan card and
+// the Crew pages all read from here. From the committee's plan of Nov 2026.
+// Board-only events and any prices or minimum spends stay off this list.
+export const weekStatus: GuideStatus = "partial";
+// The "Challenge of the day" lines below are sample text, not the committee's.
+export const dailyChallengeStatus: GuideStatus = "preliminary";
+export const week: WeekDay[] = [
   {
-    events: [{ icon: "welcome", what: "Welcome Drinks" }],
-    bus: "Airport coaches leave Geneva at 08:30, 10:30 and 14:15 (to be confirmed)",
-    busStatus: "preliminary",
+    weekday: "Sat",
+    date: "9 Jan",
+    title: "Arrival day",
+    slopeDay: false,
+    events: [
+      {
+        time: "6pm – 10pm",
+        title: "Welcome drinks",
+        venue: "Le Monde (basement)",
+        icon: "welcome",
+      },
+    ],
+    bus: "Airport coaches from Geneva, organised by SkiSync. Times coming soon.",
+    busStatus: "soon",
     challenge: "Learn five names before dinner.",
   },
   {
-    events: [{ icon: "apres", what: "Après" }],
+    weekday: "Sun",
+    date: "10 Jan",
+    title: "First full day",
+    slopeDay: true,
+    events: [
+      { time: "From 3pm", title: "Big après", venue: "Bar 360", icon: "apres" },
+      {
+        time: "Evening",
+        title: "Dinner on your own",
+        description: "We’ll share restaurant recommendations.",
+        icon: "food",
+      },
+    ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Ride every lift on the Péclet side.",
   },
   {
+    weekday: "Mon",
+    date: "11 Jan",
+    title: "Slope day",
+    slopeDay: true,
+    theme: "Wigs",
     events: [
-      { icon: "bar", what: "Bar Crawl" },
-      { icon: "club", what: "Club Night" },
+      {
+        time: "Afternoon into early evening",
+        title: "AVP bar crawl",
+        venue: "Several bars",
+        description: "In small groups.",
+        icon: "bar",
+      },
+      {
+        time: "9:30pm – 12:30am",
+        title: "Club night",
+        venue: "Klub Summit",
+        description: "The whole club, just for us.",
+        icon: "club",
+      },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Find the best vin chaud in town.",
   },
   {
-    events: [{ icon: "bar", what: "Bar Night" }],
+    weekday: "Tue",
+    date: "12 Jan",
+    title: "Slope day",
+    slopeDay: true,
+    events: [
+      {
+        time: "Evening",
+        title: "Food and drinks",
+        venue: "Favela",
+        description: "Mexican buffet and drinks.",
+        icon: "food",
+      },
+    ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Photo with a ski instructor.",
   },
   {
+    weekday: "Wed",
+    date: "13 Jan",
+    title: "Slope day",
+    slopeDay: true,
+    // Americana / Western is the third theme; its night is not decided yet.
+    // theme: "Western",
     events: [
-      { icon: "apres", what: "Après" },
-      { icon: "club", what: "Club Night" },
+      {
+        time: "Evening",
+        title: "Live music bar night",
+        venue: "Saloon",
+        description: "Wraps up around 9 to 10pm.",
+        icon: "music",
+      },
     ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Ski one run in full costume.",
   },
   {
-    events: [{ icon: "apres", what: "Après" }],
+    weekday: "Thu",
+    date: "14 Jan",
+    title: "Slope day",
+    slopeDay: true,
+    theme: "Retro",
+    events: [
+      {
+        time: "From 2pm",
+        title: "La Folie Douce",
+        venue: "Petite Terrasse",
+        description: "Our own private area. Wristbands, lunch included.",
+        icon: "party",
+      },
+      {
+        time: "Evening",
+        title: "Group get-together",
+        venue: "The residence",
+        description: "Details to come.",
+        icon: "home",
+        status: "soon",
+      },
+    ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Nominate the most improved beginner.",
   },
   {
-    events: [{ icon: "lastnight", what: "Last Night Drinks" }],
+    weekday: "Fri",
+    date: "15 Jan",
+    title: "Slope day",
+    slopeDay: true,
+    events: [
+      {
+        time: "Evening",
+        title: "Suggested bar",
+        description: "Not an organised event. We’ll point you somewhere good.",
+        icon: "lastnight",
+        status: "soon",
+      },
+    ],
     bus: "Free resort shuttle, 08:00 to 20:00 (last winter’s hours)",
     busStatus: "partial",
     challenge: "Pack tonight, not at 4 a.m. (You won’t.)",
   },
   {
-    events: [],
-    bus: "Coaches to Geneva leave at 05:15, 07:30 and 09:30 (to be confirmed)",
-    busStatus: "preliminary",
+    weekday: "Sat",
+    date: "16 Jan",
+    title: "Departure day",
+    slopeDay: false,
+    events: [{ title: "Transfers back", icon: "departures" }],
+    bus: "Airport coaches to Geneva, organised by SkiSync. Times coming soon.",
+    busStatus: "soon",
     challenge: "Sleep on the coach. Everyone else will.",
   },
 ];
+
+/** The icon beside a day's title: snow on slope days, else a plane in and a bag out. */
+export const dayIcon = (day: WeekDay, index: number): EventIcon =>
+  day.slopeDay ? "snow" : index === 0 ? "arrivals" : "departures";
 
 export const mountain = {
   status: "partial" as GuideStatus,
@@ -374,7 +462,7 @@ export const packing: Array<{ group: string; items: string[] }> = [
     items: [
       "Warm layers for walking between bars",
       "Proper boots with grip for icy streets",
-      "Theme night outfits (themes confirmed nearer the time)",
+      "Theme outfits: a wig (Monday) and something retro (Thursday)",
       "Swimwear, in case of a pool or spa",
       "Reusable water bottle",
       "Painkillers, plasters, and whatever you personally need",
@@ -1126,6 +1214,23 @@ export type KnownFlight = {
 
 export const knownFlights: KnownFlight[] = [];
 
+// The airport coaches as shown in Getting here & away. SkiSync runs them.
+export const coachesInfo = {
+  status: "soon" as GuideStatus,
+  title: "Airport coaches",
+  summary: "Organised by SkiSync",
+  body: "SkiSync is sorting out the coaches between Geneva and Val Thorens. Times and the meeting point are coming soon, so stay tuned.",
+};
+
+// Telling us your flights is optional now that SkiSync handles the coaches.
+// The form lives on the Members page only.
+export const flightsOptional = {
+  text: "Want the committee to know your flights? Totally optional. Add them on the",
+  linkLabel: "Members page",
+};
+
+// Earlier preliminary coach times. Not shown any more; kept for the flights form
+// code, which no longer asks about coaches (see askAboutCoach in flight-form.tsx).
 export const airportCoaches = {
   status: "preliminary" as GuideStatus,
   title: "Airport coaches",

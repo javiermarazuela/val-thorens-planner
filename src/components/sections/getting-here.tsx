@@ -1,14 +1,17 @@
 import { Bus, CalendarDays, ChevronDown, Plane, TrainFront } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
-import { FlightForm } from "@/components/flight-form";
-import { FlightsDialog } from "@/components/flights-dialog";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
-import { Button } from "@/components/ui/button";
-import { gettingHere, otherRoutes, type Flight, type OtherRouteIcon } from "@/lib/trip";
-import { useSession } from "@/lib/use-session";
+import {
+  coachesInfo,
+  flightsOptional,
+  gettingHere,
+  otherRoutes,
+  type Flight,
+  type OtherRouteIcon,
+} from "@/lib/trip";
 
 const muted = "text-muted-foreground";
 
@@ -71,64 +74,6 @@ function Leg({ title, date, children }: { title: string; date: string; children:
         </p>
       </div>
       {children}
-    </div>
-  );
-}
-
-// Opens in place. Only mounted once opened, so the session check (browser
-// only) never runs during server rendering.
-function FlightsPanel({ onClose }: { onClose: () => void }) {
-  const { supabase, session, authError, signIn } = useSession();
-
-  if (!supabase)
-    return <p className={`text-sm ${muted}`}>Flight details aren't switched on yet.</p>;
-  if (session === undefined) return <p className={`text-sm ${muted}`}>Loading…</p>;
-  if (!session) {
-    return (
-      <div>
-        <p className="text-sm">
-          Sign in with your Columbia Google account to add your flights. We only use it to know who
-          is who.
-        </p>
-        {authError && (
-          <p role="alert" className="mt-2 text-sm font-semibold text-destructive">
-            {authError}
-          </p>
-        )}
-        <Button className="mt-4" onClick={signIn}>
-          Sign in with Google
-        </Button>
-      </div>
-    );
-  }
-  return <FlightForm supabase={supabase} session={session} onClose={onClose} />;
-}
-
-function FlightsButton() {
-  const [open, setOpen] = useState(false);
-
-  // The "My flights" button in the header and the banner on the welcome photo
-  // open the pop-up from elsewhere on the page.
-  useEffect(() => {
-    const openIfAsked = () => {
-      if (window.location.hash === "#flights") setOpen(true);
-    };
-    const openNow = () => setOpen(true);
-    openIfAsked();
-    window.addEventListener("hashchange", openIfAsked);
-    window.addEventListener("open-flights", openNow);
-    return () => {
-      window.removeEventListener("hashchange", openIfAsked);
-      window.removeEventListener("open-flights", openNow);
-    };
-  }, []);
-
-  return (
-    <div id="flights" className="mt-8 flex scroll-mt-[calc(var(--header-h)+1rem)] justify-center">
-      <Button onClick={() => setOpen(true)}>Tell us how you're getting here</Button>
-      <FlightsDialog open={open} onClose={() => setOpen(false)} title="How are you getting here?">
-        <FlightsPanel onClose={() => setOpen(false)} />
-      </FlightsDialog>
     </div>
   );
 }
@@ -240,7 +185,26 @@ export function GettingHere({ n, tone }: SectionProps) {
         </Expander>
       </div>
 
-      <FlightsButton />
+      <div className="mt-4">
+        <Expander
+          title={coachesInfo.title}
+          summary={coachesInfo.summary}
+          badge={<StatusBadge status={coachesInfo.status} />}
+        >
+          <p className={`text-sm ${muted}`}>{coachesInfo.body}</p>
+        </Expander>
+      </div>
+
+      <p className={`mt-6 text-sm ${muted}`}>
+        {flightsOptional.text}{" "}
+        <a
+          href="/members"
+          className="font-medium text-primary underline underline-offset-4 hover:no-underline"
+        >
+          {flightsOptional.linkLabel}
+        </a>
+        .
+      </p>
     </GuideSection>
   );
 }

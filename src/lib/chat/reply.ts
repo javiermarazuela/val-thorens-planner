@@ -1,4 +1,4 @@
-import { activities, airportCoaches, dayDetails, mapPoints, packing, week } from "@/lib/trip";
+import { activities, airportCoaches, mapPoints, packing, week } from "@/lib/trip";
 import { daysToGo, tripDayIndex } from "@/lib/trip-day";
 
 import { buildIndex, normalise, search, type Index } from "./search";
@@ -213,7 +213,7 @@ function flightsReply(profile: ChatProfile | null, ctx: ReplyContext): Reply {
 // ---------- what is on ------------------------------------------------------
 
 function eventsOn(day: number): string[] {
-  return dayDetails[day]?.events.map((e) => e.what) ?? [];
+  return week[day]?.events.map((e) => e.title) ?? [];
 }
 
 const tbcTimes = "Times and venues are still to be confirmed.";
@@ -247,8 +247,8 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
     const nd = week[next]!;
     return {
       text: ev.length
-        ? `Tomorrow (${nd.day} ${nd.date}) is ${nd.title.toLowerCase()}, with ${list(ev)} in the evening. ${tbcTimes}`
-        : `Tomorrow (${nd.day} ${nd.date}) is ${nd.title.toLowerCase()}, and nothing is planned in the evening.`,
+        ? `Tomorrow (${nd.weekday} ${nd.date}) is ${nd.title.toLowerCase()}, with ${list(ev)} in the evening. ${tbcTimes}`
+        : `Tomorrow (${nd.weekday} ${nd.date}) is ${nd.title.toLowerCase()}, and nothing is planned in the evening.`,
       links,
       source: "schedule",
     };
@@ -258,8 +258,8 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
   if (wantsTonight || (has(q, /\b(next|whats next)\b/) === false && hour >= 17 && ev.length)) {
     return {
       text: ev.length
-        ? `Tonight (${day.day} ${day.date}): ${list(ev)}. ${tbcTimes}`
-        : `Nothing planned tonight (${day.day} ${day.date}). A good night for a proper dinner.`,
+        ? `Tonight (${day.weekday} ${day.date}): ${list(ev)}. ${tbcTimes}`
+        : `Nothing planned tonight (${day.weekday} ${day.date}). A good night for a proper dinner.`,
       links: [...links, { label: "Daily plan", href: "/#daily-plan" }],
       source: "schedule",
     };
@@ -269,7 +269,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
   // otherwise the next day that has some.
   if (ev.length && hour < 22) {
     return {
-      text: `Next up is ${list(ev)} this evening (${day.day} ${day.date}). ${tbcTimes}`,
+      text: `Next up is ${list(ev)} this evening (${day.weekday} ${day.date}). ${tbcTimes}`,
       links,
       source: "schedule",
     };
@@ -279,7 +279,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
     if (more.length) {
       const nd = week[d]!;
       return {
-        text: `Next up is ${list(more)} on ${nd.day} ${nd.date}. ${tbcTimes}`,
+        text: `Next up is ${list(more)} on ${nd.weekday} ${nd.date}. ${tbcTimes}`,
         links,
         source: "schedule",
       };

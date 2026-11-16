@@ -1,3 +1,5 @@
+import { features } from "@/lib/trip";
+
 import { useRealSocial } from "./real-source";
 import { useRealSlopes } from "./real-slopes-source";
 import { useRealCrewAccess, useRealTeams } from "./real-teams-source";
@@ -44,9 +46,24 @@ export function useTeams(): TeamsState {
   return useHook();
 }
 
+/**
+ * Whether Crew (teams, slopes, flight mates) is open. Off on the real site
+ * while `features.crew` is false; the test site keeps it on.
+ */
+export function crewOn(): boolean {
+  return features.crew || (useTestAccessHook !== undefined && onTestHost());
+}
+
+const crewOff: CrewAccess = { signedIn: false, team: null, teamKnown: true };
+const useCrewOff = (): CrewAccess => crewOff;
+
 /** Who is signed in and which team they are on, for the guide pages. */
 export function useCrewAccess(): CrewAccess {
-  const useHook = useTestAccessHook && onTestHost() ? useTestAccessHook : useRealCrewAccess;
+  const useHook = !crewOn()
+    ? useCrewOff
+    : useTestAccessHook && onTestHost()
+      ? useTestAccessHook
+      : useRealCrewAccess;
   return useHook();
 }
 

@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 
-import { activities, dayDetails, mapPoints, week } from "@/lib/trip";
+import { activities, mapPoints, week } from "@/lib/trip";
 
 import { mergeKnowledge } from "./builtin";
 import type { KbRow } from "./types";
@@ -106,9 +106,9 @@ Reply with a single JSON object and nothing else:
 function tripText(): string {
   const days = week
     .map((d, i) => {
-      const ev = dayDetails[i]?.events.map((e) => e.what) ?? [];
-      const challenge = dayDetails[i]?.challenge;
-      return `${d.day} ${d.date}: ${d.title}${ev.length ? `; evening: ${ev.join(", ")}` : "; no evening event"}${challenge ? `; challenge of the day: ${challenge}` : ""}`;
+      const ev = d.events.map((e) => (e.time ? `${e.time} ${e.title}` : e.title));
+      const venues = d.events.filter((e) => e.venue).map((e) => `${e.title} at ${e.venue}`);
+      return `${d.weekday} ${d.date}: ${d.title}${d.theme ? ` (theme: ${d.theme})` : ""}${ev.length ? `; on: ${ev.join(", ")}` : "; no event"}${venues.length ? `; venues: ${venues.join(", ")}` : ""}; challenge of the day (preliminary): ${d.challenge}`;
     })
     .join("\n");
   const kinds = ["restaurant", "apres", "bar", "club", "indoors"] as const;

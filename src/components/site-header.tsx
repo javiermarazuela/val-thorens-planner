@@ -27,7 +27,7 @@ export function SiteHeader() {
             </span>
           </span>
         </a>
-        <HeaderActions onGuide={false} />
+        <HeaderActions />
       </div>
     </header>
   );
