@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 
 import { EventIcon } from "@/components/event-icon";
 import { StatusBadge } from "@/components/status-badge";
+import { ThemeTag } from "@/components/theme-tag";
 import { crewOn, useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
 import { dailyChallengeStatus, mountain, week, weekStatus, dayIcon } from "@/lib/trip";
@@ -54,16 +55,16 @@ export function TodayCard() {
       </div>
 
       <div className="mt-4">
+        {info.theme && (
+          <div className="mb-2">
+            <ThemeTag theme={info.theme} variant="pill" />
+          </div>
+        )}
         <p className="text-xs font-medium uppercase tracking-wider text-primary">
           {today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.weekday}{" "}
           {info.date}
         </p>
         <h2 className="mt-1 text-lg font-semibold leading-tight sm:text-xl">{info.title}</h2>
-        {info.theme && (
-          <span className="mt-2 inline-flex items-center rounded-full bg-mustard px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-ink">
-            Theme: {info.theme}
-          </span>
-        )}
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
