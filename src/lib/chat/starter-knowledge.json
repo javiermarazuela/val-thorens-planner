@@ -69,9 +69,9 @@
       "how do I get to the resort",
       "when is my coach"
     ],
-    "answer": "",
+    "answer": "SkiSync is sorting out the coaches between Geneva and Val Thorens. Times and the meeting point are coming soon, so stay tuned.",
     "visibility": "everyone",
-    "status": "tbc",
+    "status": "confirmed",
     "link": "/#getting-here",
     "sort": 5
   },
@@ -316,7 +316,7 @@
     "area": "Money",
     "question": "Do I need to book my own flight?",
     "phrasings": ["flights included", "who books flights", "fly to geneva"],
-    "answer": "Yes, flights aren't part of the package, you book your own. Then tell us how you're getting here with the flights button so we can sort your coach.",
+    "answer": "Yes, flights aren't part of the package, you book your own. SkiSync sorts out the airport coaches, so you don't need to send us your flights.",
     "visibility": "everyone",
     "status": "confirmed",
     "link": "/#getting-here",
@@ -580,10 +580,10 @@
     "area": "The site",
     "question": "How do I tell you my flight details?",
     "phrasings": ["enter my flight", "flight form", "submit my arrival", "edit my flight"],
-    "answer": "Use the Tell us how you're getting here button in Getting here & away. You can come back and edit it any time.",
+    "answer": "It's optional, since SkiSync handles the coaches. If you'd like the committee to know, add them on the Members page. You can edit them any time.",
     "visibility": "everyone",
     "status": "confirmed",
-    "link": "/#getting-here",
+    "link": "/members",
     "sort": 49
   }
 ]

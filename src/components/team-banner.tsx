@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { useCrewAccess } from "@/lib/social/source";
 import { teamById } from "@/lib/social/teams-content";
 
-// Along the bottom of the welcome photo for someone on a team. The flights strip
-// takes the spot first, so this only shows once that one is gone.
+// Along the bottom of the welcome photo for someone on a team, when Crew is on.
 export function TeamBanner({
   hidden,
   onVisible,

@@ -234,7 +234,7 @@ export function GuideHeader({
             </>
           )}
         </p>
-        <HeaderActions onGuide />
+        <HeaderActions />
       </div>
       <div
         ref={chips}

@@ -3,9 +3,9 @@ import { ExternalLink } from "lucide-react";
 
 import { EventIcon } from "@/components/event-icon";
 import { StatusBadge } from "@/components/status-badge";
-import { useCrewAccess } from "@/lib/social/source";
+import { crewOn, useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
-import { dayDetails, dayDetailsStatus, mountain, week } from "@/lib/trip";
+import { dailyChallengeStatus, mountain, week, weekStatus, dayIcon } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
 import { appNow } from "@/lib/now";
 
@@ -18,17 +18,18 @@ const label = "text-xs font-medium uppercase tracking-wider text-muted-foregroun
 export function TodayCard() {
   const [day, setDay] = useState(0);
   const [today, setToday] = useState<number | null>(null);
+  const [games, setGames] = useState(false); // challenge of the day, only when Crew is on
   const crew = useCrewAccess();
 
   useEffect(() => {
     const index = tripDayIndex(appNow());
     setToday(index);
     if (index !== null) setDay(index);
+    setGames(crewOn());
   }, []);
 
   const info = week[day];
-  const more = dayDetails[day];
-  if (!info || !more) return null;
+  if (!info) return null;
 
   return (
     <div className="rounded-3xl border-[1.5px] border-border bg-card p-5 shadow-[0_12px_40px_-20px_oklch(0.27_0.06_258/0.45)] sm:p-7">
@@ -46,7 +47,7 @@ export function TodayCard() {
             onClick={() => setDay(i)}
             className={`flex h-14 w-12 shrink-0 flex-col items-center justify-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${i === day ? "bg-ink text-paper" : "bg-mint text-ink"}`}
           >
-            <span className="text-[0.7rem] font-semibold uppercase">{d.day}</span>
+            <span className="text-[0.7rem] font-semibold uppercase">{d.weekday}</span>
             <span className="font-display text-lg leading-none">{d.date.split(" ")[0]}</span>
           </button>
         ))}
@@ -54,32 +55,43 @@ export function TodayCard() {
 
       <div className="mt-4">
         <p className="text-xs font-medium uppercase tracking-wider text-primary">
-          {today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.day} {info.date}
+          {today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.weekday}{" "}
+          {info.date}
         </p>
         <h2 className="mt-1 text-lg font-semibold leading-tight sm:text-xl">{info.title}</h2>
+        {info.theme && (
+          <span className="mt-2 inline-flex items-center rounded-full bg-mustard px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-ink">
+            Theme: {info.theme}
+          </span>
+        )}
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-2xl bg-mint p-4 sm:row-span-2">
           <div className="flex items-center justify-between gap-2">
             <p className={label}>Events</p>
-            <StatusBadge status={dayDetailsStatus} />
+            <StatusBadge status={weekStatus} />
           </div>
           <ul className="mt-2">
             <li className="flex items-center gap-3 border-b border-border py-2.5 text-sm sm:text-base">
-              <EventIcon icon={info.daytime.icon} />
-              <span>{info.daytime.label}</span>
+              <EventIcon icon={dayIcon(info, day)} />
+              <span>{info.slopeDay ? "Slope day" : info.title}</span>
             </li>
-            {more.events.map((e, ei) => {
+            {info.events.map((e, ei) => {
               const challenge =
                 crew.signedIn && crew.team !== null ? challengeAt(day, ei) : undefined;
               return (
                 <li
-                  key={e.what}
+                  key={ei}
                   className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border py-2.5 text-sm last:border-b-0 sm:text-base"
                 >
                   <EventIcon icon={e.icon} />
-                  <span>{e.what}</span>
+                  <span>
+                    {e.time && <span className="text-muted-foreground">{e.time} · </span>}
+                    {e.title}
+                    {e.venue && <span className="text-muted-foreground"> · {e.venue}</span>}
+                  </span>
+                  {e.status && <StatusBadge status={e.status} />}
                   {challenge && (
                     <span className="rounded-full bg-mustard/40 px-2.5 py-0.5 text-xs font-bold">
                       Team challenge: {challenge.title}
@@ -94,9 +106,9 @@ export function TodayCard() {
         <div className="rounded-2xl bg-mint p-4">
           <div className="flex items-center justify-between gap-2">
             <p className={label}>Next bus</p>
-            <StatusBadge status={more.busStatus} />
+            <StatusBadge status={info.busStatus} />
           </div>
-          <p className="mt-2 text-base font-semibold leading-snug">{more.bus}</p>
+          <p className="mt-2 text-base font-semibold leading-snug">{info.bus}</p>
         </div>
 
         <div className="rounded-2xl bg-mint p-4">
@@ -117,13 +129,15 @@ export function TodayCard() {
           )}
         </div>
 
-        <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
-            <StatusBadge status={dayDetailsStatus} />
+        {games && (
+          <div className="rounded-2xl bg-mustard/30 p-4 text-ink">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-xs font-medium uppercase tracking-wider">Challenge of the day</p>
+              <StatusBadge status={dailyChallengeStatus} />
+            </div>
+            <p className="mt-2 text-base font-semibold leading-snug">{info.challenge}</p>
           </div>
-          <p className="mt-2 text-base font-semibold leading-snug">{more.challenge}</p>
-        </div>
+        )}
       </div>
     </div>
   );

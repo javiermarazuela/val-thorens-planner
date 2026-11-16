@@ -15,6 +15,10 @@ import {
 } from "@/lib/flight-suggestions";
 import { lookupFlight, type FlightLookupResult } from "@/lib/flight-lookup.functions";
 import { airportCoaches } from "@/lib/trip";
+
+// SkiSync runs the airport coaches, so the form no longer asks about them or
+// suggests one. Set to true to bring the question back.
+const askAboutCoach = false;
 import { cn } from "@/lib/utils";
 
 type Direction = "arrival" | "departure";
@@ -385,7 +389,7 @@ function Summary({
         )}
         <p className="text-sm font-semibold">{body}</p>
       </div>
-      {leg.mode !== "other" && leg.shuttle && (
+      {askAboutCoach && leg.mode !== "other" && leg.shuttle && (
         <p className="mt-1 text-sm text-muted-foreground">{shuttleText[leg.shuttle]}</p>
       )}
       <Button className="mt-3" size="sm" variant="outline" onClick={onEdit}>
@@ -803,7 +807,7 @@ function LegEditor({
         </div>
       )}
 
-      {flying && leg.confirmed && (
+      {askAboutCoach && flying && leg.confirmed && (
         <label className="grid gap-1 text-sm font-semibold">
           {t.shuttleLabel}
           <select
@@ -819,7 +823,7 @@ function LegEditor({
         </label>
       )}
 
-      {flying && leg.confirmed && coach && leg.shuttle !== "no" && (
+      {askAboutCoach && flying && leg.confirmed && coach && leg.shuttle !== "no" && (
         <p className="text-sm text-muted-foreground">
           {direction === "arrival"
             ? `The ${coach} coach from Geneva looks like your best fit.`

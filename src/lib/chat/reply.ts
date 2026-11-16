@@ -1,4 +1,4 @@
-import { activities, airportCoaches, dayDetails, mapPoints, packing, week } from "@/lib/trip";
+import { activities, coachesInfo, mapPoints, packing, week } from "@/lib/trip";
 import { daysToGo, tripDayIndex } from "@/lib/trip-day";
 
 import { buildIndex, normalise, search, type Index } from "./search";
@@ -101,21 +101,15 @@ function legLine(leg: LegInfo, kind: "arrival" | "departure"): string {
 }
 
 function coachReply(profile: ChatProfile | null, ctx: ReplyContext, q: string): Reply {
-  const general = `Airport coaches leave Geneva at ${list(airportCoaches.out.times)}, and go back at ${list(airportCoaches.home.coaches.map((c) => c.time))}. All to be confirmed.`;
-  if (!ctx.signedIn) {
-    return {
-      text: `${general} Sign in and I'll tell you which one is yours.`,
-      signIn: true,
-      source: "login",
-    };
-  }
   const arrival = profile?.arrival;
   const departure = profile?.departure;
-  if (!arrival && !departure) {
+  // SkiSync runs the coaches. Until a coach is assigned to someone, everyone
+  // gets the same answer, signed in or not.
+  if (!ctx.signedIn || (!arrival?.coachName && !departure?.coachName)) {
     return {
-      text: `${noData("your coach", ctx).text} The flights button in Getting here & away is how you tell us when you land.`,
+      text: coachesInfo.body,
       links: [{ label: "Getting here & away", href: "/#getting-here" }],
-      source: "profile",
+      source: "schedule",
     };
   }
   const wantsOut = has(q, /\b(back|leave|leaving|home|depart|departure|return|going home)\b/);
@@ -141,7 +135,7 @@ function flightsReply(profile: ChatProfile | null, ctx: ReplyContext): Reply {
   const { arrival, departure } = profile ?? { arrival: null, departure: null };
   if (!arrival && !departure) {
     return {
-      text: `I don't have your flights yet. Use the "Tell us how you're getting here" button and I'll know.`,
+      text: `I don't have your flights, and that's fine: they're optional, since SkiSync handles the coaches. If you'd like the committee to know, add them on the Members page.`,
       links: [{ label: "Getting here & away", href: "/#getting-here" }],
       source: "profile",
     };
@@ -164,11 +158,17 @@ function flightsReply(profile: ChatProfile | null, ctx: ReplyContext): Reply {
 
 // ---------- what is on ------------------------------------------------------
 
+// "Club night at Klub Summit, 9:30pm – 12:30am"
 function eventsOn(day: number): string[] {
-  return dayDetails[day]?.events.map((e) => e.what) ?? [];
+  return (
+    week[day]?.events.map(
+      (e) =>
+        `${e.title}${e.venue ? ` at ${e.venue}` : ""}${e.time ? `, ${e.time.toLowerCase()}` : ""}`,
+    ) ?? []
+  );
 }
 
-const tbcTimes = "Times and venues are still to be confirmed.";
+const fullWeek = "The whole week is in The week.";
 
 function scheduleReply(q: string, ctx: ReplyContext): Reply {
   const links: ChatLink[] = [{ label: "The week", href: "/#schedule" }];
@@ -177,7 +177,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
 
   if (idx === null && toGo !== null) {
     return {
-      text: `The trip starts on Saturday 9 January, ${toGo} day${toGo === 1 ? "" : "s"} to go. First up is arrivals, then Welcome Drinks. ${tbcTimes}`,
+      text: `The trip starts on Saturday 9 January, ${toGo} day${toGo === 1 ? "" : "s"} to go. First up: ${list(eventsOn(0))}. ${fullWeek}`,
       links,
       source: "schedule",
     };
@@ -199,8 +199,8 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
     const nd = week[next]!;
     return {
       text: ev.length
-        ? `Tomorrow (${nd.day} ${nd.date}) is ${nd.title.toLowerCase()}, with ${list(ev)} in the evening. ${tbcTimes}`
-        : `Tomorrow (${nd.day} ${nd.date}) is ${nd.title.toLowerCase()}, and nothing is planned in the evening.`,
+        ? `Tomorrow (${nd.weekday} ${nd.date}) is ${nd.title.toLowerCase()}${nd.theme ? `, theme ${nd.theme}` : ""}: ${list(ev)}.`
+        : `Tomorrow (${nd.weekday} ${nd.date}) is ${nd.title.toLowerCase()}, and nothing is planned.`,
       links,
       source: "schedule",
     };
@@ -210,8 +210,8 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
   if (wantsTonight || (has(q, /\b(next|whats next)\b/) === false && hour >= 17 && ev.length)) {
     return {
       text: ev.length
-        ? `Tonight (${day.day} ${day.date}): ${list(ev)}. ${tbcTimes}`
-        : `Nothing planned tonight (${day.day} ${day.date}). A good night for a proper dinner.`,
+        ? `Today (${day.weekday} ${day.date}): ${list(ev)}.`
+        : `Nothing planned tonight (${day.weekday} ${day.date}). A good night for a proper dinner.`,
       links: [...links, { label: "Daily plan", href: "/#daily-plan" }],
       source: "schedule",
     };
@@ -221,7 +221,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
   // otherwise the next day that has some.
   if (ev.length && hour < 22) {
     return {
-      text: `Next up is ${list(ev)} this evening (${day.day} ${day.date}). ${tbcTimes}`,
+      text: `Today (${day.weekday} ${day.date}): ${list(ev)}.`,
       links,
       source: "schedule",
     };
@@ -231,7 +231,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
     if (more.length) {
       const nd = week[d]!;
       return {
-        text: `Next up is ${list(more)} on ${nd.day} ${nd.date}. ${tbcTimes}`,
+        text: `Next up, on ${nd.weekday} ${nd.date}: ${list(more)}.`,
         links,
         source: "schedule",
       };

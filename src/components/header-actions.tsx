@@ -1,27 +1,17 @@
-import { Plane, Users } from "lucide-react";
+import { Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useCrewAccess } from "@/lib/social/source";
 
-// Tells the flights card (in Getting here & away) to open, even when the hash is
-// already #flights and so will not change.
-const openFlights = () => window.dispatchEvent(new Event("open-flights"));
-
 /**
  * The buttons on the right of every header, so the bar looks the same on the
- * guide and on every other page: My flights, Crew (signed-in members only) and
- * Members. Off the guide, My flights goes to the guide's flights pop-up.
+ * guide and on every other page: Crew (signed-in members, when Crew is on) and
+ * Members. Flights now live on the Members page only.
  */
-export function HeaderActions({ onGuide }: { onGuide: boolean }) {
+export function HeaderActions() {
   const crew = useCrewAccess();
   return (
     <div className="flex items-center gap-2">
-      <Button asChild size="sm" className="rounded-md">
-        <a href={onGuide ? "#flights" : "/#flights"} onClick={onGuide ? openFlights : undefined}>
-          <Plane aria-hidden="true" className="size-4" />
-          My flights
-        </a>
-      </Button>
       {crew.signedIn && (
         <Button asChild variant="outline" size="sm" className="rounded-md">
           <a href="/crew#teams" aria-label="Crew">

@@ -5,6 +5,8 @@ import oxalysImage from "@/assets/residence-l-oxalys.jpg";
 import stayImage from "@/assets/residence-village-montana.jpg";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
+import { StatusBadge } from "@/components/status-badge";
+import { Button } from "@/components/ui/button";
 import { googleMapsUrl, stay } from "@/lib/trip";
 
 const otherImages: Record<string, string> = {
@@ -37,9 +39,21 @@ export function Stay({ n, tone }: SectionProps) {
             <MapPin className="size-4" aria-hidden="true" />
             {stay.directionsLabel}
           </a>
-          <p className="mt-2 border-l-4 border-accent pl-3 text-sm leading-relaxed">
-            {stay.roomsNote}
-          </p>
+          <div className="mt-3 border-l-4 border-accent pl-3">
+            <p className="flex flex-wrap items-center gap-2 text-sm font-semibold">
+              {stay.roomsTitle}
+              {!stay.roomsLink && <StatusBadge status={stay.roomsStatus} />}
+            </p>
+            {stay.roomsLink ? (
+              <Button asChild size="sm" className="mt-2 rounded-md">
+                <a href={stay.roomsLink} target="_blank" rel="noreferrer">
+                  {stay.roomsLinkLabel}
+                </a>
+              </Button>
+            ) : (
+              <p className="mt-1 text-sm leading-relaxed">{stay.roomsNote}</p>
+            )}
+          </div>
         </div>
       </div>
       <div className="mt-4">

@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { FlightForm } from "@/components/flight-form";
 import { Button } from "@/components/ui/button";
+import { crewOn } from "@/lib/social/source";
 import { useSession } from "@/lib/use-session";
 import { site } from "@/lib/trip";
 
@@ -89,14 +90,20 @@ function Members() {
         ))}
         {links.length === 0 && !error && <li className="text-muted-foreground">Coming soon.</li>}
       </ul>
-      <a
-        href="/crew"
-        className="mt-5 block rounded-md border border-border px-4 py-3 font-bold hover:bg-secondary"
-      >
-        Crew: who is on your flight and coach
-      </a>
+      {crewOn() && (
+        <a
+          href="/crew"
+          className="mt-5 block rounded-md border border-border px-4 py-3 font-bold hover:bg-secondary"
+        >
+          Crew: who is on your flight and coach
+        </a>
+      )}
       <div className="mt-8 border-t border-border pt-8">
-        <h2 className="mb-4 font-display text-2xl uppercase">Your flights</h2>
+        <h2 className="font-display text-2xl uppercase">Your flights</h2>
+        <p className="mb-4 mt-1 text-sm text-muted-foreground">
+          Optional. SkiSync handles the airport coaches, so you don’t need to send us anything. Add
+          your flights here only if you’d like the committee to know.
+        </p>
         <FlightForm supabase={supabase} session={session} />
       </div>
       <Button variant="outline" className="mt-8" onClick={() => supabase.auth.signOut()}>
