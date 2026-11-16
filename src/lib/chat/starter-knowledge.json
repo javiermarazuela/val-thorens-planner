@@ -1,0 +1,589 @@
+[
+  {
+    "id": "resort-shuttle",
+    "area": "Getting around",
+    "question": "How does the free resort shuttle work?",
+    "phrasings": [
+      "how do I get around resort",
+      "is there a bus",
+      "bus around val thorens",
+      "shuttle times"
+    ],
+    "answer": "There's a free shuttle running a figure of eight through the bus station. A bus every 20 min (every 10 min Sun to Fri in peak). Sun to Fri 08:00-20:00, Sat 06:15-22:00. That's last season's timetable and the new one isn't out yet, so it's to be confirmed.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#around",
+    "sort": 1
+  },
+  {
+    "id": "stop-village-montana",
+    "area": "Getting around",
+    "question": "Which shuttle stop is closest to my accommodation?",
+    "phrasings": [
+      "where do I get off the bus",
+      "nearest bus stop",
+      "which stop for village montana",
+      "stop for oxalys",
+      "stop for kashmir"
+    ],
+    "answer": "Village Montana: get off at Montana, about a 33 m walk. L'Oxalys and Hameau du Kashmir: get off at Cairn (about 160 m and 140 m).",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#around",
+    "sort": 2
+  },
+  {
+    "id": "late-night-transport",
+    "area": "Getting around",
+    "question": "How do I get home late at night?",
+    "phrasings": [
+      "last bus",
+      "taxi at night",
+      "is there a bus after 8",
+      "getting back after dinner"
+    ],
+    "answer": "The last bus is around 20:00 (22:00 on Saturday). After that it's a walk or a taxi, and book taxis ahead.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 3
+  },
+  {
+    "id": "valley-bus",
+    "area": "Getting around",
+    "question": "How do I get to Les Menuires or Saint-Martin?",
+    "phrasings": ["bus to les menuires", "valley bus", "go to another village"],
+    "answer": "There's a separate free valley bus from the bus station, about hourly, not on Saturdays. About 20 min to Les Menuires.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#around",
+    "sort": 4
+  },
+  {
+    "id": "airport-transfer-general",
+    "area": "Getting around",
+    "question": "How does the airport coach work?",
+    "phrasings": [
+      "airport transfer",
+      "coach from geneva",
+      "how do I get to the resort",
+      "when is my coach"
+    ],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#getting-here",
+    "sort": 5
+  },
+  {
+    "id": "shuttle-mine",
+    "area": "Getting around",
+    "question": "What time is my shuttle?",
+    "phrasings": ["my coach", "which coach am I on", "my transfer", "when do I leave"],
+    "answer": "Sign in and ask me again, I'll look up your coach for you.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/members",
+    "sort": 6
+  },
+  {
+    "id": "coach-missed",
+    "area": "Getting around",
+    "question": "I missed my coach or my flight is delayed, what do I do?",
+    "phrasings": ["flight delayed", "missed my transfer", "late arrival", "stuck at the airport"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 7
+  },
+  {
+    "id": "check-in-time",
+    "area": "Where we stay",
+    "question": "When can I check in and where do I pick up my keys?",
+    "phrasings": [
+      "what time is check in",
+      "check in time",
+      "when can I check in",
+      "key pickup",
+      "arrival time at accommodation",
+      "early check-in",
+      "where are the keys"
+    ],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 8
+  },
+  {
+    "id": "checkout-time",
+    "area": "Where we stay",
+    "question": "When do I have to check out?",
+    "phrasings": ["departure day", "leaving time", "late checkout"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 9
+  },
+  {
+    "id": "luggage-storage",
+    "area": "Where we stay",
+    "question": "Can I leave my bags somewhere on arrival or departure day?",
+    "phrasings": ["store luggage", "luggage room", "bags before check in"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 10
+  },
+  {
+    "id": "wifi",
+    "area": "Where we stay",
+    "question": "Is there wifi?",
+    "phrasings": ["internet", "wifi password", "connect to wifi"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 11
+  },
+  {
+    "id": "laundry-towels",
+    "area": "Where we stay",
+    "question": "Are towels and sheets included? Can I do laundry?",
+    "phrasings": ["bedding", "bring towels", "washing machine", "laundry"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 12
+  },
+  {
+    "id": "room-where",
+    "area": "Where we stay",
+    "question": "Where is my room?",
+    "phrasings": ["which apartment am I in", "my accommodation", "who am I with"],
+    "answer": "Sign in and ask me again, I'll look up your room for you.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/members",
+    "sort": 13
+  },
+  {
+    "id": "accommodation-list",
+    "area": "Where we stay",
+    "question": "Where are we staying?",
+    "phrasings": [
+      "which hotel",
+      "residences",
+      "village montana",
+      "oxalys",
+      "kashmir",
+      "where do we sleep"
+    ],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#stay",
+    "sort": 14
+  },
+  {
+    "id": "roommate-dropout",
+    "area": "Where we stay",
+    "question": "What if someone in my apartment drops out?",
+    "phrasings": ["roommate dropped out", "apartment mate left", "empty bed"],
+    "answer": "The people still in the apartment need to re-confirm the rooming before the deadline on their invoice, or pay the price difference. Check your SkiSync invoice for the date and message us on WhatsApp.",
+    "visibility": "members",
+    "status": "tbc",
+    "link": null,
+    "sort": 15
+  },
+  {
+    "id": "cash",
+    "area": "Money",
+    "question": "Do I need to bring cash?",
+    "phrasings": ["euros", "do they take cards", "atm", "cash machine", "contactless"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 16
+  },
+  {
+    "id": "included-package",
+    "area": "Money",
+    "question": "What's included in the package?",
+    "phrasings": ["what does the trip cover", "what do I pay for separately", "is food included"],
+    "answer": "In: 7 nights of lodging, all CBS Snow Sports social events, resort taxes and fees, and SkiSync staff on site for arrival, departure and guest services. Not in: flights, lift pass, rentals, meals and optional activities.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": null,
+    "sort": 17
+  },
+  {
+    "id": "add-pass-rentals-later",
+    "area": "Money",
+    "question": "Can I add a lift pass or rentals later?",
+    "phrasings": [
+      "book lift pass after signup",
+      "change rental",
+      "add equipment",
+      "forgot to book lift pass"
+    ],
+    "answer": "You should be able to add or change lift passes and rentals from your SkiSync profile until early December, so do it as soon as you can. If the online window has closed, contact SkiSync.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 18
+  },
+  {
+    "id": "no-prebooked-rental",
+    "area": "Money",
+    "question": "I didn't pre-book rentals, where do I go?",
+    "phrasings": ["rent skis in resort", "walk-up rental", "rental shop", "no equipment booked"],
+    "answer": "You can rent on site from the shops in resort, but you'll miss the SkiSync group discount and queue on Sunday morning. If you can still add rentals on SkiSync, do that. Recommended shops near Village Montana are coming.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 19
+  },
+  {
+    "id": "collect-pass-rentals",
+    "area": "Money",
+    "question": "Where do I collect my lift pass and rentals?",
+    "phrasings": ["pick up lift pass", "get my skis", "check in for equipment"],
+    "answer": "SkiSync emails detailed check-in instructions 2 to 3 weeks before arrival, and it differs by group. If you're unsure once there, ask a trip leader.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": null,
+    "sort": 20
+  },
+  {
+    "id": "ski-and-snowboard",
+    "area": "Money",
+    "question": "Can I try both skiing and snowboarding?",
+    "phrasings": ["switch between ski and snowboard", "try snowboard", "rent both"],
+    "answer": "Yes, you can rent both types of equipment on the same lift ticket.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": null,
+    "sort": 21
+  },
+  {
+    "id": "insurance",
+    "area": "Money",
+    "question": "Should I get trip insurance?",
+    "phrasings": ["cancellation insurance", "travel insurance", "do I need insurance"],
+    "answer": "Trip insurance is optional. Without it, cancelling after the deadline means SkiSync can't refund you, because the money has already gone to resort partners. If you do have it, send your cancellation to SkiSync before you file a claim. Separately, winter sports and mountain rescue cover is mandatory, so keep your policy details on your phone.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": "/#trouble",
+    "sort": 22
+  },
+  {
+    "id": "cancel-deadlines",
+    "area": "Money",
+    "question": "What are the cancellation and transfer deadlines?",
+    "phrasings": [
+      "can I cancel",
+      "cancel my trip",
+      "refund",
+      "transfer my spot",
+      "give my place to a friend",
+      "deadline"
+    ],
+    "answer": "10 Dec 2026: last day to cancel lift passes or rentals for a refund (minus the 4% card fee). 20 Dec 2026: the transfer fee goes up. 26 Dec 2026: all transfers stop. Cancelling costs a fee, and lodging, the social package and the deposit are non-refundable. Transfers only go to someone brand new, SkiSync needs about 10 days, so start early. Do it inside the SkiSync system.",
+    "visibility": "members",
+    "status": "confirmed",
+    "link": null,
+    "sort": 23
+  },
+  {
+    "id": "name-passport",
+    "area": "Money",
+    "question": "My name or passport details are wrong, what do I do?",
+    "phrasings": ["typo in my name", "passport expires", "change my name", "passport validity"],
+    "answer": "Your name has to match your passport exactly, and the passport must be valid at least 6 months after you return (past 16 July 2027). Check your details by about 10 Dec 2026. Email SkiSync with the fix: it only counts once they confirm in writing, and an admin fee may apply.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 24
+  },
+  {
+    "id": "flights-not-included",
+    "area": "Money",
+    "question": "Do I need to book my own flight?",
+    "phrasings": ["flights included", "who books flights", "fly to geneva"],
+    "answer": "Yes, flights aren't part of the package, you book your own. Then tell us how you're getting here with the flights button so we can sort your coach.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": "/#getting-here",
+    "sort": 25
+  },
+  {
+    "id": "lift-pass-area",
+    "area": "Ski",
+    "question": "Where does my lift pass work?",
+    "phrasings": ["three valleys", "3 vallees", "which lifts", "which resorts can I ski"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 26
+  },
+  {
+    "id": "ski-lessons",
+    "area": "Ski",
+    "question": "Can I take lessons? I'm a beginner.",
+    "phrasings": ["ski school", "learn to ski", "beginner", "instructor"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 27
+  },
+  {
+    "id": "ski-storage",
+    "area": "Ski",
+    "question": "Where do I keep my skis and boots?",
+    "phrasings": ["ski locker", "boot room", "storage for equipment"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 28
+  },
+  {
+    "id": "piste-info",
+    "area": "Ski",
+    "question": "Where can I see the pistes and what's open?",
+    "phrasings": ["piste map", "what slopes are open", "snow conditions", "lifts open"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 29
+  },
+  {
+    "id": "tonight",
+    "area": "Social",
+    "question": "What are the plans for tonight?",
+    "phrasings": ["what's on tonight", "evening plans", "party tonight", "where is dinner"],
+    "answer": "Check the daily plan on the guide, it appears once the trip starts.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#daily-plan",
+    "sort": 30
+  },
+  {
+    "id": "next-event",
+    "area": "Social",
+    "question": "What's the next event?",
+    "phrasings": ["what's next", "upcoming event", "what's happening"],
+    "answer": "Check the week on the guide for the full schedule.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#schedule",
+    "sort": 31
+  },
+  {
+    "id": "dress-code",
+    "area": "Social",
+    "question": "Is there a dress code for any event?",
+    "phrasings": ["what to wear to the party", "themed night", "costume"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 32
+  },
+  {
+    "id": "apres",
+    "area": "Social",
+    "question": "Where do people go for apres?",
+    "phrasings": ["apres ski", "bars", "where to drink after skiing"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 33
+  },
+  {
+    "id": "emergency",
+    "area": "Safety",
+    "question": "What do I do in an emergency?",
+    "phrasings": ["call ambulance", "someone is hurt", "emergency number", "accident"],
+    "answer": "Call 112, it works from any phone in Europe. Then message the trip WhatsApp group so we can help.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": "/#trouble",
+    "sort": 34
+  },
+  {
+    "id": "medical",
+    "area": "Safety",
+    "question": "Where is the doctor or pharmacy?",
+    "phrasings": ["hurt myself", "need medicine", "pharmacie", "medical centre", "injury"],
+    "answer": "The medical centre is on Rue du Slalom (Quartier Slalom), and the pharmacy is in the Peclet shopping centre at the top of the resort. Hours change in season, so check the resort pages.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#trouble",
+    "sort": 35
+  },
+  {
+    "id": "food-grocery",
+    "area": "Food & shops",
+    "question": "Where can I buy groceries?",
+    "phrasings": ["supermarket", "food shop", "buy breakfast"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 36
+  },
+  {
+    "id": "food-restaurants",
+    "area": "Food & shops",
+    "question": "Where should I eat?",
+    "phrasings": ["restaurant recommendation", "dinner", "lunch on the mountain", "cheap eats"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 37
+  },
+  {
+    "id": "food-dietary",
+    "area": "Food & shops",
+    "question": "Where can I find vegetarian, vegan or gluten-free food?",
+    "phrasings": ["dietary restrictions", "allergy", "halal", "kosher"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 38
+  },
+  {
+    "id": "shops-gear",
+    "area": "Food & shops",
+    "question": "Where can I buy something I forgot (gloves, goggles, sunscreen)?",
+    "phrasings": ["forgot gloves", "buy goggles", "sunscreen", "ski shop"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 39
+  },
+  {
+    "id": "activity-spa",
+    "area": "Things to do",
+    "question": "I want a spa day, what can I do?",
+    "phrasings": ["spa", "sauna", "massage", "relax", "wellness", "hot tub"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 40
+  },
+  {
+    "id": "activity-rest-day",
+    "area": "Things to do",
+    "question": "What can I do if I don't want to ski today?",
+    "phrasings": ["non-ski activities", "rest day", "bad weather", "something different"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#todo",
+    "sort": 41
+  },
+  {
+    "id": "activity-evening",
+    "area": "Things to do",
+    "question": "What can I do tonight?",
+    "phrasings": ["evening activity", "things to do at night", "cinema", "bowling"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#todo",
+    "sort": 42
+  },
+  {
+    "id": "weather",
+    "area": "Weather & packing",
+    "question": "What will the weather be like?",
+    "phrasings": ["how cold will it be", "snow forecast", "temperature in january"],
+    "answer": "I can't predict that, it's to be confirmed closer to the trip. Check the forecast the week before.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 43
+  },
+  {
+    "id": "packing",
+    "area": "Weather & packing",
+    "question": "What should I pack?",
+    "phrasings": ["packing list", "what to bring", "what to wear skiing", "clothes"],
+    "answer": "There's a tick-list on the guide, and it saves on your phone.",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": "/#links",
+    "sort": 44
+  },
+  {
+    "id": "phone-roaming",
+    "area": "Weather & packing",
+    "question": "Will my phone work abroad?",
+    "phrasings": ["roaming", "esim", "data plan in france", "sim card"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 45
+  },
+  {
+    "id": "power-plugs",
+    "area": "Weather & packing",
+    "question": "What plug do I need?",
+    "phrasings": ["adapter", "charger", "european plug", "socket"],
+    "answer": "",
+    "visibility": "everyone",
+    "status": "tbc",
+    "link": null,
+    "sort": 46
+  },
+  {
+    "id": "how-to-sign-in",
+    "area": "The site",
+    "question": "How do I sign in?",
+    "phrasings": ["login", "log in", "google sign in", "can't log in", "members area"],
+    "answer": "Use the sign-in on the members page with your Columbia Google account. If you're a +1 or don't have a Columbia address, message us on WhatsApp so we can add you.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": "/members",
+    "sort": 47
+  },
+  {
+    "id": "whatsapp-group",
+    "area": "The site",
+    "question": "Where is the WhatsApp group?",
+    "phrasings": ["join the whatsapp", "group chat link", "whatsapp link"],
+    "answer": "The link is in the members area once you're signed in.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": "/members",
+    "sort": 48
+  },
+  {
+    "id": "flights-form",
+    "area": "The site",
+    "question": "How do I tell you my flight details?",
+    "phrasings": ["enter my flight", "flight form", "submit my arrival", "edit my flight"],
+    "answer": "Use the Tell us how you're getting here button in Getting here & away. You can come back and edit it any time.",
+    "visibility": "everyone",
+    "status": "confirmed",
+    "link": "/#getting-here",
+    "sort": 49
+  }
+]

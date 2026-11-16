@@ -7,6 +7,7 @@ import { useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
 import { dayDetails, dayDetailsStatus, mountain, week } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
+import { appNow } from "@/lib/now";
 
 const snowReport = mountain.links.find((l) => l.label === "Snow report");
 
@@ -20,7 +21,7 @@ export function TodayCard() {
   const crew = useCrewAccess();
 
   useEffect(() => {
-    const index = tripDayIndex(new Date());
+    const index = tripDayIndex(appNow());
     setToday(index);
     if (index !== null) setDay(index);
   }, []);
