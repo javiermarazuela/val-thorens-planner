@@ -9,10 +9,11 @@ import { useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
 import { week, weekSection, weekStatus, dayIcon } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
+import { appNow } from "@/lib/now";
 
 export function Schedule({ n, tone }: SectionProps) {
   const [today, setToday] = useState<number | null>(null);
-  useEffect(() => setToday(tripDayIndex(new Date())), []);
+  useEffect(() => setToday(tripDayIndex(appNow())), []);
   const { signedIn, team } = useCrewAccess();
   const showChallenges = signedIn && team !== null;
 

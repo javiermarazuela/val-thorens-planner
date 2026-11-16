@@ -19,11 +19,11 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
 | [#4](https://github.com/javiermarazuela/val-thorens-planner/pull/4) | **Separate phone and desktop layouts.** The phone page is 15% shorter, with tighter padding and two-column grids; desktop gets wider containers and a three-column guide. **Real interactive map:** Leaflet on OpenStreetMap tiles, replacing a decorative SVG. It has icon pins (house, gondola, fork, glass) in four colours, and tapping a pin or name opens a card with a linked title and "Open in Google Maps". Adds the only new dependency, `leaflet`.                                                                                                                                                  |
 | [#5](https://github.com/javiermarazuela/val-thorens-planner/pull/5) | **Official SkiSync information.** The price section shows "From $2,083 per person" (club member package), the non-member price, _Included_ / _Not included_ columns with add-on "from" prices, a **Sign up on SkiSync** button, and a **Key dates** strip (10, 20 and 26 Dec). It corrects copy SkiSync contradicts: you book your own flights, the club doesn't run the coaches, roommates are chosen at registration rather than drawn on arrival, and the passport rule is now in. It adds four confirmed FAQs, and updates CLAUDE.md rules 1 and 7 plus a context line. This HANDOFF.md is also on this PR. |
 
-## Guide redesign (branch `guide-redesign`, PR #19, not merged)
+## Guide redesign (PR #19, merged)
 
 - The trip sold out, so the site became a trip guide: one scrolling page of numbered sections (Welcome, Getting here & away, Where we stay, The week, Daily plan, Maps, Getting around, Things to do, FAQs, In case of trouble, Links & packing). Order is journey order until 9 Jan 2027, trip order after (`?order=trip|journey` forces one). Spec: `redesign-spec.md`; structure notes: CLAUDE.md.
 - Phases 1-4 built (fce938b), TanStack Start bumped to 1.168.60 to clear a Vercel XSS block (809d8f1), then two density passes after the user called the first preview too packed (c0f00fa, efad841), then a calmer palette, simpler Getting here, stay photos and a skier on the desktop trail (a622554).
-- **Not merged.** `main` and cbseuroski.com are still the older single page. Next: user checks the Vercel preview on a phone and desktop, asks for more trimming if needed, then merges.
+- **Merged and live** (later PRs added the week, the map popup and the Getting around shuttle map).
 - New content in `trip.ts` since this file's last update: `gettingHere` (flights from the committee's flights sheet), `airportCoaches`, `checkSteps`, `otherRoutes`, `gettingAround` (resort shuttle on the 2025-26 timetable until 2026-27 is published), `dayDetails` (preliminary), `thingsToDo`, `trouble`, `linksSection`, and the two smaller stays (L'Oxalys, Le Hameau du Kashmir) with photos in `src/assets/`.
 - Still sample (`preliminary`): day events and times, challenges, weather, shuttle times, airport coach times. Replace as the committee confirms.
 - Read on 7 Oct from the parent folder's `Info/`: the Master Tracker's calendar now drives the evening events in `week` and `dayDetails` (welcome drinks Sat; après Mon, Thu, Fri; club nights Tue and Fri; bar crawl Wed; still preliminary, no venues or times). Its venue list already matches `mapPoints`. The rest of the tracker (budget, payments, prior-year Tignes venues, committee comments on venues) is internal and deliberately kept out of the site. The Telegraph guide added only the Chambéry and Moûtiers travel facts in `otherRoutes`.
@@ -43,6 +43,37 @@ Euro Ski ’27: the website and guide for the CBS Snow Sports trip to Val Thoren
   - `redirect_uri_mismatch` means the Google client's redirect URI isn't exactly `https://lturqfowogbkedhldhop.supabase.co/auth/v1/callback`.
   - `/members` shows its generic "isn't on the list" message for any sign-in error. Read `error_description` in the URL or the Supabase Auth logs to find the real cause.
   - Supabase's redirect URLs must include every address sign-in can return to.
+
+## Chatbot: Julian the snowman (state on 11 Oct 2026)
+
+Rules and structure are in CLAUDE.md (the chatbot entry, rules 10 and 11). Design decisions came from the user: a hybrid, so the free search handles most questions and Haiku is used only for signed-in members when search finds nothing; each question stands alone; playful trip-leader tone, English only; relevant but unknown questions say "message us on the trip WhatsApp group"; signed-out visitors get chips and search only, with "please sign in for more complex questions"; three off-topic questions in a row means a 24-hour ban.
+
+**Branches** (`chatbot`, `chatbot-ai` and `testdata` are pushed; `chatbot-foundations` is contained in them):
+
+| Branch | What it holds |
+| --- | --- |
+| `chatbot-foundations` | Step 1: `0006_chatbot.sql`, the sheet publisher (`knowledge-sheet.gs`) and the starter CSV tabs |
+| `chatbot` | Step 2a: the free tier, Julian, `appNow()` |
+| `chatbot-ai` | Step 2b: Haiku, strikes, caps, logging, `0007_chatbot_guard.sql`. **Open the pull request to `main` from this branch** (it contains the two above) |
+| `testdata` | `chatbot-ai` plus the test site: 200 fake travellers, the `/testdata` picker, the pretend clock, the test chat environment. Never merge into `main` |
+
+**Done outside the repo:** migrations `0006` and `0007` run in Supabase; an Anthropic workspace with a $20 monthly limit, its key set in Vercel as `ANTHROPIC_API_KEY`; `test.cbseuroski.com` assigned to the `testdata` branch in Vercel (Domains, Preview, branch `testdata`) with a DNS-only CNAME in Cloudflare.
+
+**Not done yet:**
+
+- The committee's Google Sheet: import `supabase/sheet-sync/templates/*.csv` as tabs, paste `knowledge-sheet.gs`, set `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` in Script Properties, fill the rows, then Chatbot, Publish to site. Until then Julian uses the bundled starter rows and the guide FAQ.
+- The real Rooms and Shuttles sheets (matched by Columbia email). The Shuttles columns were invented, so check them against the real sheet. Flights already come from the `flights` table.
+- Checking the AI tier end to end on the test site: the Haiku request (written without a key to test against), the strike and ban messages, and the daily caps. A failure shows as "Julian's brain is taking a snow nap"; read the Vercel function log.
+- A line on the privacy page about the anonymous question log (promised, not written).
+- Roommate names on the real site: the real tables have no roommates column; the test site shows them.
+- After a day of testing, read `chat_log` in Supabase. Rows with outcome `unknown` show what to fill in first.
+
+**Gotchas:**
+
+- Shell heredocs with apostrophes broke twice; write files with the editor tool.
+- A regex written inside a non-raw Python string turned `\b` into a backspace character; ESLint's `no-control-regex` catches it.
+- `bun run lint` reports hundreds of prettier line-ending errors repo-wide on Windows; format only the files you touch.
+- The test site logs one harmless hydration warning, because the pretend date changes which sections come first.
 
 ## Current state
 

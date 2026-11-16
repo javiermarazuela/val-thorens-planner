@@ -4,12 +4,13 @@ import heroImage from "@/assets/val-thorens-trip.jpg";
 import { TeamBanner } from "@/components/team-banner";
 import { hero, trip } from "@/lib/trip";
 import { daysToGo } from "@/lib/trip-day";
+import { appNow } from "@/lib/now";
 
 export function Welcome() {
   const [toGo, setToGo] = useState<number | null>(null);
   const [teamStrip, setTeamStrip] = useState(false); // the "you're on a team" strip is showing
   const banner = teamStrip;
-  useEffect(() => setToGo(daysToGo(new Date())), []);
+  useEffect(() => setToGo(daysToGo(appNow())), []);
 
   return (
     <section id="welcome" className="scroll-mt-[var(--header-h)]">
