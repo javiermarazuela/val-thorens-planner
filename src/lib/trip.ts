@@ -126,10 +126,10 @@ export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
 // Before the trip: follow the journey. During it: what you need in resort first.
 export const journeyOrder: SectionId[] = [
   "welcome",
-  "getting-here",
-  "stay",
   "schedule",
   "daily-plan",
+  "getting-here",
+  "stay",
   "maps",
   "around",
   "todo",
@@ -423,6 +423,29 @@ export const week: WeekDay[] = [
 /** The icon beside a day's title: snow on slope days, else a plane in and a bag out. */
 export const dayIcon = (day: WeekDay, index: number): EventIcon =>
   day.slopeDay ? "snow" : index === 0 ? "arrivals" : "departures";
+
+// How each dress-up theme looks, keyed by the `theme` name in `week`.
+// `band` fills the top of the day card (and the Daily plan pill); the rest of
+// the card gets a light wash of it. `text` is "light" or "dark", whichever
+// reads on the band. `icon` is drawn in theme-tag.tsx: "wig", "goggles" or
+// "mask". A theme with no entry here (Western, until it gets one) shows in
+// mustard with the mask.
+export type ThemeIconName = "wig" | "goggles" | "mask";
+export type ThemeLook = { band: string; text: "light" | "dark"; icon: ThemeIconName };
+export const themeLooks: Record<string, ThemeLook> = {
+  // Bright violet, the party colour; leaves orange and tan for Western.
+  Wigs: { band: "#7B2FF7", text: "light", icon: "wig" },
+  // Pink from the committee's retro palette.
+  Retro: { band: "#F76FC8", text: "dark", icon: "goggles" },
+};
+const defaultThemeLook: ThemeLook = { band: "var(--mustard)", text: "dark", icon: "mask" };
+export const themeLook = (theme: string): ThemeLook => themeLooks[theme] ?? defaultThemeLook;
+
+/** "Mon, Jan 11": how a day of the week is written on the page and by Julian. */
+export const weekDayLabel = (day: WeekDay): string => {
+  const [dayOfMonth, month] = day.date.split(" ");
+  return `${day.weekday}, ${month} ${dayOfMonth}`;
+};
 
 export const mountain = {
   status: "partial" as GuideStatus,
@@ -977,8 +1000,13 @@ export const gettingHere = {
   title: "Getting here & away",
   intro: "Read this before you fly, and again on the last morning.",
   airport: { label: "Airport", value: "Geneva (GVA)" },
-  arrive: { label: "Arrive", value: "Sat 9 Jan" },
-  leave: { label: "Leave", value: "Sat 16 Jan" },
+  // The two tiles at the top of the section. `when` is free text: "Morning"
+  // for now (from the recommended flights); change it to "By 12:00" and
+  // similar once SkiSync's coach times are in.
+  arrive: { label: "Get here", day: "Sat, Jan 9", when: "Morning", where: "Land in Geneva (GVA)" },
+  leave: { label: "Leave", day: "Sat, Jan 16", when: "Morning", where: "Fly out of Geneva (GVA)" },
+  optionsButton: "See recommended options",
+  optionsHide: "Hide options",
   flightsNote:
     "Flights are not in the package, so book your own. These are the options we are suggesting.",
   nonstopLabel: "Non-stop",

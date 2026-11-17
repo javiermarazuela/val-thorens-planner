@@ -6,7 +6,14 @@ import { StatusBadge } from "@/components/status-badge";
 import { ThemeTag } from "@/components/theme-tag";
 import { crewOn, useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
-import { dailyChallengeStatus, mountain, week, weekStatus, dayIcon } from "@/lib/trip";
+import {
+  dailyChallengeStatus,
+  mountain,
+  week,
+  weekStatus,
+  dayIcon,
+  weekDayLabel,
+} from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
 import { appNow } from "@/lib/now";
 
@@ -57,12 +64,11 @@ export function TodayCard() {
       <div className="mt-4">
         {info.theme && (
           <div className="mb-2">
-            <ThemeTag theme={info.theme} variant="pill" />
+            <ThemeTag theme={info.theme} />
           </div>
         )}
         <p className="text-xs font-medium uppercase tracking-wider text-primary">
-          {today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {info.weekday}{" "}
-          {info.date}
+          {today === day ? "Today" : "Day"} · {day + 1} of {week.length} · {weekDayLabel(info)}
         </p>
         <h2 className="mt-1 text-lg font-semibold leading-tight sm:text-xl">{info.title}</h2>
       </div>
