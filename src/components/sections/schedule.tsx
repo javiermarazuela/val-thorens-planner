@@ -30,9 +30,10 @@ export function Schedule({ n, tone }: SectionProps) {
           return (
             <li
               key={day.date}
-              className={`flex flex-col overflow-hidden rounded-2xl border-[1.5px] bg-card ${isToday ? "border-ink" : "border-border"}`}
+              className={`flex flex-col overflow-hidden rounded-2xl border-[1.5px] ${day.theme ? "bg-mustard/15" : "bg-card"} ${isToday ? "border-ink" : day.theme ? "border-mustard" : "border-border"}`}
             >
-              {/* Date on the left; on a theme day the whole band turns mustard and names the theme. */}
+              {/* Date on the left. On a theme day the band turns mustard and names the theme,
+                  and the rest of the card takes a light wash of the same colour. */}
               <div
                 className={`flex min-h-12 items-center justify-between gap-3 px-4 py-2.5 ${day.theme ? "bg-mustard text-ink" : "bg-primary/10"}`}
               >
