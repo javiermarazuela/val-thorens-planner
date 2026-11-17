@@ -1,4 +1,12 @@
-import { Bus, CalendarDays, ChevronDown, Plane, TrainFront } from "lucide-react";
+import {
+  Bus,
+  CalendarDays,
+  ChevronDown,
+  Plane,
+  PlaneLanding,
+  PlaneTakeoff,
+  TrainFront,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import { GuideSection } from "@/components/guide-section";
@@ -78,21 +86,16 @@ function Leg({ title, date, children }: { title: string; date: string; children:
   );
 }
 
-// A closed-by-default row: title and a one-line summary, a + to open it.
-// `featured` is the bigger version with an icon, for the row that matters most.
+// A closed-by-default row: title and a one-line summary, a chevron to open it.
 function Expander({
   title,
   summary,
   badge,
-  icon,
-  featured = false,
   children,
 }: {
   title: string;
   summary: string;
   badge?: ReactNode;
-  icon?: ReactNode;
-  featured?: boolean;
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -102,25 +105,11 @@ function Expander({
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className={`flex w-full items-center justify-between gap-3 bg-secondary px-4 text-left transition hover:bg-secondary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${featured ? "min-h-16 py-3" : "min-h-14 py-2"}`}
+        className="flex min-h-14 w-full items-center justify-between gap-3 bg-secondary px-4 py-2 text-left transition hover:bg-secondary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <span className="flex min-w-0 items-center gap-3">
-          {icon && (
-            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink text-paper">
-              {icon}
-            </span>
-          )}
-          {featured ? (
-            <span className="min-w-0">
-              <b className="block text-lg font-semibold leading-tight">{title}</b>
-              <span className={`mt-0.5 block text-sm ${muted}`}>{summary}</span>
-            </span>
-          ) : (
-            <span>
-              <b className="text-base font-semibold">{title}</b>
-              <span className={`ml-3 text-sm ${muted}`}>{summary}</span>
-            </span>
-          )}
+        <span>
+          <b className="text-base font-semibold">{title}</b>
+          <span className={`ml-3 text-sm ${muted}`}>{summary}</span>
         </span>
         <span className="flex shrink-0 items-center gap-3">
           {badge}
@@ -135,6 +124,29 @@ function Expander({
   );
 }
 
+// One of the two tiles at the top: when to be here, when you can leave.
+function DayTile({
+  icon,
+  info,
+}: {
+  icon: ReactNode;
+  info: { label: string; day: string; when: string; where: string };
+}) {
+  return (
+    <div className="rounded-2xl border-[1.5px] border-border bg-card p-4 sm:p-5">
+      <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary">
+        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-ink text-paper">
+          {icon}
+        </span>
+        {info.label}
+      </p>
+      <p className="mt-3 text-xl font-semibold leading-tight sm:text-2xl">{info.day}</p>
+      <p className="mt-0.5 text-base font-semibold">{info.when}</p>
+      <p className={`mt-1 text-sm leading-snug ${muted}`}>{info.where}</p>
+    </div>
+  );
+}
+
 const routeIcons: Record<OtherRouteIcon, ReactNode> = {
   bus: <Bus className="size-5" aria-hidden="true" />,
   train: <TrainFront className="size-5" aria-hidden="true" />,
@@ -142,36 +154,58 @@ const routeIcons: Record<OtherRouteIcon, ReactNode> = {
 };
 
 export function GettingHere({ n, tone }: SectionProps) {
+  const [optionsOpen, setOptionsOpen] = useState(false);
   return (
     <GuideSection id="getting-here" n={n} tone={tone} title={gettingHere.title}>
-      <div>
-        <Expander
-          featured
-          icon={<Plane className="size-5" aria-hidden="true" />}
-          title={gettingHere.recommended.title}
-          summary={gettingHere.recommended.summary}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <DayTile
+          icon={<PlaneLanding className="size-4" aria-hidden="true" />}
+          info={gettingHere.arrive}
+        />
+        <DayTile
+          icon={<PlaneTakeoff className="size-4" aria-hidden="true" />}
+          info={gettingHere.leave}
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setOptionsOpen((v) => !v)}
+        aria-expanded={optionsOpen}
+        aria-controls="travel-options"
+        className="mx-auto mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-[1.5px] border-ink bg-card px-6 font-semibold transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:w-auto"
+      >
+        <Plane className="size-4" aria-hidden="true" />
+        {optionsOpen ? gettingHere.optionsHide : gettingHere.optionsButton}
+        <ChevronDown
+          className={`size-4 transition-transform ${optionsOpen ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
+      </button>
+
+      {optionsOpen && (
+        <div
+          id="travel-options"
+          className="mt-4 rounded-2xl border border-border bg-card p-4 sm:p-6"
         >
-          <div className="grid gap-x-10 gap-y-8 pt-2 lg:grid-cols-2">
+          <h3 className="text-lg font-semibold">{gettingHere.recommended.title}</h3>
+          <p className={`mt-1 text-sm ${muted}`}>{gettingHere.flightsNote}</p>
+          <div className="mt-4 grid gap-x-10 gap-y-8 lg:grid-cols-2">
             <Leg title="Arriving" date={gettingHere.out.date}>
               <FlightList flights={gettingHere.out.flights} />
             </Leg>
-
             <Leg title="Leaving" date={gettingHere.home.date}>
               <FlightList flights={gettingHere.home.flights} />
             </Leg>
           </div>
-        </Expander>
-      </div>
 
-      <div className="mt-4">
-        <Expander
-          title={otherRoutes.title}
-          summary={otherRoutes.summary}
-          badge={<StatusBadge status={otherRoutes.status} />}
-        >
-          <ul className="-mt-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3 border-t-2 border-ink pt-4">
+            <h3 className="text-lg font-semibold">{otherRoutes.title}</h3>
+            <StatusBadge status={otherRoutes.status} />
+          </div>
+          <ul className="mt-1 grid gap-x-10 lg:grid-cols-3">
             {otherRoutes.items.map((r) => (
-              <li key={r.title} className="flex gap-3 border-t border-border py-3">
+              <li key={r.title} className="flex gap-3 border-b border-border py-3 lg:border-b-0">
                 <span className="grid size-9 shrink-0 place-items-center rounded-full bg-secondary text-ink">
                   {routeIcons[r.icon]}
                 </span>
@@ -182,8 +216,8 @@ export function GettingHere({ n, tone }: SectionProps) {
               </li>
             ))}
           </ul>
-        </Expander>
-      </div>
+        </div>
+      )}
 
       <div className="mt-4">
         <Expander

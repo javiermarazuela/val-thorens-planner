@@ -126,10 +126,10 @@ export const sectionMeta: Record<SectionId, { label: string; grade: Grade }> = {
 // Before the trip: follow the journey. During it: what you need in resort first.
 export const journeyOrder: SectionId[] = [
   "welcome",
-  "getting-here",
-  "stay",
   "schedule",
   "daily-plan",
+  "getting-here",
+  "stay",
   "maps",
   "around",
   "todo",
@@ -977,8 +977,13 @@ export const gettingHere = {
   title: "Getting here & away",
   intro: "Read this before you fly, and again on the last morning.",
   airport: { label: "Airport", value: "Geneva (GVA)" },
-  arrive: { label: "Arrive", value: "Sat 9 Jan" },
-  leave: { label: "Leave", value: "Sat 16 Jan" },
+  // The two tiles at the top of the section. `when` is free text: "Morning"
+  // for now (from the recommended flights); change it to "By 12:00" and
+  // similar once SkiSync's coach times are in.
+  arrive: { label: "Get here", day: "Sat 9 Jan", when: "Morning", where: "Land in Geneva (GVA)" },
+  leave: { label: "Leave", day: "Sat 16 Jan", when: "Morning", where: "Fly out of Geneva (GVA)" },
+  optionsButton: "See recommended options",
+  optionsHide: "Hide options",
   flightsNote:
     "Flights are not in the package, so book your own. These are the options we are suggesting.",
   nonstopLabel: "Non-stop",
