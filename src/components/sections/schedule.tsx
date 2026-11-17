@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { MapPin, VenetianMask } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { EventIcon } from "@/components/event-icon";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
+import { ThemeIcon } from "@/components/theme-tag";
 import { useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
 import { week, weekSection, weekStatus, dayIcon, themeLook, weekDayLabel } from "@/lib/trip";
@@ -58,25 +59,11 @@ export function Schedule({ n, tone }: SectionProps) {
                 </span>
                 {day.theme && (
                   <span className="flex items-center gap-1.5 text-sm font-bold">
-                    <VenetianMask className="size-[1.1rem] shrink-0" aria-hidden="true" />
+                    <ThemeIcon theme={day.theme} className="size-6 shrink-0" />
                     {day.theme} theme
                   </span>
                 )}
               </div>
-              {look?.stripe && (
-                <div
-                  className="h-2 border-t-2 border-card"
-                  aria-hidden="true"
-                  style={{
-                    background: `linear-gradient(to right, ${look.stripe
-                      .map(
-                        (c, si, all) =>
-                          `${c} ${(si / all.length) * 100}% ${((si + 1) / all.length) * 100}%`,
-                      )
-                      .join(", ")})`,
-                  }}
-                />
-              )}
               <div className="flex flex-1 flex-col p-4 pt-3">
                 <p className="flex items-center gap-2.5 text-base font-semibold">
                   <EventIcon icon={dayIcon(day, i)} />

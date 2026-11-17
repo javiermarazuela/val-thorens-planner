@@ -424,23 +424,21 @@ export const week: WeekDay[] = [
 export const dayIcon = (day: WeekDay, index: number): EventIcon =>
   day.slopeDay ? "snow" : index === 0 ? "arrivals" : "departures";
 
-// Colours for each dress-up theme, keyed by the `theme` name in `week`.
+// How each dress-up theme looks, keyed by the `theme` name in `week`.
 // `band` fills the top of the day card (and the Daily plan pill); the rest of
 // the card gets a light wash of it. `text` is "light" or "dark", whichever
-// reads on the band. `stripe` is an optional row of colours under the band.
-// A theme with no entry here (Western, until it gets one) falls back to mustard.
-export type ThemeLook = { band: string; text: "light" | "dark"; stripe?: string[] };
+// reads on the band. `icon` is drawn in theme-tag.tsx: "wig", "goggles" or
+// "mask". A theme with no entry here (Western, until it gets one) shows in
+// mustard with the mask.
+export type ThemeIconName = "wig" | "goggles" | "mask";
+export type ThemeLook = { band: string; text: "light" | "dark"; icon: ThemeIconName };
 export const themeLooks: Record<string, ThemeLook> = {
-  // Wigs: bright violet, the party colour; leaves orange and tan for Western.
-  Wigs: { band: "#7B2FF7", text: "light" },
-  // Retro: pinks from the committee's retro palette, with the full palette as a stripe.
-  Retro: {
-    band: "#F76FC8",
-    text: "dark",
-    stripe: ["#0FAFEF", "#72E50B", "#FF00C0", "#F76FC8", "#0000FF"],
-  },
+  // Bright violet, the party colour; leaves orange and tan for Western.
+  Wigs: { band: "#7B2FF7", text: "light", icon: "wig" },
+  // Pink from the committee's retro palette.
+  Retro: { band: "#F76FC8", text: "dark", icon: "goggles" },
 };
-const defaultThemeLook: ThemeLook = { band: "var(--mustard)", text: "dark" };
+const defaultThemeLook: ThemeLook = { band: "var(--mustard)", text: "dark", icon: "mask" };
 export const themeLook = (theme: string): ThemeLook => themeLooks[theme] ?? defaultThemeLook;
 
 /** "Mon, Jan 11": how a day of the week is written on the page and by Julian. */
