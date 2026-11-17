@@ -1,4 +1,4 @@
-import { activities, coachesInfo, mapPoints, packing, week } from "@/lib/trip";
+import { activities, coachesInfo, mapPoints, packing, week, weekDayLabel } from "@/lib/trip";
 import { daysToGo, tripDayIndex } from "@/lib/trip-day";
 
 import { buildIndex, normalise, search, type Index } from "./search";
@@ -199,8 +199,8 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
     const nd = week[next]!;
     return {
       text: ev.length
-        ? `Tomorrow (${nd.weekday} ${nd.date}) is ${nd.title.toLowerCase()}${nd.theme ? `, theme ${nd.theme}` : ""}: ${list(ev)}.`
-        : `Tomorrow (${nd.weekday} ${nd.date}) is ${nd.title.toLowerCase()}, and nothing is planned.`,
+        ? `Tomorrow (${weekDayLabel(nd)}) is ${nd.title.toLowerCase()}${nd.theme ? `, theme ${nd.theme}` : ""}: ${list(ev)}.`
+        : `Tomorrow (${weekDayLabel(nd)}) is ${nd.title.toLowerCase()}, and nothing is planned.`,
       links,
       source: "schedule",
     };
@@ -210,8 +210,8 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
   if (wantsTonight || (has(q, /\b(next|whats next)\b/) === false && hour >= 17 && ev.length)) {
     return {
       text: ev.length
-        ? `Today (${day.weekday} ${day.date}): ${list(ev)}.`
-        : `Nothing planned tonight (${day.weekday} ${day.date}). A good night for a proper dinner.`,
+        ? `Today (${weekDayLabel(day)}): ${list(ev)}.`
+        : `Nothing planned tonight (${weekDayLabel(day)}). A good night for a proper dinner.`,
       links: [...links, { label: "Daily plan", href: "/#daily-plan" }],
       source: "schedule",
     };
@@ -221,7 +221,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
   // otherwise the next day that has some.
   if (ev.length && hour < 22) {
     return {
-      text: `Today (${day.weekday} ${day.date}): ${list(ev)}.`,
+      text: `Today (${weekDayLabel(day)}): ${list(ev)}.`,
       links,
       source: "schedule",
     };
@@ -231,7 +231,7 @@ function scheduleReply(q: string, ctx: ReplyContext): Reply {
     if (more.length) {
       const nd = week[d]!;
       return {
-        text: `Next up, on ${nd.weekday} ${nd.date}: ${list(more)}.`,
+        text: `Next up, on ${weekDayLabel(nd)}: ${list(more)}.`,
         links,
         source: "schedule",
       };

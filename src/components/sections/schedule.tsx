@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { MapPin } from "lucide-react";
+import { MapPin, VenetianMask } from "lucide-react";
 
 import { EventIcon } from "@/components/event-icon";
 import { GuideSection } from "@/components/guide-section";
 import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
-import { ThemeTag } from "@/components/theme-tag";
 import { useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
-import { week, weekSection, weekStatus, dayIcon } from "@/lib/trip";
+import { week, weekSection, weekStatus, dayIcon, weekDayLabel } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
 import { appNow } from "@/lib/now";
 
@@ -33,21 +32,25 @@ export function Schedule({ n, tone }: SectionProps) {
               key={day.date}
               className={`flex flex-col overflow-hidden rounded-2xl border-[1.5px] bg-card ${isToday ? "border-ink" : "border-border"}`}
             >
-              <div className="flex items-baseline justify-between gap-3 bg-primary/10 px-4 py-3">
-                <span className="text-xs font-medium uppercase tracking-wider text-primary">
-                  {day.weekday}
-                  {isToday ? " · Today" : ""}
+              {/* Date on the left; on a theme day the whole band turns mustard and names the theme. */}
+              <div
+                className={`flex min-h-12 items-center justify-between gap-3 px-4 py-2.5 ${day.theme ? "bg-mustard text-ink" : "bg-primary/10"}`}
+              >
+                <span className="text-base font-semibold">
+                  {weekDayLabel(day)}
+                  {isToday && (
+                    <span className="ml-1.5 text-xs font-medium uppercase tracking-wider">
+                      · Today
+                    </span>
+                  )}
                 </span>
-                <span className="flex items-baseline gap-1.5">
-                  <span className="text-xs font-medium uppercase tracking-wider text-primary">
-                    {day.date.split(" ")[1]}
+                {day.theme && (
+                  <span className="flex items-center gap-1.5 text-sm font-bold">
+                    <VenetianMask className="size-[1.1rem] shrink-0" aria-hidden="true" />
+                    {day.theme} theme
                   </span>
-                  <span className="text-2xl font-semibold leading-none">
-                    {day.date.split(" ")[0]}
-                  </span>
-                </span>
+                )}
               </div>
-              {day.theme && <ThemeTag theme={day.theme} variant="strip" />}
               <div className="flex flex-1 flex-col p-4 pt-3">
                 <p className="flex items-center gap-2.5 text-base font-semibold">
                   <EventIcon icon={dayIcon(day, i)} />

@@ -424,6 +424,12 @@ export const week: WeekDay[] = [
 export const dayIcon = (day: WeekDay, index: number): EventIcon =>
   day.slopeDay ? "snow" : index === 0 ? "arrivals" : "departures";
 
+/** "Mon, Jan 11": how a day of the week is written on the page and by Julian. */
+export const weekDayLabel = (day: WeekDay): string => {
+  const [dayOfMonth, month] = day.date.split(" ");
+  return `${day.weekday}, ${month} ${dayOfMonth}`;
+};
+
 export const mountain = {
   status: "partial" as GuideStatus,
   title: "Mountain",
@@ -980,8 +986,8 @@ export const gettingHere = {
   // The two tiles at the top of the section. `when` is free text: "Morning"
   // for now (from the recommended flights); change it to "By 12:00" and
   // similar once SkiSync's coach times are in.
-  arrive: { label: "Get here", day: "Sat 9 Jan", when: "Morning", where: "Land in Geneva (GVA)" },
-  leave: { label: "Leave", day: "Sat 16 Jan", when: "Morning", where: "Fly out of Geneva (GVA)" },
+  arrive: { label: "Get here", day: "Sat, Jan 9", when: "Morning", where: "Land in Geneva (GVA)" },
+  leave: { label: "Leave", day: "Sat, Jan 16", when: "Morning", where: "Fly out of Geneva (GVA)" },
   optionsButton: "See recommended options",
   optionsHide: "Hide options",
   flightsNote:
