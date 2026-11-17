@@ -1397,8 +1397,9 @@ export const gettingAround = {
   valley: {
     title: "Belleville valley bus",
     body: "Free to Les Menuires (about 20 minutes) and Saint-Martin-de-Belleville (about 40), roughly hourly from 08:30 to 19:00. Sunday to Friday only.",
-    mapLabel: "Valley bus to Les Menuires and Saint-Martin",
-    mapNote: "Not on Saturdays",
+    // Shown beside the bus station's dot in the shuttle map's key.
+    mapLabel: "Bus station:",
+    mapNote: "the valley bus to Les Menuires and Saint-Martin leaves from here. Not on Saturdays.",
   },
 };
 

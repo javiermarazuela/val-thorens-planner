@@ -1,6 +1,10 @@
-import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import type { ExpressionSpecification, Map as MapLibreMap, Marker } from "maplibre-gl";
+import type {
+  ExpressionSpecification,
+  Map as MapLibreMap,
+  Marker,
+  SymbolLayerSpecification,
+} from "maplibre-gl";
 
 import { loadStyle } from "@/components/map-style";
 import { markerHtml } from "@/lib/map-glyphs";
@@ -21,7 +25,10 @@ const stays = shuttle.stays.map((s) => {
   const pin = mapPoints.find((p) => p.name === s.pin);
   const stop = shuttle.loops.flatMap((l) => l.stops).find((st) => st.name === s.stop);
   if (!pin || !stop) throw new Error(`Getting around: no map position for ${s.name}`);
-  return { ...s, pin, stop };
+  // A place right beside its stop would hide the stop's dot, so its pin is
+  // lifted clear of it.
+  const lifted = Math.hypot((pin.lat - stop.lat) * 111000, (pin.lng - stop.lng) * 78000) < 40;
+  return { ...s, pin, stop, lifted };
 });
 
 // Which loop each stop is on, for the dim-the-other-loop filter.
@@ -29,6 +36,17 @@ const stopPoints = [
   ...shuttle.loops.flatMap((l) => l.stops.map((s) => ({ ...s, loop: l.id, color: l.color }))),
   { ...shuttle.hub, loop: "hub" as const, color: HUB_COLOR },
 ];
+
+// A stop with a lifted pin above it always has its name below its dot, out
+// from under the pin.
+const liftedStops = new Set(stays.filter((s) => s.lifted).map((s) => s.stop.name));
+
+// Which stop names to show for the loop picked.
+function labelFilter(active: Active, below: boolean): ExpressionSpecification {
+  const side: ExpressionSpecification = ["==", ["get", "below"], below];
+  if (active === "all") return side;
+  return ["all", side, ["any", ["==", ["get", "loop"], "hub"], ["==", ["get", "loop"], active]]];
+}
 
 // Our three places sit close together, so each label gets its own side of its pin.
 const stayLabelSide: Record<string, "above" | "below" | "left" | "right"> = {
@@ -139,8 +157,8 @@ export function ShuttleMap() {
           [Math.max(...lngs), Math.max(...lats)],
         ],
         fitBoundsOptions: {
-          // Room on the left for our places' labels, and under the valley-bus chip.
-          padding: { top: 56, right: 48, bottom: 24, left: 76 },
+          // Room on the left for our places' labels.
+          padding: { top: 36, right: 40, bottom: 24, left: 76 },
           maxZoom: mapArea.maxZoom,
         },
         maxBounds: [
@@ -278,30 +296,113 @@ export function ShuttleMap() {
             features: [
               ...stopPoints.map((s) => ({
                 type: "Feature" as const,
-                properties: { name: s.name, loop: s.loop },
+                properties: {
+                  name: s.name,
+                  loop: s.loop,
+                  below: liftedStops.has(s.name),
+                  // The bus station (where the valley bus leaves) and our
+                  // places' stops are named first, so they always get a spot.
+                  rank: s.loop === "hub" || stays.some((st) => st.stop.name === s.name) ? 0 : 1,
+                },
                 geometry: { type: "Point" as const, coordinates: [s.lng, s.lat] },
               })),
             ],
           },
         });
+        const labelText: SymbolLayerSpecification["layout"] = {
+          "text-field": ["get", "name"],
+          "text-font": ["Noto Sans Bold"],
+          "text-size": 11.5,
+          "text-padding": 2,
+        };
+        const labelPaint = {
+          "text-color": "#14232B",
+          "text-halo-color": "#ffffff",
+          "text-halo-width": 1.8,
+        };
         map.addLayer({
           id: "shuttle-stop-labels",
           type: "symbol",
           source: "shuttle-labels",
-          filter: ["!=", ["get", "loop"], "stay"],
+          filter: labelFilter("all", false),
           layout: {
-            "text-field": ["get", "name"],
-            "text-font": ["Noto Sans Bold"],
-            "text-size": 11.5,
+            ...labelText,
             "text-variable-anchor": ["top", "bottom", "right", "left"],
             "text-radial-offset": 1,
-            "text-padding": 2,
+            "symbol-sort-key": ["get", "rank"],
           },
-          paint: {
-            "text-color": "#14232B",
-            "text-halo-color": "#ffffff",
-            "text-halo-width": 1.8,
+          paint: labelPaint,
+        });
+        // These names always show, below their dot; other names keep clear of them.
+        map.addLayer({
+          id: "shuttle-stop-labels-below",
+          type: "symbol",
+          source: "shuttle-labels",
+          filter: labelFilter("all", true),
+          layout: {
+            ...labelText,
+            "text-anchor": "top",
+            "text-offset": [0, 0.9],
+            "text-allow-overlap": true,
           },
+          paint: labelPaint,
+        });
+        // Our places' pins and names are page elements, which map text cannot
+        // see, so stop names used to hide behind them. Invisible map text of
+        // the same size sits where each pin and name is, and is placed before
+        // anything else, so the stop names find a clear spot instead.
+        map.addSource("shuttle-stay-space", {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [
+              // Stop dots are page elements too, so names keep off them as well.
+              ...stopPoints.map((s) => ({
+                type: "Feature" as const,
+                properties: {
+                  text: "M",
+                  size: s.loop === "hub" ? 17 : 12,
+                  anchor: "center",
+                  offset: [0, 0],
+                },
+                geometry: { type: "Point" as const, coordinates: [s.lng, s.lat] },
+              })),
+              ...stays.flatMap((s) => {
+                const lift = s.lifted ? -26 : 0;
+                const side = stayLabelSide[s.name] ?? "above";
+                const name = {
+                  above: { anchor: "bottom", x: 0, y: lift - 17 },
+                  below: { anchor: "top", x: 0, y: lift + 17 },
+                  left: { anchor: "right", x: -19, y: lift },
+                  right: { anchor: "left", x: 19, y: lift },
+                }[side];
+                const at = { type: "Point" as const, coordinates: [s.pin.lng, s.pin.lat] };
+                return [
+                  // "MM" at 16px is about the size of the 28px house pin.
+                  { text: "MM", size: 16, anchor: "center", x: 0, y: lift },
+                  { text: s.name, size: 12.5, ...name },
+                ].map(({ text, size, anchor, x, y }) => ({
+                  type: "Feature" as const,
+                  properties: { text, size, anchor, offset: [x / size, y / size] },
+                  geometry: at,
+                }));
+              }),
+            ],
+          },
+        });
+        map.addLayer({
+          id: "shuttle-stay-space",
+          type: "symbol",
+          source: "shuttle-stay-space",
+          layout: {
+            "text-field": ["get", "text"],
+            "text-font": ["Noto Sans Bold"],
+            "text-size": ["get", "size"],
+            "text-anchor": ["get", "anchor"],
+            "text-offset": ["get", "offset"],
+            "text-allow-overlap": true,
+          },
+          paint: { "text-opacity": 0 },
         });
 
         // Dots, as page elements so they can be round or square.
@@ -323,13 +424,8 @@ export function ShuttleMap() {
           pin.appendChild(label);
           pin.setAttribute("role", "img");
           pin.setAttribute("aria-label", s.name);
-          // A place right beside its stop would hide the stop's dot, so its pin
-          // is lifted clear of it; the dotted walk still starts at the true spot.
-          const metres = Math.hypot(
-            (s.pin.lat - s.stop.lat) * 111000,
-            (s.pin.lng - s.stop.lng) * 78000,
-          );
-          new ml.Marker({ element: pin, offset: metres < 40 ? [0, -26] : [0, 0] })
+          // The dotted walk still starts at a lifted pin's true spot.
+          new ml.Marker({ element: pin, offset: s.lifted ? [0, -26] : [0, 0] })
             .setLngLat([s.pin.lng, s.pin.lat])
             .addTo(map);
         }
@@ -416,12 +512,8 @@ export function ShuttleMap() {
     if (map.getLayer("shuttle-arrows")) {
       map.setPaintProperty("shuttle-arrows", "icon-opacity", active === "all" ? 1 : faded);
     }
-    map.setFilter(
-      "shuttle-stop-labels",
-      active === "all"
-        ? ["!=", ["get", "loop"], "stay"]
-        : ["any", ["==", ["get", "loop"], "hub"], ["==", ["get", "loop"], active]],
-    );
+    map.setFilter("shuttle-stop-labels", labelFilter(active, false));
+    map.setFilter("shuttle-stop-labels-below", labelFilter(active, true));
     for (const { marker, loop } of dotsRef.current) {
       marker.getElement().style.opacity = loop === "hub" || on(loop) ? "1" : "0.25";
     }
@@ -445,13 +537,6 @@ export function ShuttleMap() {
           aria-label="Map of the free shuttle in Val Thorens, with its two loops, its stops and where we stay"
           className="relative z-0 h-[420px] w-full overflow-hidden rounded-lg border border-border bg-secondary sm:h-[460px]"
         />
-        <p className="pointer-events-none absolute right-2 top-2 z-10 flex max-w-[9.5rem] items-start gap-1.5 rounded-lg border border-border bg-card/95 px-2 py-1 text-[0.7rem] leading-snug shadow-sm sm:max-w-[13rem] sm:text-xs">
-          <ArrowLeft className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-          <span>
-            <b className="font-semibold">{valley.mapLabel}</b>
-            <span className="block text-muted-foreground">{valley.mapNote}</span>
-          </span>
-        </p>
       </div>
 
       <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
@@ -483,6 +568,18 @@ export function ShuttleMap() {
           Where we stay
         </span>
       </div>
+      {/* The valley bus leaves from the bus station, so it is told beside that dot's key. */}
+      <p className="mx-auto mt-1.5 flex max-w-md items-start sm:max-w-none justify-center gap-2 px-2 text-xs">
+        <span
+          className="mt-[3px] size-3 shrink-0 rounded-full border-2 border-white"
+          style={{ background: HUB_COLOR, boxShadow: "0 0 0 1px rgba(20,35,43,.35)" }}
+          aria-hidden="true"
+        />
+        <span>
+          <b className="font-medium">{valley.mapLabel}</b>{" "}
+          <span className="text-muted-foreground">{valley.mapNote}</span>
+        </span>
+      </p>
     </div>
   );
 }
