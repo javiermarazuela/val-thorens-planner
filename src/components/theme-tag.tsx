@@ -12,20 +12,13 @@ const svg = {
 // Our own drawings, on the same 24px grid as the lucide icons. Both follow
 // currentColor, so they turn white or navy with the text on the band.
 const icons: Record<ThemeIconName, (className: string) => ReactNode> = {
-  // A bob on a face: rounded crown, a swept fringe, sides that curl under at
-  // the jaw, and the chin drawn as a line between them.
+  // A bob wig: full rounded crown, a side-swept fringe, and the angled cut
+  // that is longer at the front than at the back.
   wig: (className) => (
     <svg {...svg} className={className}>
       <path
         fill="currentColor"
-        d="M12 2.3c-5 0-8.2 3.6-8.2 8.4v4.9c0 1.5 1 2.6 2.3 2.6h2.3V10.4c2.2-.2 4.2-1 5.7-2.4.5 1 1.2 1.8 2.1 2.3V18h2.3c1.3 0 2.3-1.1 2.3-2.6v-4.7c0-4.8-3.2-8.4-8.8-8.4Z"
-      />
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        strokeLinecap="round"
-        d="M8.4 14.6c0 3 1.6 5.1 3.6 5.1s3.6-2.1 3.6-5.1"
+        d="M12 2.2c-5.4 0-8.6 3.7-8.6 8.4v5.2c0 1 .5 1.7 1.4 2l2.8 1.6V10.2c2.6-.1 4.8-1.2 6.2-3 .4 1.4 1.3 2.4 2.6 2.9v9.3l2.8-1.6c.9-.3 1.4-1 1.4-2v-5.2c0-4.7-3.2-8.4-8.6-8.4Z"
       />
     </svg>
   ),
@@ -46,7 +39,7 @@ const icons: Record<ThemeIconName, (className: string) => ReactNode> = {
         fillOpacity={0.3}
       />
       <path d="M2 9.3H1v3.4h1M22 9.3h1v3.4h-1" />
-      <path d="M5.5 9.4c1.3-.5 2.8-.7 4.2-.7" />
+      <path d="M6 9.3c.8-.3 1.7-.4 2.5-.5" />
     </svg>
   ),
   mask: (className) => <VenetianMask className={className} aria-hidden="true" />,
