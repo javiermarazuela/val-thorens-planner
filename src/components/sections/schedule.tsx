@@ -7,7 +7,7 @@ import type { SectionProps } from "@/components/sections/registry";
 import { StatusBadge } from "@/components/status-badge";
 import { useCrewAccess } from "@/lib/social/source";
 import { challengeAt } from "@/lib/social/teams-content";
-import { week, weekSection, weekStatus, dayIcon, weekDayLabel } from "@/lib/trip";
+import { week, weekSection, weekStatus, dayIcon, themeLook, weekDayLabel } from "@/lib/trip";
 import { tripDayIndex } from "@/lib/trip-day";
 import { appNow } from "@/lib/now";
 
@@ -27,15 +27,26 @@ export function Schedule({ n, tone }: SectionProps) {
       <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {week.map((day, i) => {
           const isToday = today === i;
+          const look = day.theme ? themeLook(day.theme) : null;
           return (
             <li
               key={day.date}
-              className={`flex flex-col overflow-hidden rounded-2xl border-[1.5px] ${day.theme ? "bg-mustard/15" : "bg-card"} ${isToday ? "border-ink" : day.theme ? "border-mustard" : "border-border"}`}
+              className={`flex flex-col overflow-hidden rounded-2xl border-[1.5px] bg-card ${isToday ? "border-ink" : "border-border"}`}
+              style={
+                look
+                  ? {
+                      background: `color-mix(in oklab, ${look.band} 12%, var(--card))`,
+                      borderColor: isToday ? undefined : look.band,
+                    }
+                  : undefined
+              }
             >
-              {/* Date on the left. On a theme day the band turns mustard and names the theme,
-                  and the rest of the card takes a light wash of the same colour. */}
+              {/* Date on the left. On a theme day the band takes the theme's colour
+                  (themeLooks in trip.ts) and names the theme, and the rest of the
+                  card gets a light wash of the same colour. */}
               <div
-                className={`flex min-h-12 items-center justify-between gap-3 px-4 py-2.5 ${day.theme ? "bg-mustard text-ink" : "bg-primary/10"}`}
+                className={`flex min-h-12 items-center justify-between gap-3 px-4 py-2.5 ${look ? (look.text === "light" ? "text-white" : "text-ink") : "bg-primary/10"}`}
+                style={look ? { background: look.band } : undefined}
               >
                 <span className="text-base font-semibold">
                   {weekDayLabel(day)}
@@ -52,6 +63,20 @@ export function Schedule({ n, tone }: SectionProps) {
                   </span>
                 )}
               </div>
+              {look?.stripe && (
+                <div
+                  className="h-2 border-t-2 border-card"
+                  aria-hidden="true"
+                  style={{
+                    background: `linear-gradient(to right, ${look.stripe
+                      .map(
+                        (c, si, all) =>
+                          `${c} ${(si / all.length) * 100}% ${((si + 1) / all.length) * 100}%`,
+                      )
+                      .join(", ")})`,
+                  }}
+                />
+              )}
               <div className="flex flex-1 flex-col p-4 pt-3">
                 <p className="flex items-center gap-2.5 text-base font-semibold">
                   <EventIcon icon={dayIcon(day, i)} />
